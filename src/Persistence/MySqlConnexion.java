@@ -85,7 +85,6 @@ public class MySqlConnexion {
             // Fermeture de la connexion
             try {
                 if (stmt != null) stmt.close();
-                if (conn != null) conn.close();
             } catch (SQLException se) {
                 se.printStackTrace();
             }
@@ -173,6 +172,91 @@ public class MySqlConnexion {
             // Exécution de la requête d'insertion
             stmt.executeUpdate();
             System.out.println("Stagiaire inséré avec succès !");
+        } catch (SQLException e) {
+            e.printStackTrace();
+        } finally {
+            try {
+                if (stmt != null) stmt.close();
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+        }
+    }
+    
+    public static void deleteIntern(Connection conn, int id) {
+    	PreparedStatement stmt = null;
+
+        try {
+            String sql = "DELETE FROM intern WHERE id = ?";
+            stmt = conn.prepareStatement(sql);
+            stmt.setLong(1, id);
+
+            // Exécution de la requête de suppression
+            int rowsAffected = stmt.executeUpdate();
+            if (rowsAffected > 0) {
+                System.out.println("Stagiaire supprimé avec succès !");
+            } else {
+                System.out.println("Aucun stagiaire trouvé avec l'ID spécifié.");
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        } finally {
+            try {
+                if (stmt != null) stmt.close();
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+        }
+    }
+    
+    public static int getMaxID(Connection conn) {
+    	int maxId = 0;
+    	String sql = "SELECT MAX(ID) FROM intern";
+		ResultSet rs = null;
+		try {
+			PreparedStatement stmt = conn.prepareStatement(sql);
+			rs = stmt.executeQuery();
+			if (rs.next()) {
+				return maxId = rs.getInt(1);
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		return maxId;
+    }
+    
+    public static void updateIntern(Connection conn, String prenom, String nom, int promo, int id) {
+    	PreparedStatement stmt = null;
+
+        try {
+        	
+        	String sql = "UPDATE intern SET ";
+        	
+        	if (prenom != null) {
+        		sql = sql.concat("first_name = \""+ prenom +"\", ");
+        	}
+        	
+        	if (nom != null) {
+        		sql = sql.concat("last_name = \""+ nom +"\", ");
+        	}
+        	
+        	if (promo != 0) {
+        		sql = sql.concat("promotion_id = "+ promo +", ");
+        	}
+        	
+        	sql = sql.substring(0, sql.length() - 2);
+        	
+        	sql = sql.concat(" WHERE id = " + id);
+        	System.out.println(sql);
+            stmt = conn.prepareStatement(sql);
+
+            // Exécution de la requête de mise à jour
+            int rowsAffected = stmt.executeUpdate();
+            if (rowsAffected > 0) {
+                System.out.println("Stagiaire mis à jour avec succès !");
+            } else {
+                System.out.println("Aucun stagiaire trouvé avec l'ID spécifié.");
+            }
         } catch (SQLException e) {
             e.printStackTrace();
         } finally {

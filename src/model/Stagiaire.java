@@ -1,5 +1,7 @@
 package model;
 
+import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.sql.Timestamp;
 
 public class Stagiaire {
@@ -13,14 +15,28 @@ public class Stagiaire {
     
     public Stagiaire() {}
     
-	public Stagiaire(String firstName, String lastName, Timestamp arrival, Timestamp formationOver,
+	public Stagiaire(int id, String firstName, String lastName, Timestamp arrival, Timestamp formationOver,
 			int promotion) {
 		super();
+		this.id = id;
 		this.firstName = firstName;
 		this.lastName = lastName;
 		this.arrival = arrival;
 		this.formationOver = formationOver;
 		this.promotionId = promotion;
+	}
+	
+	public Stagiaire(ResultSet rs) {
+		try {
+			this.id = rs.getInt("id");
+			this.firstName = rs.getString("text");
+			this.lastName = rs.getString("text");
+			this.arrival = rs.getTimestamp("arrival");
+			this.formationOver = rs.getTimestamp("formation_over");
+			this.promotionId = rs.getInt("promotion_id");
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
 	}
 	
 	public long getId() {
