@@ -10,6 +10,9 @@ import java.sql.ResultSet;
 import java.sql.ResultSetMetaData;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.sql.Timestamp;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 
 public class MySqlConnexion {
 	// Informations de connexion à la base de données MySQL
@@ -161,12 +164,17 @@ public class MySqlConnexion {
         PreparedStatement stmt = null;
 
         try {
-            String sql = "INSERT INTO intern (first_name, last_name, arrival, formation_over, promotion_id) VALUES (?, ?, ?, ?, ?)";
+            String sql = "INSERT INTO intern (first_name, last_name, arrival, formation_over, promotion_id)"
+            		+ " VALUES (?, ?, ?, ?, ?)";
+            
             stmt = conn.prepareStatement(sql);
             stmt.setString(1, intern.getFirstName());
             stmt.setString(2, intern.getLastName());
-            stmt.setTimestamp(3, intern.getArrival());
-            stmt.setTimestamp(4, intern.getFormationOver());
+            
+            Timestamp timestamp = Timestamp.valueOf(intern.getArrival().atStartOfDay());
+            stmt.setTimestamp(3, timestamp);
+            stmt.setTimestamp(4, null);
+            
             stmt.setInt(5, intern.getPromotion());
 
             // Exécution de la requête d'insertion
@@ -225,7 +233,7 @@ public class MySqlConnexion {
 		return maxId;
     }
     
-    public static void updateIntern(Connection conn, String prenom, String nom, int promo, int id) {
+    public static void updateIntern(Connection conn, String prenom, String nom, String arrive, int promo, int id) {
     	PreparedStatement stmt = null;
 
         try {
@@ -242,6 +250,10 @@ public class MySqlConnexion {
         	
         	if (promo != 0) {
         		sql = sql.concat("promotion_id = "+ promo +", ");
+        	}
+        	if(arrive !=null) {
+        		sql = sql.concat("arrival = \""
+        				+ LocalDate.parse(arrive, DateTimeFormatter.ofPattern("dd-MM-yyyy")) +"\", ");
         	}
         	
         	sql = sql.substring(0, sql.length() - 2);

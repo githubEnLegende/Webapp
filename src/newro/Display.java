@@ -4,6 +4,8 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.Scanner;
 
 import Persistence.MySqlConnexion;
@@ -76,7 +78,8 @@ public class Display {
 	    			break;
 	    			
 	    		case "5": 
-	    			Stagiaire random = new Stagiaire(getMaxID(conn)+1, "Franck", "Alonso", null, null, 1);
+	    			Stagiaire random = new Stagiaire(getMaxID(conn)+1, sc.next(), sc.next(),
+	    					LocalDate.parse(sc.next(), DateTimeFormatter.ofPattern("dd-MM-yyyy")), null, sc.nextInt());
 	    			insertIntern(conn, random);
 	    			break;
 	    			
@@ -97,13 +100,15 @@ public class Display {
 	    			System.out.println("1: Son prénom");
 	    			System.out.println("2: Son nom");
 	    			System.out.println("3: Sa promotion");
-	    			System.out.println("4: Les trois");
+	    			System.out.println("4: Sa date d'arrivée");
+	    			System.out.println("5: Les trois");
 	        		System.out.print("Choix : ");
 	        		
 	    			userChoice = sc.nextLine();
 	    			
 	    			String prenom = null;
 	        		String nom = null;
+	        		String arrive = null;
 	        		int promo = 0;
 	    			
 	    			switch(userChoice) {
@@ -112,19 +117,19 @@ public class Display {
 		    				
 		    			case "1":
 		    				prenom = sc.nextLine();
-		    				updateIntern(conn, prenom, nom, promo, id);
+		    				updateIntern(conn, prenom, nom, arrive, promo,  id);
 		    				break;
 		    				
 		    			case "2":
 		    				nom = sc.nextLine();
-		    				updateIntern(conn, prenom, nom, promo, id);
+		    				updateIntern(conn, prenom, nom, arrive, promo,  id);
 		    				break;
 		    				
 		    			case "3":
 		    				choixUtilisateur = sc.nextLine();
 		    				try {
 			    				promo = Integer.parseInt(choixUtilisateur);
-			    				updateIntern(conn, prenom, nom, promo, id);
+			    				updateIntern(conn, prenom, nom, arrive, promo,  id);
 			    			}catch(NumberFormatException e) {
 			    				System.out.println("not a valid ID");
 			    				break;
@@ -132,18 +137,24 @@ public class Display {
 		    				break;
 		    				
 		    			case "4":
+		    				arrive = sc.nextLine();
+		    				updateIntern(conn, prenom, nom, arrive, promo,  id);
+		    				break;
+		    				
+		    			case "5":
 		    				prenom = sc.next();
 		    				nom = sc.next();
+		    				arrive = sc.next();
 		    				choixUtilisateur = sc.next();
 		    				try {
 			    				promo = Integer.parseInt(choixUtilisateur);
-			    				updateIntern(conn, prenom, nom, promo, id);
+			    				updateIntern(conn, prenom, nom, arrive, promo,  id);
 			    			}catch(NumberFormatException e) {
 			    				System.out.println("not a valid ID");
 			    				break;
 			    			}
 		    				break;
-
+		    			
 	    				default:
 	    					System.out.println("Choix invalide");
 	    					break;

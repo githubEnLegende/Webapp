@@ -2,20 +2,20 @@ package model;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.sql.Timestamp;
+import java.time.LocalDate;
 
 public class Stagiaire {
 	
 	private int id;
     private String firstName;
     private String lastName;
-    private Timestamp arrival;
-    private Timestamp formationOver;
+    private LocalDate arrival;
+    private LocalDate formationOver;
     private int promotionId;
     
     public Stagiaire() {}
     
-	public Stagiaire(int id, String firstName, String lastName, Timestamp arrival, Timestamp formationOver,
+	public Stagiaire(int id, String firstName, String lastName, LocalDate arrival, LocalDate formationOver,
 			int promotion) {
 		super();
 		this.id = id;
@@ -31,8 +31,8 @@ public class Stagiaire {
 			this.id = rs.getInt("id");
 			this.firstName = rs.getString("text");
 			this.lastName = rs.getString("text");
-			this.arrival = rs.getTimestamp("arrival");
-			this.formationOver = rs.getTimestamp("formation_over");
+			this.arrival = rs.getTimestamp("arrival").toLocalDateTime().toLocalDate();
+			this.formationOver = rs.getTimestamp("formation_over").toLocalDateTime().toLocalDate();
 			this.promotionId = rs.getInt("promotion_id");
 		} catch (SQLException e) {
 			e.printStackTrace();
@@ -57,16 +57,16 @@ public class Stagiaire {
 	public void setLastName(String lastName) {
 		this.lastName = lastName;
 	}
-	public Timestamp getArrival() {
+	public LocalDate getArrival() {
 		return arrival;
 	}
-	public void setArrival(Timestamp arrival) {
+	public void setArrival(LocalDate arrival) {
 		this.arrival = arrival;
 	}
-	public Timestamp getFormationOver() {
+	public LocalDate getFormationOver() {
 		return formationOver;
 	}
-	public void setFormationOver(Timestamp formationOver) {
+	public void setFormationOver(LocalDate formationOver) {
 		this.formationOver = formationOver;
 	}
 	public int getPromotion() {
