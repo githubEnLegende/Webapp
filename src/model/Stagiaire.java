@@ -1,33 +1,32 @@
 package model;
 
-import java.time.LocalDate;
+import java.sql.Timestamp;
 
 public class Stagiaire {
 	
-	private long id;
+	private int id;
     private String firstName;
     private String lastName;
-    private LocalDate arrival;
-    private LocalDate formationOver;
-    private Promotion promotion;
+    private Timestamp arrival;
+    private Timestamp formationOver;
+    private int promotionId;
     
     public Stagiaire() {}
     
-	public Stagiaire(long id, String firstName, String lastName, LocalDate arrival, LocalDate formationOver,
-			Promotion promotion) {
+	public Stagiaire(String firstName, String lastName, Timestamp arrival, Timestamp formationOver,
+			int promotion) {
 		super();
-		this.id = id;
 		this.firstName = firstName;
 		this.lastName = lastName;
 		this.arrival = arrival;
 		this.formationOver = formationOver;
-		this.promotion = promotion;
+		this.promotionId = promotion;
 	}
 	
 	public long getId() {
 		return id;
 	}
-	public void setId(long id) {
+	public void setId(int id) {
 		this.id = id;
 	}
 	public String getFirstName() {
@@ -42,23 +41,23 @@ public class Stagiaire {
 	public void setLastName(String lastName) {
 		this.lastName = lastName;
 	}
-	public LocalDate getArrival() {
+	public Timestamp getArrival() {
 		return arrival;
 	}
-	public void setArrival(LocalDate arrival) {
+	public void setArrival(Timestamp arrival) {
 		this.arrival = arrival;
 	}
-	public LocalDate getFormationOver() {
+	public Timestamp getFormationOver() {
 		return formationOver;
 	}
-	public void setFormationOver(LocalDate formationOver) {
+	public void setFormationOver(Timestamp formationOver) {
 		this.formationOver = formationOver;
 	}
-	public Promotion getPromotion() {
-		return promotion;
+	public int getPromotion() {
+		return promotionId;
 	}
-	public void setPromotion(Promotion promotion) {
-		this.promotion = promotion;
+	public void setPromotion(int promotion) {
+		this.promotionId = promotion;
 	}
 	
 	public String toString() {
@@ -68,7 +67,7 @@ public class Stagiaire {
                 ", lastName='" + lastName + '\'' +
                 ", arrival=" + arrival.toString() +
                 ", formationOver=" + formationOver.toString() +
-                ", promotionId=" + promotion.toString() +
+                ", promotionId=" + promotionId +
                 '}';
     }
 }
