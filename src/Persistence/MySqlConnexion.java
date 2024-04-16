@@ -50,9 +50,6 @@ public class MySqlConnexion {
     public static void afficher(String table, Connection conn) {
     	Statement stmt = null;
         try {
-            // Connexion à la base de données
-            conn = DriverManager.getConnection(DB_URL, USER, PASS);
-            
             // Création de l'objet Statement
             stmt = conn.createStatement();
             
@@ -76,7 +73,6 @@ public class MySqlConnexion {
             // Fermeture des ressources
             rs.close();
             stmt.close();
-            conn.close();
         } catch (SQLException se) {
             // Gestion des erreurs SQL
             se.printStackTrace();
@@ -94,31 +90,33 @@ public class MySqlConnexion {
         }
     }
     
-    public static void afficherStagiaire(Connection conn) throws SQLException {
+    public static void detailStagiaire(Connection conn, int id){
     	
     	String sql = "SELECT * FROM intern WHERE id = ?";
-    	 try (PreparedStatement stmt = conn.prepareStatement(sql)) {
-             stmt.setLong(1, 1); // Remplacez 1 par l'ID du stagiaire désiré
-             try (ResultSet rs = stmt.executeQuery()) {
-                 if (rs.next()) {
-                	 
-                     // Affichage des données
-                     System.out.println("ID : " + rs.getLong("id"));
-                     System.out.println("First Name : " + rs.getString("first_name"));
-                     System.out.println("Last Name : " + rs.getString("last_name"));
-                     System.out.println("Arrival : " + rs.getTimestamp("arrival"));
-                     System.out.println("Formation Over : " + rs.getTimestamp("formation_over"));
-                     System.out.println("Promotion ID : " + rs.getLong("promotion_id"));
-                 } else {
-                     System.out.println("Aucun résultat trouvé.");
-                 }
-             }
-    	 }
+        try (PreparedStatement stmt = conn.prepareStatement(sql)) {
+            stmt.setLong(1, id); // Remplacez 1 par l'ID du stagiaire désiré
+            try (ResultSet rs = stmt.executeQuery()) {
+                if (rs.next()) {
+                    // Affichage des données
+                    System.out.println("ID : " + rs.getLong("id"));
+                    System.out.println("First Name : " + rs.getString("first_name"));
+                    System.out.println("Last Name : " + rs.getString("last_name"));
+                    System.out.println("Arrival : " + rs.getTimestamp("arrival"));
+                    System.out.println("Formation Over : " + rs.getTimestamp("formation_over"));
+                    System.out.println("Promotion ID : " + rs.getLong("promotion_id"));
+                } else {
+                    System.out.println("Aucun résultat trouvé.");
+                }
+            }
+        }
+	     catch (SQLException e) {
+	        e.printStackTrace();
+	    }
     }
 
     public static void main(String[] args) {
     	Connection conn = MySqlConnexion.getInstance().getConnection();
-    	afficher("intern", conn);
+    	detailStagiaire(conn, 3);
     	MySqlConnexion.getInstance().closeConnection();
     	
         
