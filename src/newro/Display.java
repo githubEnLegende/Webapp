@@ -5,6 +5,7 @@ import static persistence.MySqlConnexion.*;
 import java.sql.Connection;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
+import java.util.InputMismatchException;
 import java.util.Scanner;
 
 import model.Promotion;
@@ -44,31 +45,30 @@ public class Display {
 	    			break;
 	    			
 	    		case "1": 
-	    			
 	    			Page<Stagiaire> pageStagiaire = new Page<Stagiaire>();
-	    			
 	    			boolean boucle = true;
 	    			int pageNumber = 1;
 	    			int totalPages = getTotalPages(conn, "intern", 50);
+	    			
 	    			while (boucle) {
 	                    System.out.println("Page " + pageNumber + " sur " + totalPages + ":");
 	                    afficherPageStagiaire(conn, pageNumber, pageStagiaire);
 	                    //afficher( "intern",  conn, pageNumber);
 	                    System.out.println("1: Page suivante, 2: Page précédente, 3: Choisissez la page, 0: Quitter");
 	                    System.out.println("Choix :");
-	                    int choice = sc.nextInt();
+	                    String choice = sc.next();
 
-	                    if (choice == 1 && pageNumber < totalPages) {
+	                    if (choice.equals("1")&& pageNumber < totalPages) {
 	                        // Aller à la page suivante, si ce n'est pas la dernière page
 	                        pageNumber++;
-	                    } else if (choice == 2 && pageNumber > 1) {
+	                    } else if (choice.equals("2") && pageNumber > 1) {
 	                        // Aller à la page précédente, si ce n'est pas la première page
 	                        pageNumber--;
-	                    } else if (choice == 3) {
+	                    } else if (choice.equals("3")) {
 	                    	try {
 	                    		System.out.println("Entrez un nombre :");
 			    				pageNumber = sc.nextInt();
-			    			}catch(NumberFormatException e) {
+			    			}catch(final InputMismatchException e) {
 			    				System.out.println("not a valid number");
 			    			}
 	                    	if (pageNumber > totalPages) {
@@ -76,7 +76,7 @@ public class Display {
 	                    	} else if (pageNumber < 1) {
 	                    		pageNumber = 1;
 	                    	}
-	                    } else if (choice == 0) {
+	                    } else if (choice.equals("0")) {
 	                        // Quitter la boucle
 	                        boucle = false;;
 	                    } else {
@@ -86,27 +86,26 @@ public class Display {
 	    			break;
 	    			
 	    		case "2": 
-	    			
 	    			Page<Promotion> pagePromo = new Page<Promotion>();
-	    			
 	    			boucle = true;
 	    			pageNumber = 1;
 	    			totalPages = getTotalPages(conn, "promotion", 50);
+	    			
 	    			while (boucle) {
 	                    System.out.println("Page " + pageNumber + " sur " + totalPages + ":");
 	                    afficherPagePromotion(conn, pageNumber, pagePromo);
 	                    System.out.println("1: Page suivante, 2: Page précédente, 3: Choisissez la page, 0: Quitter");
 	                    System.out.println("Choix :");
 
-	                    int choice = sc.nextInt();
+	                    String choice = sc.next();
 
-	                    if (choice == 1 && pageNumber < totalPages) {
+	                    if (choice.equals("1") && pageNumber < totalPages) {
 	                        // Aller à la page suivante, si ce n'est pas la dernière page
 	                        pageNumber++;
-	                    } else if (choice == 2 && pageNumber > 1) {
+	                    } else if (choice.equals("2") && pageNumber > 1) {
 	                        // Aller à la page précédente, si ce n'est pas la première page
 	                        pageNumber--;
-	                    } else if (choice == 3) {
+	                    } else if (choice.equals("3")) {
 	                    	try {
 	                    		System.out.println("Entrez un nombre :");
 			    				pageNumber = sc.nextInt();
@@ -119,7 +118,7 @@ public class Display {
 	                    	} else if (pageNumber < 1) {
 	                    		pageNumber = 1;
 	                    	}
-	                    } else if (choice == 0) {
+	                    } else if (choice.equals("0")) {
 	                        // Quitter la boucle
 	                    	boucle = false;;
 	                    } else {
@@ -131,6 +130,7 @@ public class Display {
 	    		case "3": 
 	    			System.out.print("Entrez l'ID d'un stagiaire :");
 	    			String userChoice = sc.nextLine();
+	    			
 	    			try {
 	    				int id = Integer.parseInt(userChoice);
 		    			detailStagiaire(conn, id); 
