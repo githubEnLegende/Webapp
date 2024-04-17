@@ -1,4 +1,4 @@
-package Persistence;
+package persistence;
 import model.Stagiaire;
 import model.Promotion;
 import model.Question;
@@ -387,8 +387,8 @@ public class MySqlConnexion {
         	}
         	
         	sql = sql.substring(0, sql.length() - 2);
-        	
         	sql = sql.concat(" WHERE id = " + id);
+        	
         	System.out.println(sql);
             stmt = conn.prepareStatement(sql);
 
