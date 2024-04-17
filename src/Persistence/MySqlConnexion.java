@@ -1,7 +1,10 @@
 package Persistence;
 import model.Stagiaire;
+import model.Promotion;
 import model.Question;
 import model.Reponse;
+
+import newro.Page;
 
 import java.sql.Connection;
 import java.sql.DriverManager;
@@ -52,7 +55,7 @@ public class MySqlConnexion {
         }
     }
     
-    public static void afficher(String table, Connection conn) {
+    /*public static void afficher(String table, Connection conn) {
     	Statement stmt = null;
         try {
             // Création de l'objet Statement
@@ -85,13 +88,124 @@ public class MySqlConnexion {
             // Gestion des autres erreurs
             e.printStackTrace();
         } finally {
-            // Fermeture de la connexion
             try {
                 if (stmt != null) stmt.close();
             } catch (SQLException se) {
                 se.printStackTrace();
             }
         }
+    }*/
+    
+    public static void afficher(String table, Connection conn, int pageNumber) {
+        Statement stmt = null;
+        try {
+        	int rowsPerPage = 50;
+            // Calcul de l'index de la première ligne de la page
+            int startIndex = (pageNumber - 1) * rowsPerPage;
+
+            // Création de l'objet Statement
+            stmt = conn.createStatement();
+
+            // Construction de la requête SQL avec une clause LIMIT pour la pagination
+            String sql = "SELECT * FROM " + table + " LIMIT " + startIndex + ", " + rowsPerPage;
+
+            // Exécution de la requête SQL
+            ResultSet rs = stmt.executeQuery(sql);
+
+            // Récupération des métadonnées du résultat
+            ResultSetMetaData metaData = rs.getMetaData();
+            int numColumns = metaData.getColumnCount();
+
+            // Affichage des données
+            while (rs.next()) {
+                for (int i = 1; i <= numColumns; i++) {
+                    System.out.print(metaData.getColumnName(i) + ": " + rs.getObject(i) + "\t");
+                }
+                System.out.println();
+            }
+
+            // Fermeture des ressources
+            rs.close();
+            stmt.close();
+        } catch (SQLException se) {
+            // Gestion des erreurs SQL
+            se.printStackTrace();
+        } catch (Exception e) {
+            // Gestion des autres erreurs
+            e.printStackTrace();
+        } finally {
+            try {
+                if (stmt != null) stmt.close();
+            } catch (SQLException se) {
+                se.printStackTrace();
+            }
+        }
+    }
+    
+//    public static <T> void afficherPage(Connection conn, int pageNumber, Page<T> page, String table) {
+//    	Statement stmt = null;
+//    	try {
+//    		String sql = "SELECT * FROM " + table + " LIMIT " + page.getNbRow() + ", "
+//    				+ (pageNumber - 1) * page.getNbRow();
+//    		
+//    		stmt = conn.createStatement();
+//    		ResultSet rs = stmt.executeQuery(sql);
+//    		
+//    		while (rs.next()) {
+//    			page.addContent(new Stagiaire(rs));
+//    		}
+//    		
+//    		page.display();
+//    		
+//    	} catch (SQLException e) {
+//    		// TODO Auto-generated catch block
+//    		e.printStackTrace();
+//    	}
+//    	
+//    	
+//    }
+    public static void afficherPageStagiaire(Connection conn, int pageNumber, Page<Stagiaire> page) {
+    	Statement stmt = null;
+    	try {
+    		String sql = "SELECT * FROM intern LIMIT " +(pageNumber - 1) * page.getNbRow()+ ", "
+    				+ page.getNbRow();
+    		
+    		stmt = conn.createStatement();
+    		ResultSet rs = stmt.executeQuery(sql);
+    		
+    		while (rs.next()) {
+    			page.addContent(new Stagiaire(rs));
+    		}
+    		
+    		page.display();
+    		page.emptyContent();
+    		
+    	} catch (SQLException e) {
+    		// TODO Auto-generated catch block
+    		e.printStackTrace();
+    	}      
+    }
+    
+    public static void afficherPagePromotion(Connection conn, int pageNumber, Page<Promotion> page) {
+        Statement stmt = null;
+        try {
+        	String sql = "SELECT * FROM promotion LIMIT " +(pageNumber - 1) * page.getNbRow()+ ", "
+    			+ page.getNbRow();
+        	
+        	stmt = conn.createStatement();
+			ResultSet rs = stmt.executeQuery(sql);
+			
+			while (rs.next()) {
+				page.addContent(new Promotion(rs));
+			}
+			
+			page.display();
+			page.emptyContent();
+			
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}      
     }
     
     public static void detailStagiaire(Connection conn, int id){
@@ -231,6 +345,22 @@ public class MySqlConnexion {
 			e.printStackTrace();
 		}
 		return maxId;
+    }
+    
+    public static int getTotalPages(Connection conn, String table, int rowsPerPage){
+        try (java.sql.Statement stmt = conn.createStatement()) {
+            // Exécution de la requête SQL pour obtenir le nombre total de lignes dans la table
+            String countQuery = "SELECT COUNT(*) FROM " + table;
+            java.sql.ResultSet rs = stmt.executeQuery(countQuery);
+            rs.next();
+            int totalRows = rs.getInt(1);
+
+            // Calcul du nombre total de pages
+            return (int) Math.ceil((double) totalRows / rowsPerPage);
+        } catch (SQLException e) {
+        	e.printStackTrace();
+        	return 0;
+        }
     }
     
     public static void updateIntern(Connection conn, String prenom, String nom, String arrive, int promo, int id) {

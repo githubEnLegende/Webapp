@@ -29,10 +29,12 @@ public class Stagiaire {
 	public Stagiaire(ResultSet rs) {
 		try {
 			this.id = rs.getInt("id");
-			this.firstName = rs.getString("text");
-			this.lastName = rs.getString("text");
-			this.arrival = rs.getTimestamp("arrival").toLocalDateTime().toLocalDate();
-			this.formationOver = rs.getTimestamp("formation_over").toLocalDateTime().toLocalDate();
+			this.firstName = rs.getString("first_name");
+			this.lastName = rs.getString("last_name");
+			this.arrival = rs.getTimestamp("arrival")
+					== null ? null : rs.getTimestamp("arrival").toLocalDateTime().toLocalDate();
+			this.formationOver = rs.getTimestamp("formation_over") 
+					== null ? null : rs.getTimestamp("formation_over").toLocalDateTime().toLocalDate();
 			this.promotionId = rs.getInt("promotion_id");
 		} catch (SQLException e) {
 			e.printStackTrace();
@@ -81,8 +83,6 @@ public class Stagiaire {
                 "id=" + id +
                 ", firstName='" + firstName + '\'' +
                 ", lastName='" + lastName + '\'' +
-                ", arrival=" + arrival.toString() +
-                ", formationOver=" + formationOver.toString() +
                 ", promotionId=" + promotionId +
                 '}';
     }

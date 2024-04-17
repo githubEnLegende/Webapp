@@ -1,14 +1,12 @@
 package newro;
 
 import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.Scanner;
 
 import Persistence.MySqlConnexion;
+import model.Promotion;
 import model.Stagiaire;
 import static Persistence.MySqlConnexion.*;
 
@@ -17,7 +15,6 @@ public class Display {
 	public static void feur() {
 		System.out.println("Connexion à la base de donnée");
 		Connection conn = MySqlConnexion.getInstance().getConnection();
-				
 		
     	boolean quit = false;
 
@@ -46,11 +43,62 @@ public class Display {
 	    			break;
 	    			
 	    		case "1": 
-	    			afficher("intern", conn); 
+	    			
+	    			Page<Stagiaire> page = new Page<Stagiaire>();
+	    			
+	    			boolean boucle = true;
+	    			int pageNumber = 1;
+	    			int totalPages = getTotalPages(conn, "intern", 50);
+	    			while (boucle) {
+	                    System.out.println("Page " + pageNumber + " sur " + totalPages + ":");
+	                    afficherPageStagiaire(conn, pageNumber, page);
+	                    //afficher( "intern",  conn, pageNumber);
+	                    // Demander à l'utilisateur s'il veut passer à la page suivante, précédente ou quitter
+	                    System.out.println("1: Page suivante, 2: Page précédente, 0: Quitter");
+	                    int choice = sc.nextInt();
+
+	                    if (choice == 1 && pageNumber < totalPages) {
+	                        // Aller à la page suivante, si ce n'est pas la dernière page
+	                        pageNumber++;
+	                    } else if (choice == 2 && pageNumber > 1) {
+	                        // Aller à la page précédente, si ce n'est pas la première page
+	                        pageNumber--;
+	                    } else if (choice == 0) {
+	                        // Quitter la boucle
+	                        boucle = false;;
+	                    } else {
+	                        System.out.println("Choix invalide !");
+	                    }
+	                }
 	    			break;
 	    			
 	    		case "2": 
-	    			afficher("promotion", conn); 
+	    			
+	    			Page<Promotion> pagePromo = new Page<Promotion>();
+	    			
+	    			boucle = true;
+	    			pageNumber = 1;
+	    			totalPages = getTotalPages(conn, "promotion", 50);
+	    			while (boucle) {
+	                    System.out.println("Page " + pageNumber + " sur " + totalPages + ":");
+	                    afficherPagePromotion(conn, pageNumber, pagePromo);
+	                    // Demander à l'utilisateur s'il veut passer à la page suivante, précédente ou quitter
+	                    System.out.println("1: Page suivante, 2: Page précédente, 0: Quitter");
+	                    int choice = sc.nextInt();
+
+	                    if (choice == 1 && pageNumber < totalPages) {
+	                        // Aller à la page suivante, si ce n'est pas la dernière page
+	                        pageNumber++;
+	                    } else if (choice == 2 && pageNumber > 1) {
+	                        // Aller à la page précédente, si ce n'est pas la première page
+	                        pageNumber--;
+	                    } else if (choice == 0) {
+	                        // Quitter la boucle
+	                    	boucle = false;;
+	                    } else {
+	                        System.out.println("Choix invalide !");
+	                    }
+	                }
 	    			break;
 	    			
 	    		case "3": 
@@ -180,8 +228,6 @@ public class Display {
     	}
 		sc.close();
     	MySqlConnexion.getInstance().closeConnection();
-
-
 
 	}
 
