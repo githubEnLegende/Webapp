@@ -164,6 +164,7 @@ public class MySqlConnexion {
 //    	
 //    	
 //    }
+    
     public static void afficherPageStagiaire(Connection conn, int pageNumber, Page<Stagiaire> page) {
     	Statement stmt = null;
     	try {

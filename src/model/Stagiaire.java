@@ -23,6 +23,15 @@ public class Stagiaire {
 		this.lastName = lastName;
 		this.arrival = arrival;
 		this.formationOver = formationOver;
+		if (promotion > 47) {
+			promotion = 47;
+			System.out.println("ID trop élevé, mis à la dernière promotion");
+		}
+		else if (promotion < 1) {
+			promotion = 1;
+			System.out.println("ID trop bas, mis à la première promotion");
+
+		}
 		this.promotionId = promotion;
 	}
 	
