@@ -2,16 +2,13 @@ package newro;
 
 import static newro.FonctionDIsplay.*;
 
-import java.sql.Connection;
 import java.util.Scanner;
 
-import persistence.MySqlConnexion;
 
 public class Display {
 
 	public static void feur() {
 		System.out.println("Connexion à la base de donnée");
-		Connection conn = MySqlConnexion.getInstance().getConnection();
 		
     	boolean quit = false;
 
@@ -40,41 +37,41 @@ public class Display {
 	    			break;
 	    			
 	    		case "1": 
-	    			DisplayAfficherPageStagiaire(conn, sc);
+	    			DisplayAfficherPageStagiaire(sc);
 	    			break;
 	    			
 	    		case "2": 
-	    			DisplayAfficherPagePromotion(conn, sc);
+	    			DisplayAfficherPagePromotion(sc);
 	    			break;
 	    			
 	    		case "3": 
-	    			DisplayAfficherStagiaire(conn, sc);
+	    			DisplayAfficherStagiaire(sc);
 	    			break;
 	    			
 	    		case "4": 
-	    			DisplayAfficherQuestion(conn, sc);
+	    			DisplayAfficherQuestion(sc);
 	    			break;
 	    			
 	    		case "5": 
-	    			DisplayAjouterStagiaire(conn, sc);
+	    			DisplayAjouterStagiaire(sc);
 	    			break;
 	    			
 	    		case "6": 
-	    			DisplayModifierStagiaire(conn, sc);
+	    			DisplayModifierStagiaire(sc);
 	    			break;
 	    		
     			case "7": 
-    				DiplaySupprimerStagiaire(conn, sc);
+    				DiplaySupprimerStagiaire(sc);
     				break;
     				
-    			default: System.out.println("Invalide, réessayez"); break;
+    			default: 
+    				System.out.println("Invalide, réessayez"); 
+    				break;
     		}
 
     		
     	}
 		sc.close();
-    	MySqlConnexion.getInstance().closeConnection();
-
 	}
 
 }

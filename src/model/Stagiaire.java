@@ -13,26 +13,24 @@ public class Stagiaire {
     private LocalDate formationOver;
     private int promotionId;
     
-    public Stagiaire() {}
     
-	public Stagiaire(int id, String firstName, String lastName, LocalDate arrival, LocalDate formationOver,
-			int promotion) {
+	private Stagiaire(StagiaireBuilder builder) {
 		super();
-		this.id = id;
-		this.firstName = firstName;
-		this.lastName = lastName;
-		this.arrival = arrival;
-		this.formationOver = formationOver;
-		if (promotion > 47) {
-			promotion = 47;
+		this.id = builder.id;
+		this.firstName = builder.firstName;
+		this.lastName = builder.lastName;
+		this.arrival = builder.arrival;
+		this.formationOver = builder.formationOver;
+		if (builder.promotionId > 47) {
+			builder.promotionId = 47;
 			System.out.println("ID trop élevé, mis à la dernière promotion");
 		}
-		else if (promotion < 1) {
-			promotion = 1;
+		else if (builder.promotionId < 1) {
+			builder.promotionId = 1;
 			System.out.println("ID trop bas, mis à la première promotion");
 
 		}
-		this.promotionId = promotion;
+		this.promotionId = builder.promotionId;
 	}
 	
 	public Stagiaire(ResultSet rs) {
@@ -95,4 +93,54 @@ public class Stagiaire {
                 ", promotionId=" + promotionId +
                 '}';
     }
+	
+	public static class StagiaireBuilder{
+		private int id;
+	    private String firstName;
+	    private String lastName;
+	    private LocalDate arrival;
+	    private LocalDate formationOver;
+	    private int promotionId;
+	    
+	    public StagiaireBuilder (int id, String firstName, String lastName, LocalDate arrival, int promotionId) {
+	    	this.id = id;
+	    	this.firstName = firstName;
+	    	this.lastName = lastName;
+	    	this.arrival = arrival;
+	    	this.promotionId = promotionId;
+	    }
+
+		public StagiaireBuilder firstName(String firstName) {
+	    	this.firstName = firstName;
+	    	return this;
+	    }
+	    
+	    public StagiaireBuilder lastName(String lastName) {
+	    	this.lastName = lastName;
+	    	return this;
+	    }
+	    
+	    public StagiaireBuilder arrival(LocalDate arrival) {
+	    	this.arrival = arrival;
+	    	return this;
+	    }
+	    
+	    public StagiaireBuilder formationOver(LocalDate formationOver) {
+	    	this.formationOver = formationOver;
+	    	return this;
+	    }
+	    
+	    public StagiaireBuilder promotionId(int promotionId) {
+	    	this.promotionId = promotionId;
+	    	return this;
+	    }
+	    
+	    public Stagiaire build() {
+	    	return new Stagiaire(this);
+	    }
+
+		
+	}
 }
+
+

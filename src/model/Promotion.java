@@ -8,6 +8,12 @@ public class Promotion {
 	private String promotion;
 	
 	
+	
+	public Promotion(PromotionBuilder builder) {
+		this.id = builder.id;
+		this.promotion = builder.promotion;
+	}
+
 	public Promotion(ResultSet rs) {
 		try {
 			this.id = rs.getInt("id");
@@ -32,6 +38,30 @@ public class Promotion {
 	
 	public String toString() {		
 		return "PromotionID : " + id + " " + promotion;
+	}
+	
+	public static class PromotionBuilder{
+		private int id;
+		private String promotion;
+		
+		public PromotionBuilder(int id, String promotion){
+			this.id = id;
+			this.promotion = promotion;
+		}
+		
+		public PromotionBuilder id(int id) {
+			this.id = id;
+			return this;
+		}
+		
+		public PromotionBuilder promotion(String promotion) {
+			this.promotion = promotion;
+			return this;
+		}
+		
+		public Promotion build() {
+			return new Promotion(this);
+		}
 	}
 	
 }

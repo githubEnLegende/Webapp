@@ -27,7 +27,6 @@ public class MySqlConnexion {
     
     private MySqlConnexion() {
         try {
-            // Création de la connexion à la base de données
             connection = DriverManager.getConnection(DB_URL, USER, PASS);
         } catch (SQLException e) {
             e.printStackTrace();
@@ -42,6 +41,13 @@ public class MySqlConnexion {
     }
     
     public Connection getConnection() {
+    	try {
+			if(connection.isClosed()) {	
+			connection = DriverManager.getConnection(DB_URL, USER, PASS);   
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
         return connection;
     }
     
@@ -96,7 +102,8 @@ public class MySqlConnexion {
         }
     }*/
     
-    public static void afficher(String table, Connection conn, int pageNumber) {
+    public static void afficher(String table, int pageNumber) {
+    	Connection conn = MySqlConnexion.getInstance().getConnection();
         Statement stmt = null;
         try {
         	int rowsPerPage = 50;
@@ -165,36 +172,34 @@ public class MySqlConnexion {
 //    	
 //    }
     
-    public static void afficherPageStagiaire(Connection conn, int pageNumber, Page<Stagiaire> page) {
-    	Statement stmt = null;
-    	try {
-    		String sql = "SELECT * FROM intern LIMIT " +(pageNumber - 1) * page.getNbRow()+ ", "
-    				+ page.getNbRow();
-    		
-    		stmt = conn.createStatement();
-    		ResultSet rs = stmt.executeQuery(sql);
-    		
+    public static void afficherPageStagiaire(int pageNumber, Page<Stagiaire> page) {
+    	
+    	String sql = "SELECT id, first_name, last_name, arrival, formation_over, promotion_id FROM intern LIMIT ? OFFSET ?";
+    	try(Connection conn = MySqlConnexion.getInstance().getConnection();
+    			PreparedStatement stmt = conn.prepareStatement(sql);){
+    			
+    		stmt.setInt(1, page.getNbRow());
+    		stmt.setInt(2, (pageNumber - 1) * page.getNbRow());
+    		ResultSet rs = stmt.executeQuery();
     		while (rs.next()) {
     			page.addContent(new Stagiaire(rs));
     		}
-    		
     		page.display();
     		page.emptyContent();
-    		
-    	} catch (SQLException e) {
-    		// TODO Auto-generated catch block
-    		e.printStackTrace();
-    	}      
-    }
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+    } 
     
-    public static void afficherPagePromotion(Connection conn, int pageNumber, Page<Promotion> page) {
-        Statement stmt = null;
-        try {
-        	String sql = "SELECT * FROM promotion LIMIT " +(pageNumber - 1) * page.getNbRow()+ ", "
-    			+ page.getNbRow();
-        	
-        	stmt = conn.createStatement();
-			ResultSet rs = stmt.executeQuery(sql);
+    public static void afficherPagePromotion(int pageNumber, Page<Promotion> page) {
+    	
+    	String sql = "SELECT id, name FROM promotion LIMIT ? OFFSET ?";
+
+    	try(Connection conn = MySqlConnexion.getInstance().getConnection();
+    			PreparedStatement stmt = conn.prepareStatement(sql);){
+        	stmt.setInt(1, page.getNbRow());
+    		stmt.setInt(2, (pageNumber - 1) * page.getNbRow());
+			ResultSet rs = stmt.executeQuery();
 			
 			while (rs.next()) {
 				page.addContent(new Promotion(rs));
@@ -209,10 +214,11 @@ public class MySqlConnexion {
 		}      
     }
     
-    public static void detailStagiaire(Connection conn, int id){
+    public static void detailStagiaire(int id){
     	
-    	String sql = "SELECT * FROM intern WHERE id = ?";
-        try (PreparedStatement stmt = conn.prepareStatement(sql)) {
+    	String sql = "SELECT id, first_name, last_name, arrival, formation_over, promotion_id FROM intern WHERE id = ?";
+        try (Connection conn = MySqlConnexion.getInstance().getConnection();
+        		PreparedStatement stmt = conn.prepareStatement(sql)) {
             stmt.setLong(1, id); // Remplacez 1 par l'ID du stagiaire désiré
             try (ResultSet rs = stmt.executeQuery()) {
                 if (rs.next()) {
@@ -233,25 +239,25 @@ public class MySqlConnexion {
 	    }
     }
     
-    public static void getQuestionById(Connection conn, int questionId) {
-    	Question question = new Question();
+    public static void getQuestionById(int questionId) {
+    	
         PreparedStatement stmt = null;
         ResultSet rs = null;
-        try {
-            String sql = "SELECT * FROM question WHERE id = ?";
+        try(Connection conn = MySqlConnexion.getInstance().getConnection();) {
+            String sql = "SELECT id, title, statement, chapter_id FROM question WHERE id = ?";
             stmt = conn.prepareStatement(sql);
             stmt.setInt(1, questionId);
             rs = stmt.executeQuery();
 
             if (rs.next()) {
-                // Création d'un objet Question avec les données récupérées
-                question.setId(rs.getInt("id"));
-                question.setTitle(rs.getString("title"));
-                question.setStatement(rs.getString("statement"));
-                question.setChapitreId(rs.getInt("chapter_id"));
+            	Question question = new Question.QuestionBuilder(
+            										rs.getInt("id"), 
+            										rs.getString("title"), 
+            										rs.getString("statement"), 
+            										rs.getInt("chapter_id")).build();
                 System.out.print(question.toString());
                 
-                String answer = "SELECT * FROM answer WHERE question_id = ?";
+                String answer = "SELECT id, text, valid_answer, question_id FROM answer WHERE question_id = ?";
                 stmt = conn.prepareStatement(answer);
                 stmt.setInt(1, question.getId());
                 rs = stmt.executeQuery();
@@ -275,14 +281,13 @@ public class MySqlConnexion {
         }
     }
     
-    public static void insertIntern(Connection conn, Stagiaire intern) {
-        PreparedStatement stmt = null;
-
-        try {
-            String sql = "INSERT INTO intern (first_name, last_name, arrival, formation_over, promotion_id)"
-            		+ " VALUES (?, ?, ?, ?, ?)";
+    
+    public static void insertIntern(Stagiaire intern) {
+        String sql = "INSERT INTO intern (first_name, last_name, arrival, formation_over, promotion_id)"
+        		+ " VALUES (?, ?, ?, ?, ?)";
+        try(Connection conn = MySqlConnexion.getInstance().getConnection();
+        		PreparedStatement stmt = conn.prepareStatement(sql);) {
             
-            stmt = conn.prepareStatement(sql);
             stmt.setString(1, intern.getFirstName());
             stmt.setString(2, intern.getLastName());
             
@@ -297,21 +302,15 @@ public class MySqlConnexion {
             System.out.println("Stagiaire inséré avec succès !");
         } catch (SQLException e) {
             e.printStackTrace();
-        } finally {
-            try {
-                if (stmt != null) stmt.close();
-            } catch (SQLException e) {
-                e.printStackTrace();
-            }
         }
     }
     
-    public static void deleteIntern(Connection conn, int id) {
-    	PreparedStatement stmt = null;
+    public static void deleteIntern(int id) {
+    	
+        String sql = "DELETE FROM intern WHERE id = ?";
 
-        try {
-            String sql = "DELETE FROM intern WHERE id = ?";
-            stmt = conn.prepareStatement(sql);
+        try(Connection conn = MySqlConnexion.getInstance().getConnection();
+        		PreparedStatement stmt = conn.prepareStatement(sql);) {
             stmt.setLong(1, id);
 
             // Exécution de la requête de suppression
@@ -323,12 +322,6 @@ public class MySqlConnexion {
             }
         } catch (SQLException e) {
             e.printStackTrace();
-        } finally {
-            try {
-                if (stmt != null) stmt.close();
-            } catch (SQLException e) {
-                e.printStackTrace();
-            }
         }
     }
     
@@ -348,11 +341,12 @@ public class MySqlConnexion {
 		return maxId;
     }
     
-    public static int getTotalPages(Connection conn, String table, int rowsPerPage){
-        try (java.sql.Statement stmt = conn.createStatement()) {
-            // Exécution de la requête SQL pour obtenir le nombre total de lignes dans la table
-            String countQuery = "SELECT COUNT(*) FROM " + table;
-            java.sql.ResultSet rs = stmt.executeQuery(countQuery);
+    public static int getTotalPages(String table, int rowsPerPage){
+		MySqlConnexion connection = MySqlConnexion.getInstance();
+        String countQuery = "SELECT COUNT(*) FROM " + table;
+
+        try (PreparedStatement stmt = connection.getConnection().prepareStatement(countQuery);) {
+            ResultSet rs = stmt.executeQuery(countQuery);
             rs.next();
             int totalRows = rs.getInt(1);
 
@@ -361,16 +355,17 @@ public class MySqlConnexion {
         } catch (SQLException e) {
         	e.printStackTrace();
         	return 0;
+        }finally {
+        	connection.closeConnection();
         }
     }
     
-    public static void updateIntern(Connection conn, String prenom, String nom, String arrive, int promo, int id) {
+    public static void updateIntern(String prenom, String nom, String arrive, int promo, int id) {
     	PreparedStatement stmt = null;
 
-        try {
+        try(Connection conn = MySqlConnexion.getInstance().getConnection();) {
         	
         	String sql = "UPDATE intern SET ";
-        	
         	if (prenom != null) {
         		sql = sql.concat("first_name = \""+ prenom +"\", ");
         	}

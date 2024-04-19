@@ -3,6 +3,7 @@ package newro;
 import static persistence.MySqlConnexion.*;
 
 import java.sql.Connection;
+import java.sql.SQLException;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeParseException;
@@ -11,28 +12,26 @@ import java.util.Scanner;
 
 import model.Promotion;
 import model.Stagiaire;
+import persistence.MySqlConnexion;
 
 public class FonctionDIsplay {
 	
-	public static void DisplayAfficherPageStagiaire(Connection conn, Scanner sc) {
+	public static void DisplayAfficherPageStagiaire(Scanner sc) {		
 		Page<Stagiaire> pageStagiaire = new Page<Stagiaire>();
 		boolean boucle = true;
 		int pageNumber = 1;
-		int totalPages = getTotalPages(conn, "intern", 50);
+		int totalPages = getTotalPages("intern", 50);
 		
 		while (boucle) {
             System.out.println("Page " + pageNumber + " sur " + totalPages + ":");
-            afficherPageStagiaire(conn, pageNumber, pageStagiaire);
-            //afficher( "intern",  conn, pageNumber);
+            afficherPageStagiaire(pageNumber, pageStagiaire);
             System.out.println("1: Page suivante, 2: Page précédente, 3: Choisissez la page, 0: Quitter");
             System.out.println("Choix :");
             String choice = sc.next();
 
             if (choice.equals("1")&& pageNumber < totalPages) {
-                // Aller à la page suivante, si ce n'est pas la dernière page
                 pageNumber++;
             } else if (choice.equals("2") && pageNumber > 1) {
-                // Aller à la page précédente, si ce n'est pas la première page
                 pageNumber--;
             } else if (choice.equals("3")) {
             	try {
@@ -47,7 +46,6 @@ public class FonctionDIsplay {
             		pageNumber = 1;
             	}
             } else if (choice.equals("0")) {
-                // Quitter la boucle
                 boucle = false;;
             } else {
                 System.out.println("Choix invalide !");
@@ -55,15 +53,17 @@ public class FonctionDIsplay {
         }
 	}
 	
-	public static void DisplayAfficherPagePromotion(Connection conn, Scanner sc) {
+	public static void DisplayAfficherPagePromotion(Scanner sc) {
+		
+
 		Page<Promotion> pagePromo = new Page<Promotion>();
 		boolean boucle = true;
 		int pageNumber = 1;
-		int totalPages = getTotalPages(conn, "promotion", 50);
+		int totalPages = getTotalPages("promotion", 50);
 		
 		while (boucle) {
             System.out.println("Page " + pageNumber + " sur " + totalPages + ":");
-            afficherPagePromotion(conn, pageNumber, pagePromo);
+            afficherPagePromotion(pageNumber, pagePromo);
             System.out.println("1: Page suivante, 2: Page précédente, 3: Choisissez la page, 0: Quitter");
             System.out.println("Choix :");
 
@@ -97,43 +97,50 @@ public class FonctionDIsplay {
         }
 	}
 	
-	public static void DisplayAfficherStagiaire(Connection conn, Scanner sc) {
+	public static void DisplayAfficherStagiaire(Scanner sc) {
 		System.out.print("Entrez l'ID d'un stagiaire :");
 		String userChoice = sc.nextLine();
 		
 		try {
 			int id = Integer.parseInt(userChoice);
-			detailStagiaire(conn, id); 
+			detailStagiaire(id); 
 		}catch(NumberFormatException e) {
 			System.out.println("not a valid ID");
 		}
 	}
 	
-	public static void DisplayAfficherQuestion(Connection conn, Scanner sc) {
+	public static void DisplayAfficherQuestion(Scanner sc) {
 		System.out.print("Entrez l'ID d'une question :");
 		String userChoice = sc.nextLine();
 		try {
 			int id = Integer.parseInt(userChoice);
-			getQuestionById(conn, id); 
+			getQuestionById(id); 
 		}catch(NumberFormatException e) {
 			System.out.println("not a valid ID");
 		}
 	}
 
-	public static void DisplayAjouterStagiaire(Connection conn, Scanner sc) {
-		try {
+	public static void DisplayAjouterStagiaire(Scanner sc) {
+		try(Connection conn = MySqlConnexion.getInstance().getConnection();) {
 			System.out.println("Entrez son prénom, nom, date d'arrivée et l'id de sa promotion :");
-			Stagiaire random = new Stagiaire(getMaxID(conn)+1, sc.next(), sc.next(),
-					LocalDate.parse(sc.next(), DateTimeFormatter.ofPattern("dd-MM-yyyy")), null, sc.nextInt());
-			insertIntern(conn, random);
+			Stagiaire random = new Stagiaire.StagiaireBuilder(
+					getMaxID(conn)+1, 
+					sc.next(), 
+					sc.next(),
+					LocalDate.parse(sc.next(), DateTimeFormatter.ofPattern("dd-MM-yyyy")), 
+					sc.nextInt()).build();
+					
+			insertIntern(random);
 		}catch(InputMismatchException e) {
 			System.out.println("not a valid Promotion ID");
 		}catch(DateTimeParseException e) {
 			System.out.println("not a valid Date");
+		} catch (SQLException e) {
+			e.printStackTrace();
 		}
 	}
 
-	public static void DisplayModifierStagiaire(Connection conn, Scanner sc) {
+	public static void DisplayModifierStagiaire(Scanner sc) {
 		System.out.print("Entrez l'ID du stagiaire que vous voulez modifier : ");
 		
 		String choixUtilisateur = sc.nextLine();
@@ -166,12 +173,12 @@ public class FonctionDIsplay {
 				
 			case "1":
 				prenom = sc.nextLine();
-				updateIntern(conn, prenom, nom, arrive, promo,  id);
+				updateIntern(prenom, nom, arrive, promo,  id);
 				break;
 				
 			case "2":
 				nom = sc.nextLine();
-				updateIntern(conn, prenom, nom, arrive, promo,  id);
+				updateIntern(prenom, nom, arrive, promo,  id);
 				break;
 				
 			case "3":
@@ -183,7 +190,7 @@ public class FonctionDIsplay {
     				} else if (promo<1) {
     					promo = 1;
     				}
-    				updateIntern(conn, prenom, nom, arrive, promo,  id);
+    				updateIntern(prenom, nom, arrive, promo,  id);
     			}catch(NumberFormatException e) {
     				System.out.println("not a valid ID");
     				break;
@@ -192,7 +199,7 @@ public class FonctionDIsplay {
 				
 			case "4":
 				arrive = sc.nextLine();
-				updateIntern(conn, prenom, nom, arrive, promo,  id);
+				updateIntern(prenom, nom, arrive, promo,  id);
 				break;
 				
 			case "5":
@@ -202,7 +209,7 @@ public class FonctionDIsplay {
 				choixUtilisateur = sc.next();
 				try {
     				promo = Integer.parseInt(choixUtilisateur);
-    				updateIntern(conn, prenom, nom, arrive, promo,  id);
+    				updateIntern(prenom, nom, arrive, promo,  id);
     			}catch(NumberFormatException e) {
     				System.out.println("not a valid ID");
     				break;
@@ -215,12 +222,13 @@ public class FonctionDIsplay {
 		}
 	}
 
-	public static void DiplaySupprimerStagiaire(Connection conn, Scanner sc) {
+	
+	public static void DiplaySupprimerStagiaire(Scanner sc) {
 		System.out.print("Entrez l'ID du stagiaire à supprimer :");
 		String userChoice = sc.nextLine();
 		try {
 			int id = Integer.parseInt(userChoice);
-			deleteIntern(conn, id);
+			deleteIntern(id);
 		}catch(NumberFormatException e) {
 			System.out.println("ID invalide");
 		}
