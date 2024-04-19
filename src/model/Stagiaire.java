@@ -1,7 +1,5 @@
 package model;
 
-import java.sql.ResultSet;
-import java.sql.SQLException;
 import java.time.LocalDate;
 
 public class Stagiaire {
@@ -15,7 +13,6 @@ public class Stagiaire {
     
     
 	private Stagiaire(StagiaireBuilder builder) {
-		super();
 		this.id = builder.id;
 		this.firstName = builder.firstName;
 		this.lastName = builder.lastName;
@@ -31,21 +28,6 @@ public class Stagiaire {
 
 		}
 		this.promotionId = builder.promotionId;
-	}
-	
-	public Stagiaire(ResultSet rs) {
-		try {
-			this.id = rs.getInt("id");
-			this.firstName = rs.getString("first_name");
-			this.lastName = rs.getString("last_name");
-			this.arrival = rs.getTimestamp("arrival")
-					== null ? null : rs.getTimestamp("arrival").toLocalDateTime().toLocalDate();
-			this.formationOver = rs.getTimestamp("formation_over") 
-					== null ? null : rs.getTimestamp("formation_over").toLocalDateTime().toLocalDate();
-			this.promotionId = rs.getInt("promotion_id");
-		} catch (SQLException e) {
-			e.printStackTrace();
-		}
 	}
 	
 	public long getId() {
