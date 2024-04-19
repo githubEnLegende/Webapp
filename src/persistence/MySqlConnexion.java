@@ -17,6 +17,9 @@ import java.sql.Timestamp;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 
+import mapper.MapperStagiaire;
+import mapper.MapperStagiaire.*;
+
 public class MySqlConnexion {
 	// Informations de connexion à la base de données MySQL
 	private static MySqlConnexion instance;
@@ -182,7 +185,7 @@ public class MySqlConnexion {
     		stmt.setInt(2, (pageNumber - 1) * page.getNbRow());
     		ResultSet rs = stmt.executeQuery();
     		while (rs.next()) {
-    			page.addContent(new Stagiaire(rs));
+    			page.addContent(new MapperStagiaire().rsToStagiaire(rs));
     		}
     		page.display();
     		page.emptyContent();
