@@ -35,7 +35,7 @@ public class QuestionDAO {
                 rs = stmt.executeQuery();
 
                 while(rs.next()) {
-                    Reponse reponse = new MapperReponse().rsToReponse(rs);
+                    Reponse reponse = new MapperReponse().rsToReponse(rs).get();
                     System.out.println(reponse.toString());
                 }
             } else {

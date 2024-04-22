@@ -22,7 +22,7 @@ public class PromotionDAO {
             ResultSet rs = stmt.executeQuery();
 
             while (rs.next()) {
-                page.addContent(new MapperPromotion().rsToPromotion(rs));
+                page.addContent(new MapperPromotion().rsToPromotion(rs).get());
             }
 
             page.display();

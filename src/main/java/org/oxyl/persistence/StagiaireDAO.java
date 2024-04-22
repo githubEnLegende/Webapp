@@ -19,7 +19,7 @@ public class StagiaireDAO {
             stmt.setInt(2, (pageNumber - 1) * page.getNbRow());
             ResultSet rs = stmt.executeQuery();
             while (rs.next()) {
-                page.addContent(new MapperStagiaire().rsToStagiaire(rs));
+                page.addContent(new MapperStagiaire().rsToStagiaire(rs).get());
             }
             page.display();
             page.emptyContent();
