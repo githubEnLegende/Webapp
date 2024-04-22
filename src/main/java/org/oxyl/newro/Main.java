@@ -7,6 +7,5 @@ public class Main {
 	public static void main(String[] args) {
     	
     	feur();
-		System.out.println("bonjour");
     }
 }
