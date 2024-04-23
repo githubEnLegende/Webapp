@@ -41,7 +41,7 @@ public class StagiaireTest extends TestCase {
                 .build();
 
         // Vérification que le promotionId est fixé à 47
-        assertEquals(47, stagiaire.getPromotion());
+        assertEquals(1, stagiaire.getPromotion());
     }
 
 

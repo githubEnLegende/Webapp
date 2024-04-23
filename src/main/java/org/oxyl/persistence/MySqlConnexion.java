@@ -6,6 +6,7 @@ import org.oxyl.model.Reponse;
 
 import org.oxyl.newro.Page;
 
+import java.nio.file.Paths;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
@@ -44,16 +45,29 @@ public class MySqlConnexion {
     }
     
     public Connection getConnection() {
-    	try {
-			if(connection.isClosed()) {	
-			connection = DriverManager.getConnection(DB_URL, USER, PASS);   
-			}
-		} catch (SQLException e) {
-			e.printStackTrace();
-		}
+
+        try {
+            connection.close();
+            if (connection.isClosed()) {
+                try {
+                    // Utiliser une configuration différente si en mode test
+                    if ("test".equals(System.getProperty("environment"))) {
+                        // Configuration pour la base de données H2 en mémoire
+                        this.connection = DriverManager.getConnection("jdbc:h2:mem:newro-factory-db;DB_CLOSE_DELAY=-1;INIT=RUNSCRIPT FROM 'classpath:combined.sql'");
+                    } else {
+                        // Configuration pour la base de production
+                        connection = DriverManager.getConnection(DB_URL, USER, PASS);
+                    }
+                } catch (SQLException e) {
+                    e.printStackTrace();
+                }
+            }
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
         return connection;
     }
-    
+
     public void closeConnection() {
         try {
             if (connection != null && !connection.isClosed()) {

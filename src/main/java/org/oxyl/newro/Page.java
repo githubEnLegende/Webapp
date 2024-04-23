@@ -34,12 +34,8 @@ public class Page<T> {
 	}
 	
 	public void display() {
-		for(T lign : content) {
-			System.out.println(lign.toString());
+		for(T line : content) {
+			System.out.println(line.toString());
 		}
 	}
-
-	
-	
-	
 }

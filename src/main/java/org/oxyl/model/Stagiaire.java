@@ -73,6 +73,8 @@ public class Stagiaire {
                 ", firstName='" + firstName + '\'' +
                 ", lastName='" + lastName + '\'' +
                 ", promotionId=" + promotionId +
+				", Arrival=" + arrival +
+				", formationOver=" + formationOver +
                 '}';
     }
 	
