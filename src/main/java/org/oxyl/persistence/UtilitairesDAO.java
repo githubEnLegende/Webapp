@@ -24,11 +24,12 @@ public class UtilitairesDAO {
     }
 
     public static int getTotalPages(String table, int rowsPerPage){
-        MySqlConnexion connection = MySqlConnexion.getInstance();
+
         String countQuery = "SELECT COUNT(*) FROM " + table;
 
-        try (PreparedStatement stmt = connection.getConnection().prepareStatement(countQuery);) {
-            ResultSet rs = stmt.executeQuery(countQuery);
+        try (Connection connection = MySqlConnexion.getInstance().getConnection();
+             PreparedStatement stmt = connection.prepareStatement(countQuery);) {
+            ResultSet rs = stmt.executeQuery();
             rs.next();
             int totalRows = rs.getInt(1);
 
@@ -37,8 +38,6 @@ public class UtilitairesDAO {
         } catch (SQLException e) {
             e.printStackTrace();
             return 0;
-        }finally {
-            connection.closeConnection();
         }
     }
 }
