@@ -69,8 +69,12 @@ public class StagiaireDAO {
             stmt.setString(1, intern.getFirstName());
             stmt.setString(2, intern.getLastName());
 
-            Timestamp timestamp = Timestamp.valueOf(intern.getArrival().atStartOfDay());
-            stmt.setTimestamp(3, timestamp);
+            if (intern.getArrival() != null){
+                Timestamp timestamp = Timestamp.valueOf(intern.getArrival().atStartOfDay());
+                stmt.setTimestamp(3, timestamp);
+            }else{
+                stmt.setTimestamp(3, null);
+            }
             stmt.setTimestamp(4, null);
 
             stmt.setInt(5, intern.getPromotion());

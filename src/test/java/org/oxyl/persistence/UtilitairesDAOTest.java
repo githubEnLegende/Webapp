@@ -20,7 +20,7 @@ public class UtilitairesDAOTest{
 
     @Test
     public void testGetTotalPages() {
-
+        System.setProperty("environment", "test");
         int pages = getTotalPages("intern", 10);
         assertEquals(5, pages);
 

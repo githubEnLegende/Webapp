@@ -6,6 +6,7 @@ import java.io.InputStreamReader;
 import java.io.Reader;
 import java.nio.charset.StandardCharsets;
 import java.sql.Connection;
+import java.sql.DriverManager;
 import java.sql.SQLException;
 
 import org.h2.tools.RunScript;
@@ -47,5 +48,6 @@ public class H2Config {
         }
 
     }
+
 }
 

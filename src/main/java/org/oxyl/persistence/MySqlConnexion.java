@@ -31,12 +31,21 @@ public class MySqlConnexion {
     
     private MySqlConnexion() {
         try {
-            connection = DriverManager.getConnection(DB_URL, USER, PASS);
+            if ("test".equals(System.getProperty("environment"))) {
+                // Configuration pour la base de données H2 en mémoire
+                this.connection = DriverManager
+                        .getConnection("jdbc:h2:mem:newro-factory-db;" +
+                                "DB_CLOSE_DELAY=-1;DATABASE_TO_UPPER=false;" +
+                                "INIT=RUNSCRIPT FROM 'classpath:init.sql';", "testnewro", "T4st3r!");
+            }
+            else {
+                connection = DriverManager.getConnection(DB_URL, USER, PASS);
+            }
         } catch (SQLException e) {
             e.printStackTrace();
         }
     }
-    
+
     public static MySqlConnexion getInstance() {
         if (instance == null) {
             instance = new MySqlConnexion();
@@ -47,14 +56,17 @@ public class MySqlConnexion {
     public Connection getConnection() {
 
         try {
-            connection.close();
             if (connection.isClosed()) {
                 try {
                     // Utiliser une configuration différente si en mode test
                     if ("test".equals(System.getProperty("environment"))) {
                         // Configuration pour la base de données H2 en mémoire
-                        this.connection = DriverManager.getConnection("jdbc:h2:mem:newro-factory-db;DB_CLOSE_DELAY=-1;INIT=RUNSCRIPT FROM 'classpath:combined.sql'");
+                        this.connection = DriverManager
+                                .getConnection("jdbc:h2:mem:newro-factory-db;DB_CLOSE_DELAY=-1;DATABASE_TO_UPPER=false;INIT=RUNSCRIPT FROM 'classpath:init.sql';",
+                                        "testnewro",
+                                        "T4st3r!");
                     } else {
+
                         // Configuration pour la base de production
                         connection = DriverManager.getConnection(DB_URL, USER, PASS);
                     }
