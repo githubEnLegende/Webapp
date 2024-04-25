@@ -3,13 +3,36 @@ package org.oxyl.persistence;
 import org.oxyl.mapper.MapperStagiaire;
 import org.oxyl.model.Stagiaire;
 import org.oxyl.newro.Page;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.sql.*;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Optional;
 
 public class StagiaireDAO {
+
+    private static Logger logger = LoggerFactory.getLogger(StagiaireDAO.class);
+
+    public static Optional<List<Stagiaire>> getAllStagiaires() {
+        String sql = "SELECT id, first_name, last_name, arrival, formation_over, promotion_id FROM intern";
+        try (Connection conn = MySqlConnexion.getInstance().getConnection();
+             PreparedStatement stmt = conn.prepareStatement(sql);) {
+            List<Stagiaire> stagiaires = new ArrayList<>();
+
+            ResultSet rs = stmt.executeQuery();
+            while (rs.next()) {
+                stagiaires.add(new MapperStagiaire().rsToStagiaire(rs).get());
+            }
+            return Optional.of(stagiaires);
+        } catch (SQLException e) {
+            logger.error("Erreur lors de la récupération des stagiaires.", e);
+            return Optional.empty();
+        }
+    }
     public static void afficherPageStagiaire(int pageNumber, Page<Stagiaire> page) {
 
         String sql = "SELECT id, first_name, last_name, arrival, formation_over, promotion_id FROM intern LIMIT ? OFFSET ?";
@@ -25,7 +48,7 @@ public class StagiaireDAO {
             page.display();
             page.emptyContent();
         } catch (SQLException e) {
-            e.printStackTrace();
+            logger.error("Erreur Lors de l'affichage de la page des stagiaires.", e);
         }
     }
 

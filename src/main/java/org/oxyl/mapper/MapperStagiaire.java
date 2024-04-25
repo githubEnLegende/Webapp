@@ -6,9 +6,14 @@ import java.util.Optional;
 //import java.util.Optional;
 
 import org.oxyl.model.Stagiaire;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 
 public class MapperStagiaire {
+
+	private static Logger logger = LoggerFactory.getLogger(MapperStagiaire.class);
+
 	public Optional<Stagiaire> rsToStagiaire(ResultSet rs) {
 		try {
 			return Optional.of(new Stagiaire.StagiaireBuilder(rs.getInt("id"),
@@ -19,7 +24,7 @@ public class MapperStagiaire {
 						rs.getInt("promotion_id")).formationOver(rs.getTimestamp("formation_over")
 						== null ? null : rs.getTimestamp("formation_over").toLocalDateTime().toLocalDate()).build());
 		} catch (SQLException e) {
-			e.printStackTrace();
+			logger.error("Erreur Base de donnée", e.getMessage());
 			return Optional.empty();
 		}
 	}

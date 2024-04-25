@@ -3,6 +3,8 @@ package org.oxyl.persistence;
 import org.oxyl.mapper.MapperPromotion;
 import org.oxyl.model.Promotion;
 import org.oxyl.newro.Page;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -10,6 +12,8 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 
 public class PromotionDAO {
+
+    private static Logger logger = LoggerFactory.getLogger(PromotionDAO.class);
 
     public static void afficherPagePromotion(int pageNumber, Page<Promotion> page) {
 
@@ -29,8 +33,8 @@ public class PromotionDAO {
             page.emptyContent();
 
         } catch (SQLException e) {
-            // TODO Auto-generated catch block
-            e.printStackTrace();
+            logger.error("Erreur lors de l'affichage de la page de promotion", e);
+            throw new RuntimeException(e);
         }
     }
 }

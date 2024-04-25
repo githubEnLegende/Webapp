@@ -3,6 +3,8 @@ package org.oxyl.persistence;
 import org.oxyl.model.Question;
 import org.oxyl.model.Reponse;
 import org.oxyl.mapper.MapperReponse;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -10,6 +12,8 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 
 public class QuestionDAO {
+
+    private static Logger logger = LoggerFactory.getLogger(QuestionDAO.class);
 
     public static void getQuestionById(int questionId) {
 
@@ -42,13 +46,14 @@ public class QuestionDAO {
                 System.out.println("Aucun résultat trouvé.");
             }
         } catch (SQLException e) {
-            e.printStackTrace();
+            logger.error("Erreur lors de l'affichage des questions", e);
+            throw new RuntimeException(e);
         } finally {
             try {
                 if (rs != null) rs.close();
                 if (stmt != null) stmt.close();
             } catch (SQLException e) {
-                e.printStackTrace();
+                logger.error("Erreur lors de la fermeture des statements et result sets", e);
             }
         }
     }
