@@ -1,0 +1,3 @@
+17:02:50.709 [main] INFO  org.oxyl.newro.Main - Ceci est un message d'info
+17:02:50.715 [main] WARN  org.oxyl.newro.Main - Ceci est un message de warning
+17:02:50.715 [main] ERROR org.oxyl.newro.Main - Ceci est un message d'erreur

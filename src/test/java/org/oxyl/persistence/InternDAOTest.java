@@ -49,7 +49,9 @@ public class InternDAOTest {
     }
 
     @Test
-    public void testAddIntern(){
+    public void testAddAndDeleteIntern(){
+        System.setProperty("environment", "test");
+        h2Config.setup();
         Stagiaire intern = new Stagiaire.StagiaireBuilder(49,
                 "feur",
                 "feur",
@@ -60,12 +62,17 @@ public class InternDAOTest {
 
         Page<Stagiaire> pageStagiaire = new Page<>();
         afficherPageStagiaire(1, pageStagiaire);
+        afficherPageStagiaire(2, pageStagiaire);
 
         System.out.println();
 
         Stagiaire stagiaire = detailStagiaire(51).get();
         assertNotNull(stagiaire);
         assertEquals(51, stagiaire.getId());
+
+        deleteIntern(51);
+        afficherPageStagiaire(1, pageStagiaire);
+        afficherPageStagiaire(2, pageStagiaire);
 
     }
 

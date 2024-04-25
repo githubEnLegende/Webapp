@@ -1,0 +1,13 @@
+<configuration>
+    <appender name="FILE" class="ch.qos.logback.core.FileAppender">
+        <file>logs/mylog.log</file> <!-- Chemin et nom du fichier de log -->
+        <append>true</append> <!-- true si vous voulez ajouter des logs au fichier existant, false pour écraser le fichier existant -->
+        <encoder>
+            <pattern>%d{HH:mm:ss.SSS} [%thread] %-5level %logger{36} - %msg%n</pattern> <!-- Format des logs -->
+        </encoder>
+    </appender>
+
+    <root level="info">
+        <appender-ref ref="FILE"/>
+    </root>
+</configuration>
