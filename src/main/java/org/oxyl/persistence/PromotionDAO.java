@@ -40,10 +40,12 @@ public class PromotionDAO {
     }
 
     public static Optional<Promotion> getPromotion(int id){
-        try(Connection conn = MySqlConnexion.getInstance().getConnection();
+        Connection conn = MySqlConnexion.getInstance().getConnection();
+        try(
             PreparedStatement stmt = conn.prepareStatement("SELECT id, name FROM promotion WHERE id = ?")) {
             stmt.setInt(1, id);
             ResultSet rs2 = stmt.executeQuery();
+            rs2.next();
             Optional<Promotion> promoOpt = new MapperPromotion().rsToPromotion(rs2);
             return promoOpt;
 

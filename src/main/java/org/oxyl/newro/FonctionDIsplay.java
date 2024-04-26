@@ -24,7 +24,7 @@ public class FonctionDIsplay {
 		Page<Stagiaire> pageStagiaire = new Page<Stagiaire>();
 		boolean boucle = true;
 		int pageNumber = 1;
-		int totalPages = getTotalPages("intern", 50);
+		int totalPages = getTotalPages("intern", pageStagiaire.getNbRow());
 		
 		while (boucle) {
             System.out.println("Page " + pageNumber + " sur " + totalPages + ":");
@@ -63,7 +63,7 @@ public class FonctionDIsplay {
 		Page<Promotion> pagePromo = new Page<Promotion>();
 		boolean boucle = true;
 		int pageNumber = 1;
-		int totalPages = getTotalPages("promotion", 50);
+		int totalPages = getTotalPages("promotion", pagePromo.getNbRow());
 		
 		while (boucle) {
             System.out.println("Page " + pageNumber + " sur " + totalPages + ":");
@@ -131,8 +131,8 @@ public class FonctionDIsplay {
 					getMaxID(conn)+1, 
 					sc.next(), 
 					sc.next(),
-					LocalDate.parse(sc.next(), DateTimeFormatter.ofPattern("dd-MM-yyyy")), 
-					sc.nextInt()).build();
+					LocalDate.parse(sc.next(), DateTimeFormatter.ofPattern("dd-MM-yyyy")))
+					.promotion(sc.nextInt()).build();
 					
 			insertIntern(random);
 		}catch(InputMismatchException e) {

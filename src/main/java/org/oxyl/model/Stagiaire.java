@@ -67,7 +67,7 @@ public class Stagiaire {
                 "id=" + id +
                 ", firstName='" + firstName + '\'' +
                 ", lastName='" + lastName + '\'' +
-                ", promotionId=" + promotion.toString() +
+                ", promotion=" + promotion.getPromotion() +
 				", Arrival=" + arrival +
 				", formationOver=" + formationOver +
                 '}';
@@ -81,19 +81,12 @@ public class Stagiaire {
 	    private LocalDate formationOver;
 	    private Promotion promotion;
 	    
-	    public StagiaireBuilder (int id, String firstName, String lastName, LocalDate arrival, int promotion) {
+	    public StagiaireBuilder (int id, String firstName, String lastName, LocalDate arrival) {
 	    	this.id = id;
 	    	this.firstName = firstName;
 	    	this.lastName = lastName;
 	    	this.arrival = arrival;
-			Optional<Promotion> promotionOptional = PromotionDAO.getPromotion(promotion);
-			if (promotionOptional.isPresent()) {
-				this.promotion = promotionOptional.get();
-			}else {
-				this.promotion = null;
-			}
-
-	    }
+		}
 
 		public StagiaireBuilder firstName(String firstName) {
 	    	this.firstName = firstName;
@@ -119,6 +112,21 @@ public class Stagiaire {
 	    	this.promotion = promotion;
 	    	return this;
 	    }
+
+		public StagiaireBuilder promotion(int promotion){
+			if (promotion>47){
+				promotion = 47;
+			} else if (promotion<1){
+				promotion = 1;
+			}
+			Optional<Promotion> promotionOptional = PromotionDAO.getPromotion(promotion);
+			if (promotionOptional.isPresent()) {
+				this.promotion = promotionOptional.get();
+			}else {
+				this.promotion = null;
+			}
+			return this;
+		}
 	    
 	    public Stagiaire build() {
 	    	return new Stagiaire(this);

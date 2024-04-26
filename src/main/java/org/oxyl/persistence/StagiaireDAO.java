@@ -43,7 +43,13 @@ public class StagiaireDAO {
             stmt.setInt(2, (pageNumber - 1) * page.getNbRow());
             ResultSet rs = stmt.executeQuery();
             while (rs.next()) {
-                page.addContent(new MapperStagiaire().rsToStagiaire(rs).get());
+
+                Stagiaire stagiaire = null;
+                Optional<Stagiaire> intern = new MapperStagiaire().rsToStagiaire(rs);
+                if (intern.isPresent()) {
+                    stagiaire = intern.get();
+                }
+                page.addContent(stagiaire);
             }
             page.display();
             page.emptyContent();
@@ -65,8 +71,8 @@ public class StagiaireDAO {
                             rs.getString("first_name"),
                             rs.getString("last_name"),
                             rs.getTimestamp("arrival")
-                                    == null ? null : rs.getTimestamp("arrival").toLocalDateTime().toLocalDate(),
-                            rs.getInt("promotion_id"))
+                                    == null ? null : rs.getTimestamp("arrival").toLocalDateTime().toLocalDate())
+                            .promotion(rs.getInt("promotion_id"))
                             .formationOver(rs.getTimestamp("formation_over")
                                     == null ? null : rs.getTimestamp("formation_over").toLocalDateTime().toLocalDate())
                             .build();

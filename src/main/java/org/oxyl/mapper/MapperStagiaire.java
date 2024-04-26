@@ -20,17 +20,19 @@ public class MapperStagiaire {
 	private static Logger logger = LoggerFactory.getLogger(MapperStagiaire.class);
 
 	public Optional<Stagiaire> rsToStagiaire(ResultSet rs) {
-		Promotion promo = null;
 		try {
 				return Optional.of(new Stagiaire.StagiaireBuilder(rs.getInt("id"),
 						rs.getString("first_name"),
 						rs.getString("last_name"),
 						rs.getTimestamp("arrival")
-								== null ? null : rs.getTimestamp("arrival").toLocalDateTime().toLocalDate(),
-						rs.getInt("promotion_id")).formationOver(rs.getTimestamp("formation_over")
-						== null ? null : rs.getTimestamp("formation_over").toLocalDateTime().toLocalDate()).build());
+								== null ? null : rs.getTimestamp("arrival").toLocalDateTime().toLocalDate())
+						.formationOver(rs.getTimestamp("formation_over")
+								== null ? null : rs.getTimestamp("formation_over").toLocalDateTime().toLocalDate())
+						.promotion(rs.getInt("promotion_id"))
+
+						.build());
 		} catch (SQLException e) {
-			logger.error("Erreur Base de donnée", e.getMessage());
+			logger.error("Erreur Base de donnée", e);
 			return Optional.empty();
 		}
 	}

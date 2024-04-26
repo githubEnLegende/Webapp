@@ -4,6 +4,7 @@ import org.junit.Test;
 import org.junit.jupiter.api.BeforeEach;
 import org.mockito.Mock;
 import org.oxyl.mapper.MapperStagiaire;
+import org.oxyl.model.Promotion;
 import org.oxyl.model.Stagiaire;
 import org.oxyl.newro.Page;
 
@@ -52,11 +53,13 @@ public class InternDAOTest {
     public void testAddAndDeleteIntern(){
         System.setProperty("environment", "test");
         h2Config.setup();
-        Stagiaire intern = new Stagiaire.StagiaireBuilder(49,
+        Promotion promo = new Promotion.PromotionBuilder(1, "Février 2011").build();
+        Stagiaire intern = new Stagiaire.StagiaireBuilder(51,
                 "feur",
                 "feur",
-                null,
-                4).formationOver(null).build();
+                null)
+                .promotion(promo)
+                .formationOver(null).build();
 
         insertIntern(intern);
 
