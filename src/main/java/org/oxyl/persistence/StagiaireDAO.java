@@ -100,7 +100,7 @@ public class StagiaireDAO {
             }
             stmt.setTimestamp(4, null);
 
-            stmt.setInt(5, intern.getPromotion());
+            stmt.setInt(5, intern.getPromotion().getId());
 
             // Exécution de la requête d'insertion
             stmt.executeUpdate();

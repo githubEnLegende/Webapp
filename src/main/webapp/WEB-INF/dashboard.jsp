@@ -1,13 +1,18 @@
 <!DOCTYPE html>
+
+<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
+<%@ page import="java.util.List" %>
+<%@ page import="org.oxyl.model.Stagiaire" %>
+
 <html>
 <head>
 <title>Newro Factory</title>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta charset="utf-8">
 <!-- Bootstrap -->
-<link href="../css/bootstrap.min.css" rel="stylesheet" media="screen">
-<link href="../css/font-awesome.css" rel="stylesheet" media="screen">
-<link href="../css/main.css" rel="stylesheet" media="screen">
+<link href="static/css/bootstrap.min.css" rel="stylesheet" media="screen">
+<link href="static/css/font-awesome.css" rel="stylesheet" media="screen">
+<link href="static/css/main.css" rel="stylesheet" media="screen">
 </head>
 <body>
     <header class="navbar navbar-inverse navbar-fixed-top">
@@ -75,42 +80,20 @@
                 </thead>
                 <!-- Browse attribute computers -->
                 <tbody id="results">
+                    <% List<Stagiaire> stagiaires = (List<Stagiaire>) request.getAttribute("stagiaires"); %>
+                    <% for (Stagiaire stagiaire : stagiaires) { %>
                    		<tr>
                    			<td class="editMode">
                    				<input type="checkbox" name="cb" class="cb" value="0">
-                   			</td> 
-                        </td>
-                   			</td> 
-                        </td>
-                   			</td> 
-                        </td>
-                   			</td> 
-                   			<td><a href="editStagiaire.html" onclick="">Jean Dupont</a></td>
-                   			<td>07/02/2022</td>
-                   			<td></td>
-                   			<td>Février 2022</td>
+                   			</td>
+
+                   			<td><a href="../static/views/editStagiaire.html" onclick=""><%=stagiaire.getFirstName()%> <%=stagiaire.getLastName()%></a></td>
+                   			<td><%=stagiaire.getArrival()%></td>
+                   			<td><%=stagiaire.getFormationOver()%></td>
+                   			<td><%=stagiaire.getPromotion()%></td>
+
                    		</tr>
-                   		<tr>
-                   			<td class="editMode"></td> 
-                   			<td><a href="editStagiaire.html" onclick="">Ulysse Coscoy</a></td>
-                   			<td>07/02/2021</td>
-                   			<td>08/04/2021</td>
-                   			<td>Février 2021</td>
-                   		</tr>
-                   		<tr>
-                   			<td class="editMode"></td> 
-                   			<td><a href="editStagiaire.html" onclick="">Mathéo Allard</a></td>
-                   			<td>01/03/2021</td>
-                   			<td>01/05/2021</td>
-                   			<td>Mars 2021</td>
-                   		</tr>
-                   		<tr>
-                   			<td class="editMode"></td> 
-                   			<td><a href="editStagiaire.html" onclick="">Walid Aloui</a></td>
-                   			<td>03/05/2021</td>
-                   			<td>03/07/2021</td>
-                   			<td>Mai 2021</td>
-                   		</tr>
+                    <%}%>
                 </tbody>
             </table>
         </div>
@@ -143,9 +126,9 @@
         </div>
 	</div>
     </footer>
-<script src="../js/jquery.min.js"></script>
-<script src="../js/bootstrap.min.js"></script>
-<script src="../js/dashboard.js"></script>
+<script src="static/js/jquery.min.js"></script>
+<script src="static/js/bootstrap.min.js"></script>
+<script src="static/js/dashboard.js"></script>
 
 </body>
 </html>

@@ -1,6 +1,10 @@
 package org.oxyl.model;
 
 import java.time.LocalDate;
+import java.util.Optional;
+
+import org.oxyl.persistence.PromotionDAO;
+
 
 public class Stagiaire {
 	
@@ -9,7 +13,7 @@ public class Stagiaire {
     private String lastName;
     private LocalDate arrival;
     private LocalDate formationOver;
-    private int promotionId;
+    private Promotion promotion;
     
     
 	private Stagiaire(StagiaireBuilder builder) {
@@ -18,16 +22,7 @@ public class Stagiaire {
 		this.lastName = builder.lastName;
 		this.arrival = builder.arrival;
 		this.formationOver = builder.formationOver;
-		if (builder.promotionId > 47) {
-			builder.promotionId = 47;
-			System.out.println("ID trop élevé, mis à la dernière promotion");
-		}
-		else if (builder.promotionId < 1) {
-			builder.promotionId = 1;
-			System.out.println("ID trop bas, mis à la première promotion");
-
-		}
-		this.promotionId = builder.promotionId;
+		this.promotion = builder.promotion;
 	}
 	
 	public long getId() {
@@ -60,11 +55,11 @@ public class Stagiaire {
 	public void setFormationOver(LocalDate formationOver) {
 		this.formationOver = formationOver;
 	}
-	public int getPromotion() {
-		return promotionId;
+	public Promotion getPromotion() {
+		return promotion;
 	}
-	public void setPromotion(int promotion) {
-		this.promotionId = promotion;
+	public void setPromotion(Promotion promotion) {
+		this.promotion = promotion;
 	}
 	
 	public String toString() {
@@ -72,7 +67,7 @@ public class Stagiaire {
                 "id=" + id +
                 ", firstName='" + firstName + '\'' +
                 ", lastName='" + lastName + '\'' +
-                ", promotionId=" + promotionId +
+                ", promotionId=" + promotion.toString() +
 				", Arrival=" + arrival +
 				", formationOver=" + formationOver +
                 '}';
@@ -84,14 +79,20 @@ public class Stagiaire {
 	    private String lastName;
 	    private LocalDate arrival;
 	    private LocalDate formationOver;
-	    private int promotionId;
+	    private Promotion promotion;
 	    
-	    public StagiaireBuilder (int id, String firstName, String lastName, LocalDate arrival, int promotionId) {
+	    public StagiaireBuilder (int id, String firstName, String lastName, LocalDate arrival, int promotion) {
 	    	this.id = id;
 	    	this.firstName = firstName;
 	    	this.lastName = lastName;
 	    	this.arrival = arrival;
-	    	this.promotionId = promotionId;
+			Optional<Promotion> promotionOptional = PromotionDAO.getPromotion(promotion);
+			if (promotionOptional.isPresent()) {
+				this.promotion = promotionOptional.get();
+			}else {
+				this.promotion = null;
+			}
+
 	    }
 
 		public StagiaireBuilder firstName(String firstName) {
@@ -114,8 +115,8 @@ public class Stagiaire {
 	    	return this;
 	    }
 	    
-	    public StagiaireBuilder promotionId(int promotionId) {
-	    	this.promotionId = promotionId;
+	    public StagiaireBuilder promotion(Promotion promotion) {
+	    	this.promotion = promotion;
 	    	return this;
 	    }
 	    

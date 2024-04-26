@@ -10,6 +10,7 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.Optional;
 
 public class PromotionDAO {
 
@@ -35,6 +36,20 @@ public class PromotionDAO {
         } catch (SQLException e) {
             logger.error("Erreur lors de l'affichage de la page de promotion", e);
             throw new RuntimeException(e);
+        }
+    }
+
+    public static Optional<Promotion> getPromotion(int id){
+        try(Connection conn = MySqlConnexion.getInstance().getConnection();
+            PreparedStatement stmt = conn.prepareStatement("SELECT id, name FROM promotion WHERE id = ?")) {
+            stmt.setInt(1, id);
+            ResultSet rs2 = stmt.executeQuery();
+            Optional<Promotion> promoOpt = new MapperPromotion().rsToPromotion(rs2);
+            return promoOpt;
+
+        } catch (SQLException e) {
+            logger.error("Erreur lors de la récupération de la promotion", e);
+            return Optional.empty();
         }
     }
 }
