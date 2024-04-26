@@ -2,13 +2,13 @@ package org.oxyl.model;
 
 public class Promotion {
 	private int id;
-	private String promotion;
+	private String name;
 	
 	
 	
 	public Promotion(PromotionBuilder builder) {
 		this.id = builder.id;
-		this.promotion = builder.promotion;
+		this.name = builder.name;
 	}
 	
 	public int getId() {
@@ -17,24 +17,24 @@ public class Promotion {
 	public void setId(int id) {
 		this.id = id;
 	}
-	public String getPromotion() {
-		return promotion;
+	public String getName() {
+		return name;
 	}
-	public void setPromotion(String promotion) {
-		this.promotion = promotion;
+	public void setName(String name) {
+		this.name = name;
 	}
 	
 	public String toString() {		
-		return "PromotionID : " + id + " " + promotion;
+		return "PromotionID : " + id + " " + name;
 	}
 	
 	public static class PromotionBuilder{
 		private int id;
-		private String promotion;
+		private String name;
 		
-		public PromotionBuilder(int id, String promotion){
+		public PromotionBuilder(int id, String name){
 			this.id = id;
-			this.promotion = promotion;
+			this.name = name;
 		}
 		
 		public PromotionBuilder id(int id) {
@@ -42,8 +42,8 @@ public class Promotion {
 			return this;
 		}
 		
-		public PromotionBuilder promotion(String promotion) {
-			this.promotion = promotion;
+		public PromotionBuilder name(String name) {
+			this.name = name;
 			return this;
 		}
 		

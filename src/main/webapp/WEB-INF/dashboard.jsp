@@ -24,7 +24,7 @@
     <section id="main">
         <div class="container">
             <h1 id="homeTitle">
-                4 Stagiaires found
+                50 Stagiaires found
             </h1>
             <div id="actions" class="form-horizontal">
                 <div class="pull-left">
@@ -87,10 +87,10 @@
                    				<input type="checkbox" name="cb" class="cb" value="0">
                    			</td>
 
-                   			<td><a href="../static/views/editStagiaire.html" onclick=""><%=stagiaire.getFirstName()%> <%=stagiaire.getLastName()%></a></td>
+                   			<td><a href="static/views/editStagiaire.html" onclick=""><%=stagiaire.getFirstName()%> <%=stagiaire.getLastName()%></a></td>
                    			<td><%=stagiaire.getArrival()%></td>
                    			<td><%=stagiaire.getFormationOver()%></td>
-                   			<td><%=stagiaire.getPromotion()%></td>
+                   			<td><%=stagiaire.getPromotion().getName()%></td>
 
                    		</tr>
                     <%}%>
@@ -107,11 +107,10 @@
                       <span aria-hidden="true">&laquo;</span>
                   </a>
               </li>
-              <li><a href="#">1</a></li>
-              <li><a href="#">2</a></li>
-              <li><a href="#">3</a></li>
-              <li><a href="#">4</a></li>
-              <li><a href="#">5</a></li>
+                <% for (int i = 1; i <= (int) request.getAttribute("totalPages"); i++){ %>
+                    <li><a href="#"><%=i%></a></li>
+                <%}%>
+
               <li>
                 <a href="#" aria-label="Next">
                     <span aria-hidden="true">&raquo;</span>

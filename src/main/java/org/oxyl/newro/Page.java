@@ -28,6 +28,10 @@ public class Page<T> {
         this.content = content;
     }
 
+    public void getListContent(List<T> content) {
+        this.content = content;
+    }
+
     public void addContent(T content) {
         this.content.add(content);
     }

@@ -28,11 +28,13 @@ public class MySqlConnexion {
                                 "DB_CLOSE_DELAY=-1;DATABASE_TO_UPPER=false;" +
                                 "INIT=RUNSCRIPT FROM 'classpath:init.sql';", "testnewro", "T4st3r!");
             } else {
+                Class.forName("com.mysql.cj.jdbc.Driver");
                 connection = DriverManager.getConnection(DB_URL, USER, PASS);
             }
         } catch (SQLException e) {
             logger.error("Erreur lors de la connexion", e.getMessage());
-            throw new RuntimeException(e);
+        } catch (ClassNotFoundException e) {
+            logger.error("Erreur lors de la récupération du driver", e);
         }
     }
 
@@ -58,17 +60,18 @@ public class MySqlConnexion {
                     } else {
 
                         // Configuration pour la base de production
+                        Class.forName("com.mysql.cj.jdbc.Driver");
                         connection = DriverManager.getConnection(DB_URL, USER, PASS);
                     }
                 } catch (SQLException e) {
                     logger.error("Erreur lors de la connexion", e.getMessage());
-                    throw new RuntimeException(e);
 
+                } catch (ClassNotFoundException e) {
+                    logger.error("Erreur lors de la récupération du driver", e);
                 }
             }
         } catch (SQLException e) {
             logger.error("Erreur lors de la connexion", e.getMessage());
-            throw new RuntimeException(e);
         }
         return connection;
     }
@@ -80,7 +83,6 @@ public class MySqlConnexion {
             }
         } catch (SQLException e) {
             logger.error("Erreur lors de la fermeture de la connexion", e.getMessage());
-            throw new RuntimeException(e);
 
         }
     }

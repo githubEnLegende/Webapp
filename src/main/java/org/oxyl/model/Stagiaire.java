@@ -67,7 +67,7 @@ public class Stagiaire {
                 "id=" + id +
                 ", firstName='" + firstName + '\'' +
                 ", lastName='" + lastName + '\'' +
-                ", promotion=" + promotion.getPromotion() +
+                ", promotion=" + promotion.getName() +
 				", Arrival=" + arrival +
 				", formationOver=" + formationOver +
                 '}';

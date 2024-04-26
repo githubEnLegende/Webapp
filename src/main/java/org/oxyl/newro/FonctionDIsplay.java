@@ -1,6 +1,5 @@
 package org.oxyl.newro;
 
-import static org.oxyl.persistence.MySqlConnexion.*;
 import static org.oxyl.persistence.PromotionDAO.*;
 import static org.oxyl.persistence.QuestionDAO.*;
 import static org.oxyl.persistence.StagiaireDAO.*;
@@ -17,18 +16,24 @@ import java.util.Scanner;
 import org.oxyl.model.Promotion;
 import org.oxyl.model.Stagiaire;
 import org.oxyl.persistence.MySqlConnexion;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 public class FonctionDIsplay {
+
+	private static final Logger logger = LoggerFactory.getLogger(FonctionDIsplay.class);
 	
 	public static void DisplayAfficherPageStagiaire(Scanner sc) {		
-		Page<Stagiaire> pageStagiaire = new Page<Stagiaire>();
+		Page<Stagiaire> pageStagiaire = new Page<>();
 		boolean boucle = true;
 		int pageNumber = 1;
 		int totalPages = getTotalPages("intern", pageStagiaire.getNbRow());
 		
 		while (boucle) {
             System.out.println("Page " + pageNumber + " sur " + totalPages + ":");
-            afficherPageStagiaire(pageNumber, pageStagiaire);
+            getPageStagiaire(pageNumber, pageStagiaire);
+			pageStagiaire.display();
+			pageStagiaire.emptyContent();
             System.out.println("1: Page suivante, 2: Page précédente, 3: Choisissez la page, 0: Quitter");
             System.out.println("Choix :");
             String choice = sc.next();
@@ -50,7 +55,7 @@ public class FonctionDIsplay {
             		pageNumber = 1;
             	}
             } else if (choice.equals("0")) {
-                boucle = false;;
+                boucle = false;
             } else {
                 System.out.println("Choix invalide !");
             }
@@ -60,7 +65,7 @@ public class FonctionDIsplay {
 	public static void DisplayAfficherPagePromotion(Scanner sc) {
 		
 
-		Page<Promotion> pagePromo = new Page<Promotion>();
+		Page<Promotion> pagePromo = new Page<>();
 		boolean boucle = true;
 		int pageNumber = 1;
 		int totalPages = getTotalPages("promotion", pagePromo.getNbRow());
@@ -94,7 +99,7 @@ public class FonctionDIsplay {
             	}
             } else if (choice.equals("0")) {
                 // Quitter la boucle
-            	boucle = false;;
+            	boucle = false;
             } else {
                 System.out.println("Choix invalide !");
             }
@@ -125,7 +130,7 @@ public class FonctionDIsplay {
 	}
 
 	public static void DisplayAjouterStagiaire(Scanner sc) {
-		try(Connection conn = MySqlConnexion.getInstance().getConnection();) {
+		try(Connection conn = MySqlConnexion.getInstance().getConnection()) {
 			System.out.println("Entrez son prénom, nom, date d'arrivée et l'id de sa promotion :");
 			Stagiaire random = new Stagiaire.StagiaireBuilder(
 					getMaxID(conn)+1, 
@@ -140,7 +145,7 @@ public class FonctionDIsplay {
 		}catch(DateTimeParseException e) {
 			System.out.println("not a valid Date");
 		} catch (SQLException e) {
-			e.printStackTrace();
+			logger.error("Erreur lors de la connexion", e);
 		}
 	}
 

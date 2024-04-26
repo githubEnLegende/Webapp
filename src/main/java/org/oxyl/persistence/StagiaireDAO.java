@@ -15,12 +15,12 @@ import java.util.Optional;
 
 public class StagiaireDAO {
 
-    private static Logger logger = LoggerFactory.getLogger(StagiaireDAO.class);
+    private static final Logger logger = LoggerFactory.getLogger(StagiaireDAO.class);
 
     public static Optional<List<Stagiaire>> getAllStagiaires() {
         String sql = "SELECT id, first_name, last_name, arrival, formation_over, promotion_id FROM intern";
         try (Connection conn = MySqlConnexion.getInstance().getConnection();
-             PreparedStatement stmt = conn.prepareStatement(sql);) {
+             PreparedStatement stmt = conn.prepareStatement(sql)) {
             List<Stagiaire> stagiaires = new ArrayList<>();
 
             ResultSet rs = stmt.executeQuery();
@@ -33,7 +33,7 @@ public class StagiaireDAO {
             return Optional.empty();
         }
     }
-    public static void afficherPageStagiaire(int pageNumber, Page<Stagiaire> page) {
+    public static void getPageStagiaire(int pageNumber, Page<Stagiaire> page) {
 
         String sql = "SELECT id, first_name, last_name, arrival, formation_over, promotion_id FROM intern LIMIT ? OFFSET ?";
         try (Connection conn = MySqlConnexion.getInstance().getConnection();
@@ -51,11 +51,11 @@ public class StagiaireDAO {
                 }
                 page.addContent(stagiaire);
             }
-            page.display();
-            page.emptyContent();
+
         } catch (SQLException e) {
             logger.error("Erreur Lors de l'affichage de la page des stagiaires.", e);
         }
+
     }
 
     public static Optional<Stagiaire> detailStagiaire(int id) {

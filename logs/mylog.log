@@ -207,3 +207,6 @@ java.sql.SQLException: Operation not allowed after ResultSet closed
 12:09:18.486 [main] INFO  org.oxyl.newro.Main - Ceci est un message d'info
 12:09:18.491 [main] WARN  org.oxyl.newro.Main - Ceci est un message de warning
 12:09:18.492 [main] ERROR org.oxyl.newro.Main - Ceci est un message d'erreur
+12:11:09.981 [main] INFO  org.oxyl.newro.Main - Ceci est un message d'info
+12:11:09.986 [main] WARN  org.oxyl.newro.Main - Ceci est un message de warning
+12:11:09.986 [main] ERROR org.oxyl.newro.Main - Ceci est un message d'erreur
