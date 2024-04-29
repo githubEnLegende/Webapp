@@ -70,7 +70,7 @@ public class InternDAOTest {
 
     @Test
     public void testUpdateIntern(){
-        updateIntern("Franck", "Alonso", null, 1, 50);
+        updateIntern("Franck", "Alonso", null, null, 1, 50);
         Stagiaire stagiaire = detailStagiaire(50).get();
 
 

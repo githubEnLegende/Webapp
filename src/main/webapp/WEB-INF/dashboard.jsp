@@ -87,7 +87,7 @@
                    				<input type="checkbox" name="cb" class="cb" value="<%= stagiaire.getId() %>">
                    			</td>
 
-                   			<td><a href="static/views/editStagiaire.html" onclick=""><%=stagiaire.getFirstName()%> <%=stagiaire.getLastName()%></a></td>
+                   			<td><a href="editStagiaire?id=<%=stagiaire.getId()%>" onclick=""><%=stagiaire.getFirstName()%> <%=stagiaire.getLastName()%></a></td>
                    			<td><%=stagiaire.getArrival()%></td>
                    			<td><%=stagiaire.getFormationOver()%></td>
                    			<td><%=stagiaire.getPromotion().getName()%></td>

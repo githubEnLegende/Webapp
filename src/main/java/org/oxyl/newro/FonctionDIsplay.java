@@ -174,6 +174,7 @@ public class FonctionDIsplay {
 		String prenom = null;
 		String nom = null;
 		String arrive = null;
+		String finFormation = null;
 		int promo = 0;
 		
 		switch(userChoice) {
@@ -182,12 +183,12 @@ public class FonctionDIsplay {
 				
 			case "1":
 				prenom = sc.nextLine();
-				updateIntern(prenom, nom, arrive, promo,  id);
+				updateIntern(prenom, nom, arrive, finFormation, promo, id);
 				break;
 				
 			case "2":
 				nom = sc.nextLine();
-				updateIntern(prenom, nom, arrive, promo,  id);
+				updateIntern(prenom, nom, arrive, finFormation, promo,  id);
 				break;
 				
 			case "3":
@@ -199,7 +200,7 @@ public class FonctionDIsplay {
     				} else if (promo<1) {
     					promo = 1;
     				}
-    				updateIntern(prenom, nom, arrive, promo,  id);
+    				updateIntern(prenom, nom, arrive, finFormation, promo,  id);
     			}catch(NumberFormatException e) {
     				System.out.println("not a valid ID");
     				break;
@@ -208,7 +209,7 @@ public class FonctionDIsplay {
 				
 			case "4":
 				arrive = sc.nextLine();
-				updateIntern(prenom, nom, arrive, promo,  id);
+				updateIntern(prenom, nom, arrive, finFormation, promo,  id);
 				break;
 				
 			case "5":
@@ -218,7 +219,7 @@ public class FonctionDIsplay {
 				choixUtilisateur = sc.next();
 				try {
     				promo = Integer.parseInt(choixUtilisateur);
-    				updateIntern(prenom, nom, arrive, promo,  id);
+    				updateIntern(prenom, nom, arrive, finFormation, promo,  id);
     			}catch(NumberFormatException e) {
     				System.out.println("not a valid ID");
     				break;

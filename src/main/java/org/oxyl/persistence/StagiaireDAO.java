@@ -8,7 +8,6 @@ import org.slf4j.LoggerFactory;
 
 import java.sql.*;
 import java.time.LocalDate;
-import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -37,7 +36,7 @@ public class StagiaireDAO {
 
         String sql = "SELECT id, first_name, last_name, arrival, formation_over, promotion_id FROM intern LIMIT ? OFFSET ?";
         try (Connection conn = MySqlConnexion.getInstance().getConnection();
-             PreparedStatement stmt = conn.prepareStatement(sql);) {
+             PreparedStatement stmt = conn.prepareStatement(sql)) {
 
             stmt.setInt(1, page.getNbRow());
             stmt.setInt(2, (pageNumber - 1) * page.getNbRow());
@@ -83,7 +82,7 @@ public class StagiaireDAO {
                 }
             }
         } catch (SQLException e) {
-            e.printStackTrace();
+            logger.error("Erreur requête SQL pour le détail stagiaire");
             return Optional.empty();
         }
         return Optional.empty();
@@ -93,7 +92,7 @@ public class StagiaireDAO {
         String sql = "INSERT INTO intern (first_name, last_name, arrival, formation_over, promotion_id)"
                 + " VALUES (?, ?, ?, ?, ?)";
         try (Connection conn = MySqlConnexion.getInstance().getConnection();
-             PreparedStatement stmt = conn.prepareStatement(sql);) {
+             PreparedStatement stmt = conn.prepareStatement(sql)) {
 
             stmt.setString(1, intern.getFirstName());
             stmt.setString(2, intern.getLastName());
@@ -112,7 +111,7 @@ public class StagiaireDAO {
             stmt.executeUpdate();
             System.out.println("Stagiaire inséré avec succès !");
         } catch (SQLException e) {
-            e.printStackTrace();
+            logger.error("erreur requête sql lors de l'insertion d'un stagiaire");
         }
     }
 
@@ -121,7 +120,7 @@ public class StagiaireDAO {
         String sql = "DELETE FROM intern WHERE id = ?";
 
         try (Connection conn = MySqlConnexion.getInstance().getConnection();
-             PreparedStatement stmt = conn.prepareStatement(sql);) {
+             PreparedStatement stmt = conn.prepareStatement(sql)) {
             stmt.setLong(1, id);
 
             // Exécution de la requête de suppression
@@ -132,53 +131,54 @@ public class StagiaireDAO {
                 System.out.println("Aucun stagiaire trouvé avec l'ID spécifié.");
             }
         } catch (SQLException e) {
-            e.printStackTrace();
+            logger.error("erreur SQL lors de la supression d'un stagiaire", e);
         }
     }
 
-    public static void updateIntern(String prenom, String nom, String arrive, int promo, int id) {
-        PreparedStatement stmt = null;
+    public static void updateIntern(String prenom, String nom, String arrive, String finFormation, int promo, int id) {
+        String sql = "UPDATE intern SET ";
+        List<Object> parameters = new ArrayList<>();
 
-        try (Connection conn = MySqlConnexion.getInstance().getConnection();) {
+        if (prenom != null && !prenom.isEmpty()) {
+            sql += "first_name = ?, ";
+            parameters.add(prenom);
+        }
+        if (nom != null && !nom.isEmpty()) {
+            sql += "last_name = ?, ";
+            parameters.add(nom);
+        }
+        if (promo != 0) {
+            sql += "promotion_id = ?, ";
+            parameters.add(promo);
+        }
+        if (arrive != null && !arrive.isEmpty()) {
+            sql += "arrival = ?, ";
+            parameters.add(LocalDate.parse(arrive));
+        }
+        if (finFormation != null && !finFormation.isEmpty()) {
+            sql += "formation_over = ?, ";
+            parameters.add(LocalDate.parse(finFormation));
+        }
 
-            String sql = "UPDATE intern SET ";
-            if (prenom != null) {
-                sql = sql.concat("first_name = \"" + prenom + "\", ");
+        // Supprimer la dernière virgule et l'espace
+        sql = sql.substring(0, sql.length() - 2);
+
+        // Ajouter la clause WHERE
+        sql += " WHERE id = ?";
+        parameters.add(id);
+
+        try (Connection conn = MySqlConnexion.getInstance().getConnection();
+             PreparedStatement stmt = conn.prepareStatement(sql)) {
+
+            // Définir les paramètres
+            int index = 1;
+            for (Object parameter : parameters) {
+                stmt.setObject(index, parameter);
+                index++;
             }
-
-            if (nom != null) {
-                sql = sql.concat("last_name = \"" + nom + "\", ");
-            }
-
-            if (promo != 0) {
-                sql = sql.concat("promotion_id = " + promo + ", ");
-            }
-            if (arrive != null) {
-                sql = sql.concat("arrival = \""
-                        + LocalDate.parse(arrive, DateTimeFormatter.ofPattern("dd-MM-yyyy")) + "\", ");
-            }
-
-            sql = sql.substring(0, sql.length() - 2);
-            sql = sql.concat(" WHERE id = " + id);
-
-            System.out.println(sql);
-            stmt = conn.prepareStatement(sql);
-
-            // Exécution de la requête de mise à jour
-            int rowsAffected = stmt.executeUpdate();
-            if (rowsAffected > 0) {
-                System.out.println("Stagiaire mis à jour avec succès !");
-            } else {
-                System.out.println("Aucun stagiaire trouvé avec l'ID spécifié.");
-            }
+            stmt.executeUpdate();
         } catch (SQLException e) {
-            e.printStackTrace();
-        } finally {
-            try {
-                if (stmt != null) stmt.close();
-            } catch (SQLException e) {
-                e.printStackTrace();
-            }
+            logger.error("Erreur SQL lors de la mise à jour d'un stagiaire", e);
         }
     }
 
