@@ -133,7 +133,7 @@ public class FonctionDIsplay {
 		try(Connection conn = MySqlConnexion.getInstance().getConnection()) {
 			System.out.println("Entrez son prénom, nom, date d'arrivée et l'id de sa promotion :");
 			Stagiaire random = new Stagiaire.StagiaireBuilder(
-					getMaxID(conn)+1, 
+					getMaxID()+1,
 					sc.next(), 
 					sc.next(),
 					LocalDate.parse(sc.next(), DateTimeFormatter.ofPattern("dd-MM-yyyy")))

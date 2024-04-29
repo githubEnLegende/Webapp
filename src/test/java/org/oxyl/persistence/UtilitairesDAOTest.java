@@ -14,7 +14,7 @@ public class UtilitairesDAOTest{
     @Test
     public void testGetMaxID() {
         System.setProperty("environment", "test");
-        int id = getMaxID(MySqlConnexion.getInstance().getConnection());
+        int id = getMaxID();
         assertEquals(50, id);
     }
 

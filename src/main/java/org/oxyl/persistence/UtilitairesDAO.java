@@ -7,20 +7,24 @@ import java.sql.SQLException;
 
 public class UtilitairesDAO {
 
-    public static int getMaxID(Connection conn) {
-        int maxId = 0;
-        String sql = "SELECT MAX(ID) FROM intern";
-        ResultSet rs = null;
-        try {
-            PreparedStatement stmt = conn.prepareStatement(sql);
-            rs = stmt.executeQuery();
-            if (rs.next()) {
-                return maxId = rs.getInt(1);
+    public static int getMaxID() {
+        try(Connection conn = MySqlConnexion.getInstance().getConnection()) {
+            int maxId = 0;
+            String sql = "SELECT MAX(ID) FROM intern";
+            ResultSet rs = null;
+            try {
+                PreparedStatement stmt = conn.prepareStatement(sql);
+                rs = stmt.executeQuery();
+                if (rs.next()) {
+                    return maxId = rs.getInt(1);
+                }
+            } catch (SQLException e) {
+                e.printStackTrace();
             }
+            return maxId;
         } catch (SQLException e) {
-            e.printStackTrace();
+            throw new RuntimeException(e);
         }
-        return maxId;
     }
 
     public static int getTotalPages(String table, int rowsPerPage){

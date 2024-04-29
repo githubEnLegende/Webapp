@@ -24,7 +24,7 @@
     <section id="main">
         <div class="container">
             <h1 id="homeTitle">
-                50 Stagiaires found
+                Stagiaires Trouvés
             </h1>
             <div id="actions" class="form-horizontal">
                 <div class="pull-left">
@@ -36,7 +36,7 @@
                     </form>
                 </div>
                 <div class="pull-right">
-                    <a class="btn btn-success" id="addStagiaire" href="addStagiaire">Ajout stagiaire</a> 
+                    <a class="btn btn-success" id="addStagiaire" href="addStagiaire">Ajout stagiaire</a>
                     <a class="btn btn-default" id="editStagiaire" href="#" onclick="$.fn.toggleEditMode();">Modifier</a>
                 </div>
             </div>
@@ -84,7 +84,7 @@
                     <% for (Stagiaire stagiaire : stagiaires) { %>
                    		<tr>
                    			<td class="editMode">
-                   				<input type="checkbox" name="cb" class="cb" value="0">
+                   				<input type="checkbox" name="cb" class="cb" value="<%= stagiaire.getId() %>">
                    			</td>
 
                    			<td><a href="static/views/editStagiaire.html" onclick=""><%=stagiaire.getFirstName()%> <%=stagiaire.getLastName()%></a></td>
@@ -108,7 +108,7 @@
                   </a>
               </li>
                 <% for (int i = 1; i <= (int) request.getAttribute("totalPages"); i++){ %>
-                    <li><a href="#"><%=i%></a></li>
+                    <li><a href="dashboard?page=<%= i %>"><%= i %></a></li>
                 <%}%>
 
               <li>
