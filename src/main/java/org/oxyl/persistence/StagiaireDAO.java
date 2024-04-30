@@ -35,6 +35,9 @@ public class StagiaireDAO {
     public static void getPageStagiaire(int pageNumber, Page<Stagiaire> page) {
 
         String sql = "SELECT id, first_name, last_name, arrival, formation_over, promotion_id FROM intern LIMIT ? OFFSET ?";
+
+        String sql2 = "SELECT intern.id, first_name, last_name, arrival, formation_over, promotion_id, promotion.name"
+                + " FROM intern, promotion WHERE intern.promotion_id = promotion.id ORDER BY intern.id;";
         try (Connection conn = MySqlConnexion.getInstance().getConnection();
              PreparedStatement stmt = conn.prepareStatement(sql)) {
 
@@ -163,7 +166,6 @@ public class StagiaireDAO {
         // Supprimer la dernière virgule et l'espace
         sql = sql.substring(0, sql.length() - 2);
 
-        // Ajouter la clause WHERE
         sql += " WHERE id = ?";
         parameters.add(id);
 

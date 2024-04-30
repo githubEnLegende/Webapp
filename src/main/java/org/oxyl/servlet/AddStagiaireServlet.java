@@ -6,11 +6,15 @@ import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import org.oxyl.model.Stagiaire;
+import org.oxyl.validator.ValidatorStagiaire;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.io.IOException;
 import java.time.LocalDate;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 import static org.oxyl.persistence.StagiaireDAO.insertIntern;
 import static org.oxyl.persistence.UtilitairesDAO.getMaxID;
@@ -37,12 +41,32 @@ public class AddStagiaireServlet extends HttpServlet {
         String finFormation = request.getParameter("finFormation");
         String promotionId = request.getParameter("promotionId");
 
+        LocalDate finFormationDate = null;
+
+        if (finFormation != null && !finFormation.isEmpty()) {
+             finFormationDate = LocalDate.parse(finFormation);
+        }
+
+
         Stagiaire stagiaire = new Stagiaire.StagiaireBuilder(getMaxID()+1, firstName, lastName, LocalDate.parse(arrival))
-                .formationOver(LocalDate.parse(finFormation))
+                .formationOver(finFormationDate)
                 .promotion(Integer.parseInt(promotionId)).build();
 
-        insertIntern(stagiaire);
-        response.sendRedirect("dashboard");
+
+        ValidatorStagiaire stagaireValidator = new ValidatorStagiaire(stagiaire);
+
+
+
+        if (stagaireValidator.isValide()){
+            insertIntern(stagiaire);
+            response.sendRedirect("dashboard");
+        }else{
+            System.out.println("Stagiaire non valide");
+            request.setAttribute("stagiaireValidator", stagaireValidator);
+            request.getRequestDispatcher("WEB-INF/addStagiaire.jsp").forward(request, response);
+        }
+
+
     }
 
 }

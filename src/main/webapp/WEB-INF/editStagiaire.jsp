@@ -1,4 +1,7 @@
 <!DOCTYPE html>
+
+<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
+
 <html>
 <head>
 <title>Newro Factory</title>
@@ -44,7 +47,7 @@
                             </div>
                             <div class="form-group">
                                 <label for="promotionId">Promotion</label>
-                                <input type="text" class="form-control" name="promotionId" id="promotionId" placeholder="Date de fin de formation" value="">
+                                <input type="text" class="form-control" name="promotionId" id="promotionId" placeholder="Entrez l'id de la promotion" value="">
                                 <%--                                <select class="form-control" name="promotionId" id="promotionId" >--%>
                                 <%--                                    <option value="0">--</option>--%>
                                 <%--                                </select>--%>

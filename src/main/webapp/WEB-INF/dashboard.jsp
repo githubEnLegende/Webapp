@@ -1,8 +1,7 @@
 <!DOCTYPE html>
 
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
-<%@ page import="java.util.List" %>
-<%@ page import="org.oxyl.model.Stagiaire" %>
+<%@ taglib prefix = "c" uri = "http://java.sun.com/jsp/jstl/core" %>
 
 <html>
 <head>
@@ -80,20 +79,17 @@
                 </thead>
                 <!-- Browse attribute computers -->
                 <tbody id="results">
-                    <% List<Stagiaire> stagiaires = (List<Stagiaire>) request.getAttribute("stagiaires"); %>
-                    <% for (Stagiaire stagiaire : stagiaires) { %>
-                   		<tr>
-                   			<td class="editMode">
-                   				<input type="checkbox" name="cb" class="cb" value="<%= stagiaire.getId() %>">
-                   			</td>
-
-                   			<td><a href="editStagiaire?id=<%=stagiaire.getId()%>" onclick=""><%=stagiaire.getFirstName()%> <%=stagiaire.getLastName()%></a></td>
-                   			<td><%=stagiaire.getArrival()%></td>
-                   			<td><%=stagiaire.getFormationOver()%></td>
-                   			<td><%=stagiaire.getPromotion().getName()%></td>
-
-                   		</tr>
-                    <%}%>
+                <c:forEach var="stagiaire" items="${requestScope.stagiaires}">
+                    <tr>
+                        <td class="editMode">
+                            <input type="checkbox" name="cb" class="cb" value="${stagiaire.id}">
+                        </td>
+                        <td><a href="editStagiaire?id=${stagiaire.id}" onclick="">${stagiaire.firstName} ${stagiaire.lastName}</a></td>
+                        <td>${stagiaire.arrival}</td>
+                        <td>${stagiaire.formationOver}</td>
+                        <td>${stagiaire.promotion.name}</td>
+                    </tr>
+                </c:forEach>
                 </tbody>
             </table>
         </div>
@@ -103,25 +99,35 @@
         <div class="container text-center">
             <ul class="pagination">
                 <li>
-                    <a href="#" aria-label="Previous">
-                      <span aria-hidden="true">&laquo;</span>
-                  </a>
-              </li>
-                <% for (int i = 1; i <= (int) request.getAttribute("totalPages"); i++){ %>
-                    <li><a href="dashboard?page=<%= i %>"><%= i %></a></li>
-                <%}%>
+                    <a href="dashboard?page=1&size=${size}" aria-label="Previous">
+                        <span aria-hidden="true">&laquo;</span>
+                    </a>
+                </li>
+                <c:forEach var="pageNumber" begin="${Math.max(1, page - 2)}" end="${Math.max(5, page + 2)}">
+                    <li>
+                        <a href="dashboard?page=${pageNumber}&size=${size}">
+                            <c:out value="${pageNumber}" />
+                        </a>
+                    </li>
+                </c:forEach>
+                <li>
+                    <a href="dashboard?page=${totalPages}&size=${size}" aria-label="Next">
+                        <span aria-hidden="true">&raquo;</span>
+                    </a>
+                </li>
+            </ul>
 
-              <li>
-                <a href="#" aria-label="Next">
-                    <span aria-hidden="true">&raquo;</span>
-                </a>
-            </li>
-        </ul>
 
-        <div class="btn-group btn-group-sm pull-right" role="group" >
-            <button type="button" class="btn btn-default">10</button>
-            <button type="button" class="btn btn-default">50</button>
-            <button type="button" class="btn btn-default">100</button>
+            <div class="btn-group btn-group-sm pull-right" role="group">
+            <button type="button" class="btn btn-default" >
+                <a href="dashboard?page=1&size=10">10</a>
+            </button>
+            <button type="button" class="btn btn-default">
+                <a href="dashboard?page=1&size=50">50</a>
+            </button>
+            <button type="button" class="btn btn-default">
+                <a href="dashboard?page=1&size=100">100</a>
+            </button>
         </div>
 	</div>
     </footer>
