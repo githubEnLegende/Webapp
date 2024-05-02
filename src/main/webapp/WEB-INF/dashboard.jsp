@@ -104,7 +104,7 @@
                     </a>
                 </li>
                 <c:forEach var="pageNumber" begin="${Math.max(1, page - 2)}" end="${Math.max(5, page + 2)}">
-                    <li>
+                    <li class="${page == pageNumber ? "active" : ""}">
                         <a href="dashboard?page=${pageNumber}&size=${size}">
                             <c:out value="${pageNumber}" />
                         </a>

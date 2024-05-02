@@ -5,6 +5,7 @@ import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import org.oxyl.model.Promotion;
 import org.oxyl.model.Stagiaire;
 import org.oxyl.validator.ValidatorStagiaire;
 import org.slf4j.Logger;
@@ -16,6 +17,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import static org.oxyl.persistence.PromotionDAO.getAllPromotion;
 import static org.oxyl.persistence.StagiaireDAO.insertIntern;
 import static org.oxyl.persistence.UtilitairesDAO.getMaxID;
 
@@ -26,6 +28,9 @@ public class AddStagiaireServlet extends HttpServlet {
 
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
+
+        List<Promotion> listPromo = getAllPromotion();
+        request.setAttribute("listPromo", listPromo);
 
         request.getRequestDispatcher("WEB-INF/addStagiaire.jsp").forward(request, response);
 

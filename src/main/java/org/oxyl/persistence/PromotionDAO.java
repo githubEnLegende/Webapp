@@ -10,11 +10,33 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Optional;
 
 public class PromotionDAO {
 
     private static Logger logger = LoggerFactory.getLogger(PromotionDAO.class);
+
+    public static List<Promotion> getAllPromotion(){
+
+        List<Promotion> listPromo = new ArrayList<>();
+        String sql = "SELECT id, name FROM promotion";
+        try(Connection conn = MySqlConnexion.getInstance().getConnection();
+            PreparedStatement stmt = conn.prepareStatement(sql);){
+
+            ResultSet rs = stmt.executeQuery();
+
+            while (rs.next()) {
+                listPromo.add(new MapperPromotion().rsToPromotion(rs).get());
+            }
+            return listPromo;
+        } catch (SQLException e) {
+            logger.error("Erreur lors de la récupération des promotions", e);
+        }
+
+        return listPromo;
+    }
 
     public static void afficherPagePromotion(int pageNumber, Page<Promotion> page) {
 

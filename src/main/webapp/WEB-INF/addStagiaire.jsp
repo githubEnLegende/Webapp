@@ -65,10 +65,16 @@
                                     </c:forEach>
                                 </c:if>
                                 <label for="promotionId">Promotion</label>
-                                <input type="text" class="form-control" name="promotionId" id="promotionId" placeholder="Entrez l'id de la promotion" value="" required>
+<%--                                <input type="text" class="form-control" name="promotionId" id="promotionId" placeholder="Entrez l'id de la promotion" value="" required>--%>
 <%--                                <select class="form-control" name="promotionId" id="promotionId" >--%>
 <%--                                    <option value="0">--</option>--%>
 <%--                                </select>--%>
+                                <select class="form-control" name="promotionId" id="promotionId" >
+                                    <option value="0">-- Selectionner une promotion </option>
+                                    <c:forEach items="${requestScope.listPromo}" var="promotion">
+                                        <option value="${promotion.id}">${promotion.name}</option>
+                                    </c:forEach>
+                                </select>
                             </div>                  
                         </fieldset>
                         <div class="actions pull-right">

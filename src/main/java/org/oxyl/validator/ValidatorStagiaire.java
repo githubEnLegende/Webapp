@@ -20,7 +20,13 @@ public class ValidatorStagiaire {
         stagiaireValidator.put(0, nameValidator(stagiaire.getLastName()));
         stagiaireValidator.put(1, nameValidator(stagiaire.getFirstName()));
         stagiaireValidator.put(2, dateValidator(stagiaire.getArrival(), stagiaire.getFormationOver()));
-        stagiaireValidator.put(3, promotionValidator(stagiaire.getPromotion().getId()));
+        if(stagiaire.getPromotion() == null){
+            List<String> stringPromotion = new ArrayList<>();
+            stringPromotion.add("Choisissez une promotion valide");
+            stagiaireValidator.put(3,  stringPromotion);
+        }else{
+            stagiaireValidator.put(3, promotionValidator(stagiaire.getPromotion().getId()));
+        }
 
     }
 

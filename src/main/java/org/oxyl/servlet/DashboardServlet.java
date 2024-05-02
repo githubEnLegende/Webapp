@@ -26,7 +26,6 @@ public class DashboardServlet extends HttpServlet {
             throws ServletException, IOException {
 
         Page<Stagiaire> page = new Page<>();
-
         String pageParam = request.getParameter("page");
         String pageTaille = request.getParameter("size");
 
