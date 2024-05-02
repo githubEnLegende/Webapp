@@ -98,12 +98,14 @@
     <footer class="navbar-fixed-bottom">
         <div class="container text-center">
             <ul class="pagination">
+                <c:set var="startPage" value="${Math.min(totalPages-4,Math.max(1, page - 2))}"/>
+                <c:set var="endPage" value="${Math.max(5,Math.min(totalPages+0, page + 2))}"/>
                 <li>
                     <a href="dashboard?page=1&size=${size}" aria-label="Previous">
                         <span aria-hidden="true">&laquo;</span>
                     </a>
                 </li>
-                <c:forEach var="pageNumber" begin="${Math.max(1, page - 2)}" end="${Math.max(5, page + 2)}">
+                <c:forEach var="pageNumber" begin="${startPage}" end="${endPage}">
                     <li class="${page == pageNumber ? "active" : ""}">
                         <a href="dashboard?page=${pageNumber}&size=${size}">
                             <c:out value="${pageNumber}" />
