@@ -14,7 +14,17 @@ import javax.swing.text.html.Option;
 
 public class MapperPromotion {
 
+	private static MapperPromotion instance;
 	private static Logger logger = LoggerFactory.getLogger(MapperPromotion.class);
+
+
+	public static MapperPromotion getInstance() {
+		if (instance == null) {
+			instance = new MapperPromotion();
+		}
+		return instance;
+	}
+
 
 	public Optional<Promotion> rsToPromotion(ResultSet rs) {
 		try {

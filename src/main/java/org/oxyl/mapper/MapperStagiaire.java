@@ -11,7 +11,15 @@ import org.slf4j.LoggerFactory;
 
 public class MapperStagiaire {
 
-	private static Logger logger = LoggerFactory.getLogger(MapperStagiaire.class);
+	private static final Logger logger = LoggerFactory.getLogger(MapperStagiaire.class);
+	private static MapperStagiaire instance;
+
+	public static MapperStagiaire getInstance() {
+		if (instance == null) {
+			instance = new MapperStagiaire();
+		}
+		return instance;
+	}
 
 	public Optional<Stagiaire> rsToStagiaire(ResultSet rs) {
 		try {

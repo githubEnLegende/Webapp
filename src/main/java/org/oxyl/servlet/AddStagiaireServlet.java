@@ -52,7 +52,7 @@ public class AddStagiaireServlet extends HttpServlet {
 
         if (stagiaireValidator.isEmpty()){
 
-            LocalDate finFormationDate =  new MapperDate().stringtoLocalDate(finFormation);
+            LocalDate finFormationDate =  MapperDate.getInstance().stringtoLocalDate(finFormation);
 
             Stagiaire intern = new Stagiaire.StagiaireBuilder(UtilitairesDAO.getInstance().getMaxID()+1,
                     firstName, lastName, LocalDate.parse(arrival))

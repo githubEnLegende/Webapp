@@ -32,7 +32,7 @@ public class MySqlConnexion {
                 connection = DriverManager.getConnection(DB_URL, USER, PASS);
             }
         } catch (SQLException e) {
-            logger.error("Erreur lors de la connexion", e.getMessage());
+            logger.error("Erreur lors de la connexion", e);
         } catch (ClassNotFoundException e) {
             logger.error("Erreur lors de la récupération du driver", e);
         }

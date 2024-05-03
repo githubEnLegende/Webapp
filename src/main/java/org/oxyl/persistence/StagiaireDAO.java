@@ -32,7 +32,7 @@ public class StagiaireDAO {
 
             ResultSet rs = stmt.executeQuery();
             while (rs.next()) {
-                stagiaires.add(new MapperStagiaire().rsToStagiaire(rs).get());
+                stagiaires.add(MapperStagiaire.getInstance().rsToStagiaire(rs).get());
             }
             return Optional.of(stagiaires);
         } catch (SQLException e) {
@@ -55,7 +55,7 @@ public class StagiaireDAO {
             while (rs.next()) {
 
                 Stagiaire stagiaire = null;
-                Optional<Stagiaire> intern = new MapperStagiaire().rsToStagiaire(rs);
+                Optional<Stagiaire> intern = MapperStagiaire.getInstance().rsToStagiaire(rs);
                 if (intern.isPresent()) {
                     stagiaire = intern.get();
                 }

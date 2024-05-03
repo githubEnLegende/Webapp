@@ -36,7 +36,7 @@ public class PromotionDAO {
 
             ResultSet rs = stmt.executeQuery();
             while (rs.next()) {
-                listPromo.add(new MapperPromotion().rsToPromotion(rs).get());
+                listPromo.add(MapperPromotion.getInstance().rsToPromotion(rs).get());
             }
             return listPromo;
         } catch (SQLException e) {
@@ -57,7 +57,7 @@ public class PromotionDAO {
             ResultSet rs = stmt.executeQuery();
 
             while (rs.next()) {
-                page.addContent(new MapperPromotion().rsToPromotion(rs).get());
+                page.addContent(MapperPromotion.getInstance().rsToPromotion(rs).get());
             }
 
             page.display();
@@ -76,7 +76,7 @@ public class PromotionDAO {
             stmt.setInt(1, id);
             ResultSet rs2 = stmt.executeQuery();
             rs2.next();
-            Optional<Promotion> promoOpt = new MapperPromotion().rsToPromotion(rs2);
+            Optional<Promotion> promoOpt = MapperPromotion.getInstance().rsToPromotion(rs2);
             return promoOpt;
 
         } catch (SQLException e) {
