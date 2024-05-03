@@ -24,8 +24,7 @@ import static org.oxyl.persistence.StagiaireDAO.*;
 @WebServlet("/editStagiaire")
 public class EditStagiaireServlet extends HttpServlet {
 
-    protected void doGet(HttpServletRequest request, HttpServletResponse response)
-            throws ServletException, IOException {
+    protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 
         int id = Integer.parseInt(request.getParameter("id"));
 
@@ -44,8 +43,7 @@ public class EditStagiaireServlet extends HttpServlet {
     }
 
 
-    protected void doPost(HttpServletRequest request, HttpServletResponse response)
-            throws ServletException, IOException {
+    protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         String id = request.getParameter("id");
         String lastName = request.getParameter("lastName");
         String firstName = request.getParameter("firstName");
@@ -56,14 +54,14 @@ public class EditStagiaireServlet extends HttpServlet {
         StagiaireDTO stagiaire = new StagiaireDTO(lastName, firstName, arrival, finFormation, promotionId);
         Map<Integer, String> stagiaireValidator = ValidatorStagiaire.getInstance().stagiaireValidator(stagiaire);
 
-        if (stagiaireValidator.isEmpty()){
+        if (stagiaireValidator.isEmpty()) {
 
             int stagId = Integer.parseInt(id);
             int promoId = Integer.parseInt(promotionId);
 
             StagiaireDAO.getInstance().updateIntern(firstName, lastName, arrival, finFormation, promoId, stagId);
             response.sendRedirect("dashboard");
-        }else{
+        } else {
             System.out.println("Stagiaire non valide");
             request.setAttribute("stagiaireValidator", stagiaireValidator);
             doGet(request, response);
@@ -79,7 +77,7 @@ public class EditStagiaireServlet extends HttpServlet {
 //        }else{
 //            System.out.println("Stagiaire non valide");
 //            request.setAttribute("stagiaireValidator", stagaireValidator);
-        }
     }
+}
 
 

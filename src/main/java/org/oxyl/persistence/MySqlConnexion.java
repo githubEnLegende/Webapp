@@ -23,10 +23,7 @@ public class MySqlConnexion {
         try {
             if ("test".equals(System.getProperty("environment"))) {
                 // Configuration pour la base de données H2 en mémoire
-                this.connection = DriverManager
-                        .getConnection("jdbc:h2:mem:newro-factory-db;" +
-                                "DB_CLOSE_DELAY=-1;DATABASE_TO_UPPER=false;" +
-                                "INIT=RUNSCRIPT FROM 'classpath:init.sql';", "testnewro", "T4st3r!");
+                this.connection = DriverManager.getConnection("jdbc:h2:mem:newro-factory-db;" + "DB_CLOSE_DELAY=-1;DATABASE_TO_UPPER=false;" + "INIT=RUNSCRIPT FROM 'classpath:init.sql';", "testnewro", "T4st3r!");
             } else {
                 Class.forName("com.mysql.cj.jdbc.Driver");
                 connection = DriverManager.getConnection(DB_URL, USER, PASS);
@@ -53,10 +50,7 @@ public class MySqlConnexion {
                     // Utiliser une configuration différente si en mode test
                     if ("test".equals(System.getProperty("environment"))) {
                         // Configuration pour la base de données H2 en mémoire
-                        this.connection = DriverManager
-                                .getConnection("jdbc:h2:mem:newro-factory-db;DB_CLOSE_DELAY=-1;DATABASE_TO_UPPER=false;INIT=RUNSCRIPT FROM 'classpath:init.sql';",
-                                        "testnewro",
-                                        "T4st3r!");
+                        this.connection = DriverManager.getConnection("jdbc:h2:mem:newro-factory-db;DB_CLOSE_DELAY=-1;DATABASE_TO_UPPER=false;INIT=RUNSCRIPT FROM 'classpath:init.sql';", "testnewro", "T4st3r!");
                     } else {
 
                         // Configuration pour la base de production

@@ -14,25 +14,25 @@ import javax.swing.text.html.Option;
 
 public class MapperPromotion {
 
-	private static MapperPromotion instance;
-	private static Logger logger = LoggerFactory.getLogger(MapperPromotion.class);
+    private static MapperPromotion instance;
+    private static Logger logger = LoggerFactory.getLogger(MapperPromotion.class);
 
 
-	public static MapperPromotion getInstance() {
-		if (instance == null) {
-			instance = new MapperPromotion();
-		}
-		return instance;
-	}
+    public static MapperPromotion getInstance() {
+        if (instance == null) {
+            instance = new MapperPromotion();
+        }
+        return instance;
+    }
 
 
-	public Optional<Promotion> rsToPromotion(ResultSet rs) {
-		try {
-			return Optional.of(new Promotion.PromotionBuilder(rs.getInt("id"),
-					rs.getString("name")).build());
-		} catch (SQLException e) {
-			logger.error("Erreur Base de donnée", e.getMessage());
-			return Optional.empty();
-		}
-	}
+    public Optional<Promotion> rsToPromotion(ResultSet rs) {
+        try {
+            return Optional.of(new Promotion.PromotionBuilder(rs.getInt("id"),
+                    rs.getString("name")).build());
+        } catch (SQLException e) {
+            logger.error("Erreur Base de donnée", e.getMessage());
+            return Optional.empty();
+        }
+    }
 }

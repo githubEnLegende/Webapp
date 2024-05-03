@@ -24,7 +24,6 @@ public class Stagiaire {
 		this.formationOver = builder.formationOver;
 		this.promotion = builder.promotion;
 	}
-	
 	public long getId() {
 		return id;
 	}

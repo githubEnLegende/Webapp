@@ -114,11 +114,17 @@ public class StagiaireDAO {
             }else{
                 stmt.setTimestamp(3, null);
             }
-            stmt.setTimestamp(4, null);
 
+            if (intern.getArrival() != null){
+                Timestamp timestamp = Timestamp.valueOf(intern.getFormationOver().atStartOfDay());
+                stmt.setTimestamp(4, timestamp);
+            }else{
+                stmt.setTimestamp(4, null);
+            }
             stmt.setInt(5, intern.getPromotion().getId());
 
             // Exécution de la requête d'insertion
+            System.out.println(stmt);
             stmt.executeUpdate();
             System.out.println("Stagiaire inséré avec succès !");
         } catch (SQLException e) {

@@ -1,59 +1,59 @@
 package org.oxyl.model;
 
 public class Question {
-	
-	private int id;
-	private String title;
-	private String statement;
-	private int chapitreId;
-	
-	public Question(QuestionBuilder builder) {
-		this.id = builder.id;
-		this.title = builder.title;
-		this.statement = builder.statement;
-		this.chapitreId = builder.chapitreId;
-	}
-	
-	public Question() {
-		this.id = 0;
-		this.title = null;
-		this.statement = null;
-		this.chapitreId = 0;
-	}
 
-	public int getId() {
-		return id;
-	}
+    private int id;
+    private String title;
+    private String statement;
+    private int chapitreId;
 
-	public void setId(int id) {
-		this.id = id;
-	}
+    public Question(QuestionBuilder builder) {
+        this.id = builder.id;
+        this.title = builder.title;
+        this.statement = builder.statement;
+        this.chapitreId = builder.chapitreId;
+    }
 
-	public String getTitle() {
-		return title;
-	}
+    public Question() {
+        this.id = 0;
+        this.title = null;
+        this.statement = null;
+        this.chapitreId = 0;
+    }
 
-	public void setTitle(String title) {
-		this.title = title;
-	}
+    public int getId() {
+        return id;
+    }
 
-	public String getStatement() {
-		return statement;
-	}
+    public void setId(int id) {
+        this.id = id;
+    }
 
-	public void setStatement(String statement) {
-		this.statement = statement;
-	}
+    public String getTitle() {
+        return title;
+    }
 
-	public int getChapitreId() {
-		return chapitreId;
-	}
+    public void setTitle(String title) {
+        this.title = title;
+    }
 
-	public void setChapitreId(int i) {
-		this.chapitreId = i;
-	}
+    public String getStatement() {
+        return statement;
+    }
 
-	public String toString() {
+    public void setStatement(String statement) {
+        this.statement = statement;
+    }
+
+    public int getChapitreId() {
+        return chapitreId;
+    }
+
+    public void setChapitreId(int i) {
+        this.chapitreId = i;
+    }
+
+    public String toString() {
         return "Question{" +
                 "id=" + id +
                 ", title='" + title + '\'' +
@@ -61,45 +61,45 @@ public class Question {
                 ", chapterId=" + chapitreId +
                 "}\n";
     }
-	
-	public static class QuestionBuilder{
-		private int id;
-		private String title;
-		private String statement;
-		private int chapitreId;
 
-		public QuestionBuilder(int id, String title, String statement, int chapitreId) {
-			this.id = id;
-			this.title = title;
-			this.statement = statement;
-			this.chapitreId = chapitreId;
-		}
+    public static class QuestionBuilder {
+        private int id;
+        private String title;
+        private String statement;
+        private int chapitreId;
 
-		public QuestionBuilder id(int id) {
-			this.id = id;
-			return this;
-		}
-		
-		public QuestionBuilder title(String title) {
-			this.title = title;
-			return this;
-		}
-		
-		public QuestionBuilder statement(String statement) {
-			this.statement = statement;
-			return this;
-		}
-		
-		public QuestionBuilder chapitreId(int chapitreId) {
-			this.chapitreId = chapitreId;
-			return this;
-		}
-		
-		public Question build() {
-			return new Question(this);
-		}
-		
-		
-	}
+        public QuestionBuilder(int id, String title, String statement, int chapitreId) {
+            this.id = id;
+            this.title = title;
+            this.statement = statement;
+            this.chapitreId = chapitreId;
+        }
+
+        public QuestionBuilder id(int id) {
+            this.id = id;
+            return this;
+        }
+
+        public QuestionBuilder title(String title) {
+            this.title = title;
+            return this;
+        }
+
+        public QuestionBuilder statement(String statement) {
+            this.statement = statement;
+            return this;
+        }
+
+        public QuestionBuilder chapitreId(int chapitreId) {
+            this.chapitreId = chapitreId;
+            return this;
+        }
+
+        public Question build() {
+            return new Question(this);
+        }
+
+
+    }
 
 }

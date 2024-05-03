@@ -24,7 +24,7 @@
             <div class="row">
                 <div class="col-xs-8 col-xs-offset-2 box">
                     <h1>Add Stagiaire</h1>
-                    <form action="addStagiaire" method="POST">
+                    <form action="addStagiaire" method="POST" onsubmit="return validateForm()">
                         <fieldset>
                             <c:set var="validator" value="${requestScope.stagiaireValidator}"/>
                             <div class="form-group">
@@ -77,4 +77,33 @@
         </div>
     </section>
 </body>
+
+<script>
+    function validateForm() {
+        // Validate first name
+        var firstName = document.getElementById("firstName").value;
+        if (!/^[a-zA-ZÀ-ÿ\s'-]+$/.test(firstName)) {
+            alert("Please enter a valid first name (only letters and spaces allowed).");
+            return false;
+        }
+
+        // Validate last name
+        var lastName = document.getElementById("lastName").value;
+        if (!/^[a-zA-ZÀ-ÿ\s'-]+$/.test(lastName)) {
+            alert("Please enter a valid last name (only letters and spaces allowed).");
+            return false;
+        }
+
+        // Validate formation over date if present
+        var formationOver = document.getElementById("finFormation").value;
+        var arrival = document.getElementById("arrival").value;
+        if (formationOver && formationOver < arrival) {
+            alert("Formation Over Date must be after Arrival Date.");
+            return false;
+        }
+
+        return true;
+    }
+</script>
+
 </html>

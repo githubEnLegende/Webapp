@@ -18,4 +18,10 @@ public class Main {
     	feur();
 
     }
+
+	private static void e(){}
+
+
 }
+
+

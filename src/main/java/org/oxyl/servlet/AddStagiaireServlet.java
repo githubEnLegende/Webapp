@@ -20,7 +20,6 @@ import java.util.List;
 import java.util.Map;
 
 
-
 @WebServlet("/addStagiaire")
 public class AddStagiaireServlet extends HttpServlet {
 
@@ -50,18 +49,18 @@ public class AddStagiaireServlet extends HttpServlet {
 
         Map<Integer, String> stagiaireValidator = ValidatorStagiaire.getInstance().stagiaireValidator(stagiaire);
 
-        if (stagiaireValidator.isEmpty()){
+        if (stagiaireValidator.isEmpty()) {
 
-            LocalDate finFormationDate =  MapperDate.getInstance().stringtoLocalDate(finFormation);
+            LocalDate finFormationDate = MapperDate.getInstance().stringtoLocalDate(finFormation);
 
-            Stagiaire intern = new Stagiaire.StagiaireBuilder(UtilitairesDAO.getInstance().getMaxID()+1,
+            Stagiaire intern = new Stagiaire.StagiaireBuilder(UtilitairesDAO.getInstance().getMaxID() + 1,
                     firstName, lastName, LocalDate.parse(arrival))
                     .formationOver(finFormationDate)
                     .promotion(Integer.parseInt(promotionId)).build();
 
             StagiaireDAO.getInstance().insertIntern(intern);
             response.sendRedirect("dashboard");
-        }else{
+        } else {
             System.out.println("Stagiaire non valide");
             request.setAttribute("stagiaireValidator", stagiaireValidator);
             doGet(request, response);

@@ -15,7 +15,6 @@ import org.slf4j.LoggerFactory;
 import java.io.IOException;
 
 
-
 @WebServlet("/dashboard")
 public class DashboardServlet extends HttpServlet {
 
@@ -24,20 +23,22 @@ public class DashboardServlet extends HttpServlet {
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
 
+        logger.info("Entrée dans le feur");
+
         Page<Stagiaire> page = new Page<>();
         String pageParam = request.getParameter("page");
         String pageTaille = request.getParameter("size");
 
         int pageNum = 1;
         if (pageParam != null) {
-            try{
+            try {
                 pageNum = Integer.parseInt(pageParam);
-            }catch (NumberFormatException e){
+            } catch (NumberFormatException e) {
                 logger.error("Mauvais format de nombre pour la page", e);
             }
         }
 
-        if(pageTaille != null && !pageTaille.isEmpty()){
+        if (pageTaille != null && !pageTaille.isEmpty()) {
             page.setNbRow(Integer.parseInt(pageTaille));
         }
         StagiaireDAO.getInstance().getPageStagiaire(pageNum, page);
@@ -55,9 +56,10 @@ public class DashboardServlet extends HttpServlet {
 
 
     }
+
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         boolean isDeleted = false;
-        if(!request.getParameter("selection").isEmpty()) {
+        if (!request.getParameter("selection").isEmpty()) {
             String[] idsToDelete = request.getParameter("selection").split(",");
             for (String id : idsToDelete) {
                 StagiaireDAO.getInstance().deleteIntern(Integer.parseInt(id));

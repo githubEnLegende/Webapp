@@ -27,12 +27,12 @@ public class PromotionDAO {
         return instance;
     }
 
-    public List<Promotion> getAllPromotion(){
+    public List<Promotion> getAllPromotion() {
 
         List<Promotion> listPromo = new ArrayList<>();
         String sql = "SELECT id, name FROM promotion";
-        try(Connection conn = MySqlConnexion.getInstance().getConnection();
-            PreparedStatement stmt = conn.prepareStatement(sql);){
+        try (Connection conn = MySqlConnexion.getInstance().getConnection();
+             PreparedStatement stmt = conn.prepareStatement(sql);) {
 
             ResultSet rs = stmt.executeQuery();
             while (rs.next()) {
@@ -50,8 +50,8 @@ public class PromotionDAO {
 
         String sql = "SELECT id, name FROM promotion LIMIT ? OFFSET ?";
 
-        try(Connection conn = MySqlConnexion.getInstance().getConnection();
-            PreparedStatement stmt = conn.prepareStatement(sql);){
+        try (Connection conn = MySqlConnexion.getInstance().getConnection();
+             PreparedStatement stmt = conn.prepareStatement(sql);) {
             stmt.setInt(1, page.getNbRow());
             stmt.setInt(2, (pageNumber - 1) * page.getNbRow());
             ResultSet rs = stmt.executeQuery();
@@ -69,10 +69,10 @@ public class PromotionDAO {
         }
     }
 
-    public Optional<Promotion> getPromotion(int id){
+    public Optional<Promotion> getPromotion(int id) {
         Connection conn = MySqlConnexion.getInstance().getConnection();
-        try(
-            PreparedStatement stmt = conn.prepareStatement("SELECT id, name FROM promotion WHERE id = ?")) {
+        try (
+                PreparedStatement stmt = conn.prepareStatement("SELECT id, name FROM promotion WHERE id = ?")) {
             stmt.setInt(1, id);
             ResultSet rs2 = stmt.executeQuery();
             rs2.next();

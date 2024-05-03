@@ -15,9 +15,9 @@ public class QuestionDAO {
 
     private static Logger logger = LoggerFactory.getLogger(QuestionDAO.class);
     private static QuestionDAO instance;
-    
-    public static QuestionDAO getInstance(){
-        if (instance == null){
+
+    public static QuestionDAO getInstance() {
+        if (instance == null) {
             instance = new QuestionDAO();
         }
         return instance;
@@ -27,7 +27,7 @@ public class QuestionDAO {
 
         PreparedStatement stmt = null;
         ResultSet rs = null;
-        try(Connection conn = MySqlConnexion.getInstance().getConnection();) {
+        try (Connection conn = MySqlConnexion.getInstance().getConnection();) {
             String sql = "SELECT id, title, statement, chapter_id FROM question WHERE id = ?";
             stmt = conn.prepareStatement(sql);
             stmt.setInt(1, questionId);
@@ -46,7 +46,7 @@ public class QuestionDAO {
                 stmt.setInt(1, question.getId());
                 rs = stmt.executeQuery();
 
-                while(rs.next()) {
+                while (rs.next()) {
                     Reponse reponse = MapperReponse.getInstance().rsToReponse(rs).get();
                     System.out.println(reponse.toString());
                 }

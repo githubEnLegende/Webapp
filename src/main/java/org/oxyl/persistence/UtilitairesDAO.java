@@ -19,7 +19,7 @@ public class UtilitairesDAO {
     }
 
     public int getMaxID() {
-        try(Connection conn = MySqlConnexion.getInstance().getConnection()) {
+        try (Connection conn = MySqlConnexion.getInstance().getConnection()) {
             int maxId = 0;
             String sql = "SELECT MAX(ID) FROM intern";
             ResultSet rs = null;
@@ -38,7 +38,7 @@ public class UtilitairesDAO {
         }
     }
 
-    public int getTotalPages(String table, int rowsPerPage){
+    public int getTotalPages(String table, int rowsPerPage) {
 
         String countQuery = "SELECT COUNT(*) FROM " + table;
 
