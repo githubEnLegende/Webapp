@@ -24,13 +24,13 @@ public class InternDAOTest {
     @Test
     public void testPageStagiaire(){
         Page<Stagiaire> pageStagiaire = new Page<>();
-        getPageStagiaire(1, pageStagiaire);
+        StagiaireDAO.getInstance().getPageStagiaire(1, pageStagiaire);
 
     }
 
     @Test
     public void testIntern() {
-        var option = detailStagiaire(20);
+        var option = StagiaireDAO.getInstance().detailStagiaire(20);
         assertTrue(option.isPresent());
         Stagiaire stagiaire = option.get();
 
@@ -50,28 +50,28 @@ public class InternDAOTest {
                 .promotion(promo)
                 .formationOver(null).build();
 
-        insertIntern(intern);
+        StagiaireDAO.getInstance().insertIntern(intern);
 
         Page<Stagiaire> pageStagiaire = new Page<>();
-        getPageStagiaire(1, pageStagiaire);
-        getPageStagiaire(2, pageStagiaire);
+        StagiaireDAO.getInstance().getPageStagiaire(1, pageStagiaire);
+        StagiaireDAO.getInstance().getPageStagiaire(2, pageStagiaire);
 
         System.out.println();
 
-        Stagiaire stagiaire = detailStagiaire(51).get();
+        Stagiaire stagiaire = StagiaireDAO.getInstance().detailStagiaire(51).get();
         assertNotNull(stagiaire);
         assertEquals(51, stagiaire.getId());
 
-        deleteIntern(51);
-        getPageStagiaire(1, pageStagiaire);
-        getPageStagiaire(2, pageStagiaire);
+        StagiaireDAO.getInstance().deleteIntern(51);
+        StagiaireDAO.getInstance().getPageStagiaire(1, pageStagiaire);
+        StagiaireDAO.getInstance().getPageStagiaire(2, pageStagiaire);
 
     }
 
     @Test
     public void testUpdateIntern(){
-        updateIntern("Franck", "Alonso", null, null, 1, 50);
-        Stagiaire stagiaire = detailStagiaire(50).get();
+        StagiaireDAO.getInstance().updateIntern("Franck", "Alonso", null, null, 1, 50);
+        Stagiaire stagiaire = StagiaireDAO.getInstance().detailStagiaire(50).get();
 
 
     }

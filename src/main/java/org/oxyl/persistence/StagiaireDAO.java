@@ -15,8 +15,16 @@ import java.util.Optional;
 public class StagiaireDAO {
 
     private static final Logger logger = LoggerFactory.getLogger(StagiaireDAO.class);
+    private static StagiaireDAO instance;
 
-    public static Optional<List<Stagiaire>> getAllStagiaires() {
+    public static StagiaireDAO getInstance() {
+        if (instance == null) {
+            instance = new StagiaireDAO();
+        }
+        return instance;
+    }
+
+    public Optional<List<Stagiaire>> getAllStagiaires() {
         String sql = "SELECT id, first_name, last_name, arrival, formation_over, promotion_id FROM intern";
         try (Connection conn = MySqlConnexion.getInstance().getConnection();
              PreparedStatement stmt = conn.prepareStatement(sql)) {
@@ -32,7 +40,7 @@ public class StagiaireDAO {
             return Optional.empty();
         }
     }
-    public static void getPageStagiaire(int pageNumber, Page<Stagiaire> page) {
+    public void getPageStagiaire(int pageNumber, Page<Stagiaire> page) {
 
         String sql = "SELECT id, first_name, last_name, arrival, formation_over, promotion_id FROM intern LIMIT ? OFFSET ?";
 
@@ -60,7 +68,7 @@ public class StagiaireDAO {
 
     }
 
-    public static Optional<Stagiaire> detailStagiaire(int id) {
+    public Optional<Stagiaire> detailStagiaire(int id) {
 
         String sql = "SELECT id, first_name, last_name, arrival, formation_over, promotion_id FROM intern WHERE id = ?";
         try (Connection conn = MySqlConnexion.getInstance().getConnection();
@@ -91,7 +99,7 @@ public class StagiaireDAO {
         return Optional.empty();
     }
 
-    public static void insertIntern(Stagiaire intern) {
+    public void insertIntern(Stagiaire intern) {
         String sql = "INSERT INTO intern (first_name, last_name, arrival, formation_over, promotion_id)"
                 + " VALUES (?, ?, ?, ?, ?)";
         try (Connection conn = MySqlConnexion.getInstance().getConnection();
@@ -118,7 +126,7 @@ public class StagiaireDAO {
         }
     }
 
-    public static void deleteIntern(int id) {
+    public void deleteIntern(int id) {
 
         String sql = "DELETE FROM intern WHERE id = ?";
 
@@ -138,7 +146,7 @@ public class StagiaireDAO {
         }
     }
 
-    public static void updateIntern(String prenom, String nom, String arrive, String finFormation, int promo, int id) {
+    public void updateIntern(String prenom, String nom, String arrive, String finFormation, int promo, int id) {
         String sql = "UPDATE intern SET ";
         List<Object> parameters = new ArrayList<>();
 
@@ -176,12 +184,20 @@ public class StagiaireDAO {
             int index = 1;
             for (Object parameter : parameters) {
                 stmt.setObject(index, parameter);
+                System.out.println(parameter);
                 index++;
             }
+            System.out.println(stmt);
             stmt.executeUpdate();
         } catch (SQLException e) {
             logger.error("Erreur SQL lors de la mise à jour d'un stagiaire", e);
         }
     }
+
+//    public static List<Stagiaire> getStagiairesByName(String name){
+//
+//        String sql = "SELECT id, first_name, last_name, arrival, formation_over, promotion_id FROM intern WHERE first_name = ? OR last_name = ?";
+//
+//    }
 
 }

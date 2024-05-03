@@ -31,30 +31,25 @@
                     <form action="editStagiaire" method="POST">
                         <input type="hidden" name="id" value="<%= request.getParameter("id") %>" id="id"/> <!-- TODO: Change this value with the computer id -->
                         <fieldset>
+                            <c:set var="validator" value="${requestScope.stagiaireValidator}"/>
                             <div class="form-group">
-                                <c:if test="${requestScope.stagiaireValidator.valide == false}">
-                                    <c:forEach var="error" items="${requestScope.stagiaireValidator.stagiaireValidator[(0).intValue()]}">
-                                        <span style="color:red"> ${error} </span><br>
-                                    </c:forEach>
+                                <c:if test="${not empty validator && not empty validator[(0).intValue()]}">
+                                    <span style="color:red"> ${validator[(0).intValue()]} </span><br>
                                 </c:if>
                                 <label for="lastName">Nom</label>
                                 <input type="text" class="form-control" name="lastName" id="lastName" placeholder="Nom du stagiaire" value="${requestScope.stagiaire.lastName}" required>
 
                             </div>
                             <div class="form-group">
-                                <c:if test="${requestScope.stagiaireValidator.valide == false}">
-                                    <c:forEach var="error" items="${requestScope.stagiaireValidator.stagiaireValidator[(1).intValue()]}">
-                                        <span style="color:red"> ${error} </span><br>
-                                    </c:forEach>
+                                <c:if test="${not empty validator && not empty validator[(1).intValue()]}">
+                                    <span style="color:red"> ${validator[(1).intValue()]} </span><br>
                                 </c:if>
                                 <label for="firstName">Prénom</label>
                                 <input type="text" class="form-control" name="firstName" id="firstName" placeholder="Prénom du stagiaire" value="${requestScope.stagiaire.firstName}" required>
                             </div>
                             <div class="form-group">
-                                <c:if test="${requestScope.stagiaireValidator.valide == false}">
-                                    <c:forEach var="error" items="${requestScope.stagiaireValidator.stagiaireValidator[(2).intValue()]}">
-                                        <span style="color:red"> ${error} </span><br>
-                                    </c:forEach>
+                                <c:if test="${not empty validator && not empty validator[(2).intValue()]}">
+                                    <span style="color:red"> ${validator[(2).intValue()]} </span><br>
                                 </c:if>
                                 <label for="arrival">Date d'arrivée</label>
                                 <input type="date" class="form-control" name="arrival" id="arrival" placeholder="Date d'arrivée" value="${requestScope.stagiaire.arrival}" required>
@@ -64,16 +59,10 @@
                                 <input type="date" class="form-control" name="finFormation" id="finFormation" placeholder="Date de fin de formation" value="${requestScope.stagiaire.formationOver}">
                             </div>
                             <div class="form-group">
-                                <c:if test="${requestScope.stagiaireValidator.valide == false}">
-                                    <c:forEach var="error" items="${requestScope.stagiaireValidator.stagiaireValidator[(3).intValue()]}">
-                                        <span style="color:red"> ${error} </span> <br>
-                                    </c:forEach>
+                                <c:if test="${not empty validator && not empty validator[(3).intValue()]}">
+                                    <span style="color:red"> ${validator[(3).intValue()]} </span> <br>
                                 </c:if>
                                 <label for="promotionId">Promotion</label>
-                                <%--                                <input type="text" class="form-control" name="promotionId" id="promotionId" placeholder="Entrez l'id de la promotion" value="" required>--%>
-                                <%--                                <select class="form-control" name="promotionId" id="promotionId" >--%>
-                                <%--                                    <option value="0">--</option>--%>
-                                <%--                                </select>--%>
                                 <select class="form-control" name="promotionId" id="promotionId" >
                                     <option value="${requestScope.stagiaire.promotion.id}">${requestScope.stagiaire.promotion.name} </option>
                                     <c:forEach items="${requestScope.listPromo}" var="promotion">

@@ -6,22 +6,20 @@ import static org.junit.Assert.assertEquals;
 
 import java.sql.Connection;
 
-import static org.oxyl.persistence.UtilitairesDAO.getMaxID;
-import static org.oxyl.persistence.UtilitairesDAO.getTotalPages;
 
 public class UtilitairesDAOTest{
 
     @Test
     public void testGetMaxID() {
         System.setProperty("environment", "test");
-        int id = getMaxID();
+        int id = UtilitairesDAO.getInstance().getMaxID();
         assertEquals(50, id);
     }
 
     @Test
     public void testGetTotalPages() {
         System.setProperty("environment", "test");
-        int pages = getTotalPages("intern", 10);
+        int pages = UtilitairesDAO.getInstance().getTotalPages("intern", 10);
         assertEquals(5, pages);
 
     }

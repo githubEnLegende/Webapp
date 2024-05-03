@@ -114,7 +114,7 @@ public class Stagiaire {
 	    }
 
 		public StagiaireBuilder promotion(int promotion){
-			Optional<Promotion> promotionOptional = PromotionDAO.getPromotion(promotion);
+			Optional<Promotion> promotionOptional = PromotionDAO.getInstance().getPromotion(promotion);
 			if (promotionOptional.isPresent()) {
 				this.promotion = promotionOptional.get();
 			}else {

@@ -1,5 +1,7 @@
 package org.oxyl.persistence;
 
+import jdk.jshell.execution.Util;
+
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -7,7 +9,16 @@ import java.sql.SQLException;
 
 public class UtilitairesDAO {
 
-    public static int getMaxID() {
+    private static UtilitairesDAO instance;
+
+    public static UtilitairesDAO getInstance() {
+        if (instance == null) {
+            instance = new UtilitairesDAO();
+        }
+        return instance;
+    }
+
+    public int getMaxID() {
         try(Connection conn = MySqlConnexion.getInstance().getConnection()) {
             int maxId = 0;
             String sql = "SELECT MAX(ID) FROM intern";
@@ -27,7 +38,7 @@ public class UtilitairesDAO {
         }
     }
 
-    public static int getTotalPages(String table, int rowsPerPage){
+    public int getTotalPages(String table, int rowsPerPage){
 
         String countQuery = "SELECT COUNT(*) FROM " + table;
 

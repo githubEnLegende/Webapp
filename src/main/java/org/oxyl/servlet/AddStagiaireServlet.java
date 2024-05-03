@@ -5,21 +5,20 @@ import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import org.oxyl.dto.StagiaireDTO;
+import org.oxyl.mapper.MapperDate;
 import org.oxyl.model.Promotion;
 import org.oxyl.model.Stagiaire;
+import org.oxyl.persistence.PromotionDAO;
+import org.oxyl.persistence.StagiaireDAO;
+import org.oxyl.persistence.UtilitairesDAO;
 import org.oxyl.validator.ValidatorStagiaire;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import java.io.IOException;
 import java.time.LocalDate;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import static org.oxyl.persistence.PromotionDAO.getAllPromotion;
-import static org.oxyl.persistence.StagiaireDAO.insertIntern;
-import static org.oxyl.persistence.UtilitairesDAO.getMaxID;
 
 
 @WebServlet("/addStagiaire")
@@ -29,7 +28,7 @@ public class AddStagiaireServlet extends HttpServlet {
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
 
-        List<Promotion> listPromo = getAllPromotion();
+        List<Promotion> listPromo = PromotionDAO.getInstance().getAllPromotion();
         request.setAttribute("listPromo", listPromo);
 
         request.getRequestDispatcher("WEB-INF/addStagiaire.jsp").forward(request, response);
@@ -46,28 +45,26 @@ public class AddStagiaireServlet extends HttpServlet {
         String finFormation = request.getParameter("finFormation");
         String promotionId = request.getParameter("promotionId");
 
-        LocalDate finFormationDate = null;
 
-        if (finFormation != null && !finFormation.isEmpty()) {
-             finFormationDate = LocalDate.parse(finFormation);
-        }
+        StagiaireDTO stagiaire = new StagiaireDTO(lastName, firstName, arrival, finFormation, promotionId);
 
+        Map<Integer, String> stagiaireValidator = ValidatorStagiaire.getInstance().stagiaireValidator(stagiaire);
 
-        Stagiaire stagiaire = new Stagiaire.StagiaireBuilder(getMaxID()+1, firstName, lastName, LocalDate.parse(arrival))
-                .formationOver(finFormationDate)
-                .promotion(Integer.parseInt(promotionId)).build();
+        if (stagiaireValidator.isEmpty()){
 
+            LocalDate finFormationDate =  new MapperDate().stringtoLocalDate(finFormation);
 
-        ValidatorStagiaire stagaireValidator = new ValidatorStagiaire(stagiaire);
+            Stagiaire intern = new Stagiaire.StagiaireBuilder(UtilitairesDAO.getInstance().getMaxID()+1,
+                    firstName, lastName, LocalDate.parse(arrival))
+                    .formationOver(finFormationDate)
+                    .promotion(Integer.parseInt(promotionId)).build();
 
-
-
-        if (stagaireValidator.isValide()){
-            insertIntern(stagiaire);
+            StagiaireDAO.getInstance().insertIntern(intern);
             response.sendRedirect("dashboard");
         }else{
             System.out.println("Stagiaire non valide");
-            request.setAttribute("stagiaireValidator", stagaireValidator);
+            request.setAttribute("stagiaireValidator", stagiaireValidator);
+            doGet(request, response);
             request.getRequestDispatcher("WEB-INF/addStagiaire.jsp").forward(request, response);
         }
 

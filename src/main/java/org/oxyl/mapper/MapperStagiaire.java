@@ -1,18 +1,12 @@
 package org.oxyl.mapper;
 
-import java.sql.Connection;
-import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.Optional;
-import org.oxyl.mapper.MapperPromotion;
-import org.oxyl.model.Promotion;
 import org.oxyl.model.Stagiaire;
-import org.oxyl.persistence.MySqlConnexion;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import static org.oxyl.persistence.PromotionDAO.getPromotion;
 
 
 public class MapperStagiaire {

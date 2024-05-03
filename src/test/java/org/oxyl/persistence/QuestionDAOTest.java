@@ -4,8 +4,6 @@ import junit.framework.TestCase;
 import org.junit.Test;
 import org.junit.jupiter.api.BeforeEach;
 
-import static org.oxyl.persistence.QuestionDAO.getQuestionById;
-
 public class QuestionDAOTest extends TestCase {
 
     private final H2Config h2Config = H2Config.getInstance();
@@ -18,6 +16,6 @@ public class QuestionDAOTest extends TestCase {
     @Test
     public void testGetQuestion(){
         System.setProperty("environment", "test");
-        getQuestionById(364);
+        QuestionDAO.getInstance().getQuestionById(364);
     }
 }

@@ -18,7 +18,16 @@ public class PromotionDAO {
 
     private static Logger logger = LoggerFactory.getLogger(PromotionDAO.class);
 
-    public static List<Promotion> getAllPromotion(){
+    private static PromotionDAO instance;
+
+    public static PromotionDAO getInstance() {
+        if (instance == null) {
+            instance = new PromotionDAO();
+        }
+        return instance;
+    }
+
+    public List<Promotion> getAllPromotion(){
 
         List<Promotion> listPromo = new ArrayList<>();
         String sql = "SELECT id, name FROM promotion";
@@ -26,7 +35,6 @@ public class PromotionDAO {
             PreparedStatement stmt = conn.prepareStatement(sql);){
 
             ResultSet rs = stmt.executeQuery();
-
             while (rs.next()) {
                 listPromo.add(new MapperPromotion().rsToPromotion(rs).get());
             }
@@ -38,7 +46,7 @@ public class PromotionDAO {
         return listPromo;
     }
 
-    public static void afficherPagePromotion(int pageNumber, Page<Promotion> page) {
+    public void afficherPagePromotion(int pageNumber, Page<Promotion> page) {
 
         String sql = "SELECT id, name FROM promotion LIMIT ? OFFSET ?";
 
@@ -61,7 +69,7 @@ public class PromotionDAO {
         }
     }
 
-    public static Optional<Promotion> getPromotion(int id){
+    public Optional<Promotion> getPromotion(int id){
         Connection conn = MySqlConnexion.getInstance().getConnection();
         try(
             PreparedStatement stmt = conn.prepareStatement("SELECT id, name FROM promotion WHERE id = ?")) {

@@ -7,14 +7,13 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import org.oxyl.model.Stagiaire;
 import org.oxyl.newro.Page;
+import org.oxyl.persistence.StagiaireDAO;
+import org.oxyl.persistence.UtilitairesDAO;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.io.IOException;
 
-import static org.oxyl.persistence.StagiaireDAO.deleteIntern;
-import static org.oxyl.persistence.StagiaireDAO.getPageStagiaire;
-import static org.oxyl.persistence.UtilitairesDAO.getTotalPages;
 
 
 @WebServlet("/dashboard")
@@ -41,9 +40,9 @@ public class DashboardServlet extends HttpServlet {
         if(pageTaille != null && !pageTaille.isEmpty()){
             page.setNbRow(Integer.parseInt(pageTaille));
         }
-        getPageStagiaire(pageNum, page);
+        StagiaireDAO.getInstance().getPageStagiaire(pageNum, page);
 
-        int totalPages = getTotalPages("intern", page.getNbRow());
+        int totalPages = UtilitairesDAO.getInstance().getTotalPages("intern", page.getNbRow());
 
         request.setAttribute("size", page.getNbRow());
         request.setAttribute("page", pageNum);
@@ -61,7 +60,7 @@ public class DashboardServlet extends HttpServlet {
         if(!request.getParameter("selection").isEmpty()) {
             String[] idsToDelete = request.getParameter("selection").split(",");
             for (String id : idsToDelete) {
-                deleteIntern(Integer.parseInt(id));
+                StagiaireDAO.getInstance().deleteIntern(Integer.parseInt(id));
             }
         }
         request.setAttribute("isDeleted", isDeleted);

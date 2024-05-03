@@ -14,8 +14,16 @@ import java.sql.SQLException;
 public class QuestionDAO {
 
     private static Logger logger = LoggerFactory.getLogger(QuestionDAO.class);
+    private static QuestionDAO instance;
+    
+    public static QuestionDAO getInstance(){
+        if (instance == null){
+            instance = new QuestionDAO();
+        }
+        return instance;
+    }
 
-    public static void getQuestionById(int questionId) {
+    public void getQuestionById(int questionId) {
 
         PreparedStatement stmt = null;
         ResultSet rs = null;

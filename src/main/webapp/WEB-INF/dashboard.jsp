@@ -23,7 +23,7 @@
     <section id="main">
         <div class="container">
             <h1 id="homeTitle">
-                Stagiaires Trouvés
+                <c:out value="${requestScope.stagiaires.size()} Stagiaires trouvés"/>
             </h1>
             <div id="actions" class="form-horizontal">
                 <div class="pull-left">
