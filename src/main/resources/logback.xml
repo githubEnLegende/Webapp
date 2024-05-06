@@ -1,13 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
 <configuration>
+    <contextName>Tomcat</contextName>
+    <jmxConfigurator contextName="Tomcat" />
+    <!-- Définition de l'appender pour écrire dans un fichier -->
     <appender name="FILE" class="ch.qos.logback.core.FileAppender">
-        <file>logs/mylog.log</file> <!-- Chemin et nom du fichier de log -->
-        <append>true</append> <!-- true si vous voulez ajouter des logs au fichier existant, false pour écraser le fichier existant -->
-        <encoder>
-            <pattern>%d{HH:mm:ss.SSS} [%thread] %-5level %logger{36} - %msg%n</pattern> <!-- Format des logs -->
-        </encoder>
+        <File>/home/oxyl/eclipse-workspace/NewroFactoryMaven//logs/logs.log</File>
+        <Append>true</Append>
+        <BufferedIO>false</BufferedIO>
+        <ImmediateFlush>true</ImmediateFlush>
+        <layout class="ch.qos.logback.classic.PatternLayout">
+            <Pattern>%d{yyyy-MM-dd HH:mm:ss} [%-5p] - %m%n</Pattern>
+        </layout>
     </appender>
 
-    <root level="info">
-        <appender-ref ref="FILE"/>
+    <!-- Configuration des niveaux de log pour chaque appender -->
+    <root level="ALL">
+        <appender-ref ref="FILE" />
     </root>
+
 </configuration>
