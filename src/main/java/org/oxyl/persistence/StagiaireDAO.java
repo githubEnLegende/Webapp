@@ -79,18 +79,19 @@ public class StagiaireDAO {
         String sql = """
                 SELECT id, first_name, last_name, arrival, formation_over, promotion_id
                 FROM intern WHERE first_name LIKE ? OR last_name LIKE ?
-                LIMIT ? OFFSET ?
-                ORDER BY ?;
                 """;
+
+        StringBuilder query = new StringBuilder(sql);
+        query.append(" ORDER BY ").append(page.getOrder()).append(" LIMIT ? OFFSET ?;");
+
         name = "%" + name + "%";
         try (Connection conn = MySqlConnexion.getInstance().getConnection();
-             PreparedStatement stmt = conn.prepareStatement(sql)) {
+             PreparedStatement stmt = conn.prepareStatement(query.toString())) {
 
             stmt.setString(1, name);
             stmt.setString(2, name);
             stmt.setInt(3, page.getNbRow());
             stmt.setInt(4, (page.getPageNumber() - 1) * page.getNbRow());
-            stmt.setString(5, page.getOrder());
 
             try (ResultSet rs = stmt.executeQuery()) {
                 while (rs.next()) {
