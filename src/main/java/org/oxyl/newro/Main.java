@@ -1,5 +1,6 @@
 package org.oxyl.newro;
 
+import org.oxyl.model.Stagiaire;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -16,10 +17,11 @@ public class Main {
 	public static void main(String[] args) {
 		logger.info("Starting Newro...");
     	feur();
-
     }
 
-	private static void e(){}
+//	private static void e(){
+//		System.out.println("feur");
+//	}
 
 
 }

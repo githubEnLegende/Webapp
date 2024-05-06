@@ -43,8 +43,7 @@ public class DashboardServlet extends HttpServlet {
 
         if (search != null && !search.isEmpty()) {
             StagiaireDAO.getInstance().getPageStagiaire(search, page);
-        }
-        else{
+        } else {
             StagiaireDAO.getInstance().getPageStagiaire(page);
         }
 

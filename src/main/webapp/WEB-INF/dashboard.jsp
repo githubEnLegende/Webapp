@@ -60,19 +60,21 @@
                                     </a>
                             </span>
                         </th>
-                        <th>
-                            Stagiaire
+                        <th >
+                            <a href="dashboard?page=${requestScope.page}&size=${size}&order=stagiaire">
+                                Stagiaire
+                            </a>
                         </th>
-                        <th>
-                            Date d'arrivée
+                        <th href="dashboard?page=${requestScope.page}&size=${size}&search=arrival">
+                            <a>Date d'arrivée</a>
                         </th>
                         <!-- Table header for Discontinued Date -->
-                        <th>
-                            Date de fin de formation
+                        <th href="dashboard?page=${requestScope.page}&size=${size}&search=formationOver">
+                            <a>Date de fin de formation</a>
                         </th>
                         <!-- Table header for Company -->
-                        <th>
-                            Promotion
+                        <th href="dashboard?page=${requestScope.page}&size=${size}&search=promotion">
+                            <a>Promotion</a>
                         </th>
 
                     </tr>
@@ -121,16 +123,13 @@
 
 
             <div class="btn-group btn-group-sm pull-right" role="group">
-            <button type="button" class="btn btn-default" >
-                <a href="dashboard?page=1&size=10">10</a>
-            </button>
-            <button type="button" class="btn btn-default">
-                <a href="dashboard?page=1&size=50">50</a>
-            </button>
-            <button type="button" class="btn btn-default">
-                <a href="dashboard?page=1&size=100">100</a>
-            </button>
-        </div>
+                <form action="dashboard?page=1&" method="GET">
+                    <input type="submit" name="size" value="10" class="btn btn-default">
+                    <input type="submit" name="size" value="50" class="btn btn-default">
+                    <input type="submit" name="size" value="100" class="btn btn-default">
+                </form>
+
+            </div>
 	</div>
     </footer>
 <script src="static/js/jquery.min.js"></script>

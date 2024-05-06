@@ -6,7 +6,7 @@ import java.util.List;
 
 public class Page<T> {
     private int nbRow = 50;
-
+    private String order = "first_name";
     private int pageNumber = 1;
     private List<T> content = new ArrayList<>();
 
@@ -40,6 +40,14 @@ public class Page<T> {
 
     public void getListContent(List<T> content) {
         this.content = content;
+    }
+
+    public String getOrder() {
+        return order;
+    }
+
+    public void setOrder(String order) {
+        this.order = order;
     }
 
     public void addContent(T content) {
