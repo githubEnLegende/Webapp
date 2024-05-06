@@ -28,7 +28,7 @@ public class FonctionDIsplay {
 
         while (boucle) {
             System.out.println("Page " + pageNumber + " sur " + totalPages + ":");
-            StagiaireDAO.getInstance().getPageStagiaire(pageNumber, pageStagiaire);
+            StagiaireDAO.getInstance().getPageStagiaire(pageStagiaire);
             pageStagiaire.display();
             pageStagiaire.emptyContent();
             System.out.println("1: Page suivante, 2: Page précédente, 3: Choisissez la page, 0: Quitter");

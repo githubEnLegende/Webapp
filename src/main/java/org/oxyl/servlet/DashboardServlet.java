@@ -28,25 +28,30 @@ public class DashboardServlet extends HttpServlet {
         Page<Stagiaire> page = new Page<>();
         String pageParam = request.getParameter("page");
         String pageTaille = request.getParameter("size");
+        String search = request.getParameter("search");
 
-        int pageNum = 1;
         if (pageParam != null) {
             try {
-                pageNum = Integer.parseInt(pageParam);
+                page.setPageNumber(Integer.parseInt(pageParam));
             } catch (NumberFormatException e) {
                 logger.error("Mauvais format de nombre pour la page", e);
             }
         }
-
         if (pageTaille != null && !pageTaille.isEmpty()) {
             page.setNbRow(Integer.parseInt(pageTaille));
         }
-        StagiaireDAO.getInstance().getPageStagiaire(pageNum, page);
+
+        if (search != null && !search.isEmpty()) {
+            StagiaireDAO.getInstance().getPageStagiaire(search, page);
+        }
+        else{
+            StagiaireDAO.getInstance().getPageStagiaire(page);
+        }
 
         int totalPages = UtilitairesDAO.getInstance().getTotalPages("intern", page.getNbRow());
 
         request.setAttribute("size", page.getNbRow());
-        request.setAttribute("page", pageNum);
+        request.setAttribute("page", page.getPageNumber());
         request.setAttribute("totalPages", totalPages);
         request.setAttribute("stagiaires", page.getStagiaires());
 

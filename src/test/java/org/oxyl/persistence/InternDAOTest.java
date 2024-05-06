@@ -24,7 +24,7 @@ public class InternDAOTest {
     @Test
     public void testPageStagiaire(){
         Page<Stagiaire> pageStagiaire = new Page<>();
-        StagiaireDAO.getInstance().getPageStagiaire(1, pageStagiaire);
+        StagiaireDAO.getInstance().getPageStagiaire(pageStagiaire);
 
     }
 
@@ -53,8 +53,8 @@ public class InternDAOTest {
         StagiaireDAO.getInstance().insertIntern(intern);
 
         Page<Stagiaire> pageStagiaire = new Page<>();
-        StagiaireDAO.getInstance().getPageStagiaire(1, pageStagiaire);
-        StagiaireDAO.getInstance().getPageStagiaire(2, pageStagiaire);
+        StagiaireDAO.getInstance().getPageStagiaire(pageStagiaire);
+        StagiaireDAO.getInstance().getPageStagiaire(pageStagiaire);
 
         System.out.println();
 
@@ -63,8 +63,8 @@ public class InternDAOTest {
         assertEquals(51, stagiaire.getId());
 
         StagiaireDAO.getInstance().deleteIntern(51);
-        StagiaireDAO.getInstance().getPageStagiaire(1, pageStagiaire);
-        StagiaireDAO.getInstance().getPageStagiaire(2, pageStagiaire);
+        StagiaireDAO.getInstance().getPageStagiaire(pageStagiaire);
+        StagiaireDAO.getInstance().getPageStagiaire(pageStagiaire);
 
     }
 

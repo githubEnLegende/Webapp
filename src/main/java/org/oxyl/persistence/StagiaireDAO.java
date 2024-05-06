@@ -40,7 +40,7 @@ public class StagiaireDAO {
             return Optional.empty();
         }
     }
-    public void getPageStagiaire(int pageNumber, Page<Stagiaire> page) {
+    public void getPageStagiaire(Page<Stagiaire> page) {
 
         String sql = "SELECT id, first_name, last_name, arrival, formation_over, promotion_id FROM intern LIMIT ? OFFSET ?";
 
@@ -50,7 +50,7 @@ public class StagiaireDAO {
              PreparedStatement stmt = conn.prepareStatement(sql)) {
 
             stmt.setInt(1, page.getNbRow());
-            stmt.setInt(2, (pageNumber - 1) * page.getNbRow());
+            stmt.setInt(2, (page.getPageNumber() - 1) * page.getNbRow());
             ResultSet rs = stmt.executeQuery();
             while (rs.next()) {
 
@@ -66,6 +66,37 @@ public class StagiaireDAO {
             logger.error("Erreur Lors de l'affichage de la page des stagiaires.", e);
         }
 
+    }
+
+    public void getPageStagiaire(String name, Page page){
+
+        String sql = """
+                SELECT id, first_name, last_name, arrival, formation_over, promotion_id
+                FROM intern WHERE first_name LIKE ? OR last_name LIKE ?
+                LIMIT ? OFFSET ?;
+                """;
+        name = "%" + name + "%";
+        try (Connection conn = MySqlConnexion.getInstance().getConnection();
+             PreparedStatement stmt = conn.prepareStatement(sql)) {
+
+            stmt.setString(1, name);
+            stmt.setString(2, name);
+            stmt.setInt(3, page.getNbRow());
+            stmt.setInt(4, (page.getPageNumber() - 1) * page.getNbRow());
+
+            try (ResultSet rs = stmt.executeQuery()) {
+                while (rs.next()) {
+                    Stagiaire stagiaire = null;
+                    Optional<Stagiaire> intern = MapperStagiaire.getInstance().rsToStagiaire(rs);
+                    if (intern.isPresent()) {
+                        stagiaire = intern.get();
+                    }
+                    page.addContent(stagiaire);
+                }
+            }
+        } catch (SQLException e) {
+            logger.error("Probleme lors de la connexion pour l'affichage sur search", e);
+        }
     }
 
     public Optional<Stagiaire> detailStagiaire(int id) {
@@ -115,7 +146,7 @@ public class StagiaireDAO {
                 stmt.setTimestamp(3, null);
             }
 
-            if (intern.getArrival() != null){
+            if (intern.getFormationOver() != null){
                 Timestamp timestamp = Timestamp.valueOf(intern.getFormationOver().atStartOfDay());
                 stmt.setTimestamp(4, timestamp);
             }else{
@@ -200,10 +231,5 @@ public class StagiaireDAO {
         }
     }
 
-//    public static List<Stagiaire> getStagiairesByName(String name){
-//
-//        String sql = "SELECT id, first_name, last_name, arrival, formation_over, promotion_id FROM intern WHERE first_name = ? OR last_name = ?";
-//
-//    }
 
 }

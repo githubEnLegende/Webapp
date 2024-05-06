@@ -6,6 +6,8 @@ import java.util.List;
 
 public class Page<T> {
     private int nbRow = 50;
+
+    private int pageNumber = 1;
     private List<T> content = new ArrayList<>();
 
 
@@ -14,6 +16,14 @@ public class Page<T> {
 
     public int getNbRow() {
         return nbRow;
+    }
+
+    public int getPageNumber() {
+        return pageNumber;
+    }
+
+    public void setPageNumber(int pageNumber) {
+        this.pageNumber = pageNumber;
     }
 
     public void setNbRow(int nbRow) {
