@@ -3,8 +3,6 @@ package org.oxyl.persistence;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import com.zaxxer.hikari.HikariConfig;
-import com.zaxxer.hikari.HikariDataSource;
 
 import java.sql.Connection;
 import java.sql.DriverManager;
@@ -22,17 +20,6 @@ public class MySqlConnexion {
     private static final String USER = "adminnewro";
     private static final String PASS = "Qw€rty1234";
 
-    private static HikariDataSource dataSource;
-
-    private static void createConnectionHikari(){
-        HikariConfig config = new HikariConfig();
-        config.setJdbcUrl(DB_URL);
-        config.setUsername(USER);
-        config.setPassword(PASS);
-
-        dataSource = new HikariDataSource(config);
-    }
-
     private MySqlConnexion() {
         try {
             if ("test".equals(System.getProperty("environment"))) {
@@ -40,8 +27,8 @@ public class MySqlConnexion {
                 connection = DriverManager.getConnection("jdbc:h2:mem:newro-factory-db;" + "DB_CLOSE_DELAY=-1;DATABASE_TO_UPPER=false;" + "INIT=RUNSCRIPT FROM 'classpath:init.sql';", "testnewro", "T4st3r!");
             } else {
                 Class.forName("com.mysql.cj.jdbc.Driver");
-                createConnectionHikari();
-                connection = dataSource.getConnection();
+                connection = DriverManager.getConnection(DB_URL, USER, PASS);
+
             }
         } catch (SQLException e) {
             logger.error("Erreur lors de la connexion", e);
@@ -70,7 +57,8 @@ public class MySqlConnexion {
 
                         // Configuration pour la base de production
                         Class.forName("com.mysql.cj.jdbc.Driver");
-                        connection = dataSource.getConnection();
+                        connection = DriverManager.getConnection(DB_URL, USER, PASS);
+
                     }
                 } catch (SQLException e) {
                     logger.error("Erreur lors de la connexion", e.getMessage());

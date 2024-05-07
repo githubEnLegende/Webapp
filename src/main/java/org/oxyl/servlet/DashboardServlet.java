@@ -12,6 +12,7 @@ import org.oxyl.persistence.UtilitairesDAO;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+
 import java.io.IOException;
 
 
@@ -43,9 +44,7 @@ public class DashboardServlet extends HttpServlet {
             page.setNbRow(Integer.parseInt(pageTaille));
         }
 
-        if (order != null && !order.isEmpty()) {
-            page.setOrder(order);
-        }
+        page.setOrder(SecureOrder.inEnum(order));
 
         if (search != null && !search.isEmpty()) {
             StagiaireDAO.getInstance().getPageStagiaire(search, page);
