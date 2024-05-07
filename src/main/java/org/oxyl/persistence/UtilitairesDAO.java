@@ -22,7 +22,7 @@ public class UtilitairesDAO {
     }
 
     public int getMaxID() {
-        try (Connection conn = MySqlConnexion.getInstance().getConnection()) {
+        try (Connection conn = DataSource.getConnection()) {
             int maxId = 0;
             String sql = "SELECT MAX(ID) FROM intern";
             ResultSet rs = null;
@@ -46,7 +46,7 @@ public class UtilitairesDAO {
 
         String countQuery = "SELECT COUNT(*) FROM " + table;
 
-        try (Connection connection = MySqlConnexion.getInstance().getConnection();
+        try (Connection connection = DataSource.getConnection();
              PreparedStatement stmt = connection.prepareStatement(countQuery);) {
             ResultSet rs = stmt.executeQuery();
             rs.next();

@@ -31,7 +31,7 @@ public class PromotionDAO {
 
         List<Promotion> listPromo = new ArrayList<>();
         String sql = "SELECT id, name FROM promotion";
-        try (Connection conn = MySqlConnexion.getInstance().getConnection();
+        try (Connection conn = DataSource.getConnection();
              PreparedStatement stmt = conn.prepareStatement(sql);) {
 
             ResultSet rs = stmt.executeQuery();
@@ -50,12 +50,12 @@ public class PromotionDAO {
 
         String sql = "SELECT id, name FROM promotion LIMIT ? OFFSET ?";
 
-        try (Connection conn = MySqlConnexion.getInstance().getConnection();
+        try (Connection conn = DataSource.getConnection();
              PreparedStatement stmt = conn.prepareStatement(sql);) {
             stmt.setInt(1, page.getNbRow());
             stmt.setInt(2, (pageNumber - 1) * page.getNbRow());
             ResultSet rs = stmt.executeQuery();
-
+            
             while (rs.next()) {
                 page.addContent(MapperPromotion.getInstance().rsToPromotion(rs).get());
             }
@@ -70,8 +70,8 @@ public class PromotionDAO {
     }
 
     public Optional<Promotion> getPromotion(int id) {
-        Connection conn = MySqlConnexion.getInstance().getConnection();
-        try (
+
+        try (Connection conn = DataSource.getConnection();
                 PreparedStatement stmt = conn.prepareStatement("SELECT id, name FROM promotion WHERE id = ?")) {
             stmt.setInt(1, id);
             ResultSet rs2 = stmt.executeQuery();

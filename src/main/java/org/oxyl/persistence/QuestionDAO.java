@@ -27,7 +27,7 @@ public class QuestionDAO {
 
         PreparedStatement stmt = null;
         ResultSet rs = null;
-        try (Connection conn = MySqlConnexion.getInstance().getConnection();) {
+        try (Connection conn = DataSource.getConnection();) {
             String sql = "SELECT id, title, statement, chapter_id FROM question WHERE id = ?";
             stmt = conn.prepareStatement(sql);
             stmt.setInt(1, questionId);

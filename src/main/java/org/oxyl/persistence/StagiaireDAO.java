@@ -26,7 +26,7 @@ public class StagiaireDAO {
 
     public Optional<List<Stagiaire>> getAllStagiaires() {
         String sql = "SELECT id, first_name, last_name, arrival, formation_over, promotion_id FROM intern";
-        try (Connection conn = MySqlConnexion.getInstance().getConnection();
+        try (Connection conn = DataSource.getConnection();
              PreparedStatement stmt = conn.prepareStatement(sql)) {
             List<Stagiaire> stagiaires = new ArrayList<>();
 
@@ -50,7 +50,7 @@ public class StagiaireDAO {
 
 //        String sql2 = "SELECT intern.id, first_name, last_name, arrival, formation_over, promotion_id, promotion.name"
 //                + " FROM intern, promotion WHERE intern.promotion_id = promotion.id ORDER BY intern.id;";
-        try (Connection conn = MySqlConnexion.getInstance().getConnection();
+        try (Connection conn = DataSource.getConnection();
              PreparedStatement stmt = conn.prepareStatement(query.toString())) {
 
             stmt.setInt(1, page.getNbRow());
@@ -85,7 +85,7 @@ public class StagiaireDAO {
         query.append(" ORDER BY ").append(page.getOrder()).append(" LIMIT ? OFFSET ?;");
 
         name = "%" + name + "%";
-        try (Connection conn = MySqlConnexion.getInstance().getConnection();
+        try (Connection conn = DataSource.getConnection();
              PreparedStatement stmt = conn.prepareStatement(query.toString())) {
 
             stmt.setString(1, name);
@@ -111,7 +111,7 @@ public class StagiaireDAO {
     public Optional<Stagiaire> detailStagiaire(int id) {
 
         String sql = "SELECT id, first_name, last_name, arrival, formation_over, promotion_id FROM intern WHERE id = ?";
-        try (Connection conn = MySqlConnexion.getInstance().getConnection();
+        try (Connection conn = DataSource.getConnection();
              PreparedStatement stmt = conn.prepareStatement(sql)) {
             stmt.setLong(1, id); // Remplacez 1 par l'ID du stagiaire désiré
             try (ResultSet rs = stmt.executeQuery()) {
@@ -142,7 +142,7 @@ public class StagiaireDAO {
     public void insertIntern(Stagiaire intern) {
         String sql = "INSERT INTO intern (first_name, last_name, arrival, formation_over, promotion_id)"
                 + " VALUES (?, ?, ?, ?, ?)";
-        try (Connection conn = MySqlConnexion.getInstance().getConnection();
+        try (Connection conn = DataSource.getConnection();
              PreparedStatement stmt = conn.prepareStatement(sql)) {
 
             stmt.setString(1, intern.getFirstName());
@@ -176,7 +176,7 @@ public class StagiaireDAO {
 
         String sql = "DELETE FROM intern WHERE id = ?";
 
-        try (Connection conn = MySqlConnexion.getInstance().getConnection();
+        try (Connection conn = DataSource.getConnection();
              PreparedStatement stmt = conn.prepareStatement(sql)) {
             stmt.setLong(1, id);
 
@@ -223,7 +223,7 @@ public class StagiaireDAO {
         sql += " WHERE id = ?";
         parameters.add(id);
 
-        try (Connection conn = MySqlConnexion.getInstance().getConnection();
+        try (Connection conn = DataSource.getConnection();
              PreparedStatement stmt = conn.prepareStatement(sql)) {
 
             // Définir les paramètres

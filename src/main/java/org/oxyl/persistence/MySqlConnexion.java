@@ -24,7 +24,7 @@ public class MySqlConnexion {
 
     private static HikariDataSource dataSource;
 
-    private static void createConnection(){
+    private static void createConnectionHikari(){
         HikariConfig config = new HikariConfig();
         config.setJdbcUrl(DB_URL);
         config.setUsername(USER);
@@ -40,7 +40,7 @@ public class MySqlConnexion {
                 connection = DriverManager.getConnection("jdbc:h2:mem:newro-factory-db;" + "DB_CLOSE_DELAY=-1;DATABASE_TO_UPPER=false;" + "INIT=RUNSCRIPT FROM 'classpath:init.sql';", "testnewro", "T4st3r!");
             } else {
                 Class.forName("com.mysql.cj.jdbc.Driver");
-                createConnection();
+                createConnectionHikari();
                 connection = dataSource.getConnection();
             }
         } catch (SQLException e) {
