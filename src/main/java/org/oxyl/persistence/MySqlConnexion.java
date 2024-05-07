@@ -3,6 +3,9 @@ package org.oxyl.persistence;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import com.zaxxer.hikari.HikariConfig;
+import com.zaxxer.hikari.HikariDataSource;
+
 import java.sql.Connection;
 import java.sql.DriverManager;
 
@@ -10,6 +13,8 @@ import java.sql.SQLException;
 
 
 public class MySqlConnexion {
+
+    private static Logger logger = LoggerFactory.getLogger(MySqlConnexion.class);
     // Informations de connexion à la base de données MySQL
     private static MySqlConnexion instance;
     private Connection connection;
@@ -17,16 +22,26 @@ public class MySqlConnexion {
     private static final String USER = "adminnewro";
     private static final String PASS = "Qw€rty1234";
 
-    private static Logger logger = LoggerFactory.getLogger(MySqlConnexion.class);
+    private static HikariDataSource dataSource;
+
+    private static void createConnection(){
+        HikariConfig config = new HikariConfig();
+        config.setJdbcUrl(DB_URL);
+        config.setUsername(USER);
+        config.setPassword(PASS);
+
+        dataSource = new HikariDataSource(config);
+    }
 
     private MySqlConnexion() {
         try {
             if ("test".equals(System.getProperty("environment"))) {
                 // Configuration pour la base de données H2 en mémoire
-                this.connection = DriverManager.getConnection("jdbc:h2:mem:newro-factory-db;" + "DB_CLOSE_DELAY=-1;DATABASE_TO_UPPER=false;" + "INIT=RUNSCRIPT FROM 'classpath:init.sql';", "testnewro", "T4st3r!");
+                connection = DriverManager.getConnection("jdbc:h2:mem:newro-factory-db;" + "DB_CLOSE_DELAY=-1;DATABASE_TO_UPPER=false;" + "INIT=RUNSCRIPT FROM 'classpath:init.sql';", "testnewro", "T4st3r!");
             } else {
                 Class.forName("com.mysql.cj.jdbc.Driver");
-                connection = DriverManager.getConnection(DB_URL, USER, PASS);
+                createConnection();
+                connection = dataSource.getConnection();
             }
         } catch (SQLException e) {
             logger.error("Erreur lors de la connexion", e);
@@ -55,7 +70,7 @@ public class MySqlConnexion {
 
                         // Configuration pour la base de production
                         Class.forName("com.mysql.cj.jdbc.Driver");
-                        connection = DriverManager.getConnection(DB_URL, USER, PASS);
+                        connection = dataSource.getConnection();
                     }
                 } catch (SQLException e) {
                     logger.error("Erreur lors de la connexion", e.getMessage());
@@ -69,17 +84,4 @@ public class MySqlConnexion {
         }
         return connection;
     }
-
-    public void closeConnection() {
-        try {
-            if (connection != null && !connection.isClosed()) {
-                connection.close();
-            }
-        } catch (SQLException e) {
-            logger.error("Erreur lors de la fermeture de la connexion", e.getMessage());
-
-        }
-    }
-
-
 }

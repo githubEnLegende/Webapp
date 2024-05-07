@@ -29,6 +29,7 @@ public class DashboardServlet extends HttpServlet {
         String pageParam = request.getParameter("page");
         String pageTaille = request.getParameter("size");
         String search = request.getParameter("search");
+        String order = request.getParameter("order");
 
         if (pageParam != null) {
             try {
@@ -37,8 +38,13 @@ public class DashboardServlet extends HttpServlet {
                 logger.error("Mauvais format de nombre pour la page", e);
             }
         }
+
         if (pageTaille != null && !pageTaille.isEmpty()) {
             page.setNbRow(Integer.parseInt(pageTaille));
+        }
+
+        if (order != null && !order.isEmpty()) {
+            page.setOrder(order);
         }
 
         if (search != null && !search.isEmpty()) {
@@ -51,6 +57,7 @@ public class DashboardServlet extends HttpServlet {
 
         request.setAttribute("size", page.getNbRow());
         request.setAttribute("page", page.getPageNumber());
+        request.setAttribute("order", page.getOrder());
         request.setAttribute("totalPages", totalPages);
         request.setAttribute("stagiaires", page.getStagiaires());
 

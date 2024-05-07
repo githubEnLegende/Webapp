@@ -1,6 +1,8 @@
 package org.oxyl.persistence;
 
 import jdk.jshell.execution.Util;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -10,6 +12,7 @@ import java.sql.SQLException;
 public class UtilitairesDAO {
 
     private static UtilitairesDAO instance;
+    private final static Logger logger = LoggerFactory.getLogger(UtilitairesDAO.class);
 
     public static UtilitairesDAO getInstance() {
         if (instance == null) {
@@ -30,12 +33,13 @@ public class UtilitairesDAO {
                     return maxId = rs.getInt(1);
                 }
             } catch (SQLException e) {
-                e.printStackTrace();
+                logger.error("Erreur lors de la récupération du max ID", e);
             }
             return maxId;
         } catch (SQLException e) {
-            throw new RuntimeException(e);
+            logger.error("Erreur lors de la récupération du max ID", e);
         }
+        return 0;
     }
 
     public int getTotalPages(String table, int rowsPerPage) {
@@ -51,7 +55,7 @@ public class UtilitairesDAO {
             // Calcul du nombre total de pages
             return (int) Math.ceil((double) totalRows / rowsPerPage);
         } catch (SQLException e) {
-            e.printStackTrace();
+            logger.error("Erreur lors de la récupération du total des pages", e);
             return 0;
         }
     }
