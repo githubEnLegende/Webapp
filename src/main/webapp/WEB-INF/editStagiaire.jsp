@@ -28,7 +28,7 @@
                     </div>
                     <h1>Modification stagiaire</h1>
 
-                    <form action="editStagiaire" method="POST">
+                    <form action="editStagiaire" method="POST" onsubmit="return validateForm()">
                         <input type="hidden" name="id" value="<%= request.getParameter("id") %>" id="id"/> <!-- TODO: Change this value with the computer id -->
                         <fieldset>
                             <c:set var="validator" value="${requestScope.stagiaireValidator}"/>
@@ -82,4 +82,33 @@
         </div>
     </section>
 </body>
+
+<script>
+    function validateForm() {
+        // Validate first name
+        var firstName = document.getElementById("firstName").value;
+        if (!/^[a-zA-ZÀ-ÿ\s'-]+$/.test(firstName)) {
+            alert("Please enter a valid first name (only letters and spaces allowed).");
+            return false;
+        }
+
+        // Validate last name
+        var lastName = document.getElementById("lastName").value;
+        if (!/^[a-zA-ZÀ-ÿ\s'-]+$/.test(lastName)) {
+            alert("Please enter a valid last name (only letters and spaces allowed).");
+            return false;
+        }
+
+        // Validate formation over date if present
+        var formationOver = document.getElementById("finFormation").value;
+        var arrival = document.getElementById("arrival").value;
+        if (formationOver && formationOver < arrival) {
+            alert("Formation Over Date must be after Arrival Date.");
+            return false;
+        }
+
+        return true;
+    }
+</script>
+
 </html>

@@ -65,4 +65,27 @@ public class QuestionDAO {
             }
         }
     }
+
+    public void deleteQuestion(int id) {
+        String answerQuery = "DELETE FROM answer WHERE question_id = ?";
+        String questionQuery = "DELETE FROM question WHERE id = ?";
+        try (Connection conn = DataSource.getConnection();
+             PreparedStatement answStmt = conn.prepareStatement(answerQuery);
+             PreparedStatement questStmt = conn.prepareStatement(questionQuery)) {
+
+            conn.setAutoCommit(false);
+
+            answStmt.setInt(1, id);
+            questStmt.setInt(1, id);
+
+            answStmt.execute();
+            questStmt.execute();
+
+            conn.commit();
+
+        } catch (SQLException e) {
+            logger.error("Problème lors de l'accès à la bdd", e);
+            System.out.println("Erreur lors de la supression question");
+        }
+    }
 }

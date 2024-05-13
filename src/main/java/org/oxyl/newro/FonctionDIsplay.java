@@ -235,4 +235,15 @@ public class FonctionDIsplay {
             System.out.println("ID invalide");
         }
     }
+
+    public static void DisplaySupprimerQuestion(Scanner sc) {
+        System.out.println("Entrez l'ID de la question à supprimer : ");
+        String userChoice = sc.nextLine();
+        try{
+            int id = Integer.parseInt(userChoice);
+            QuestionDAO.getInstance().deleteQuestion(id);
+        } catch (NumberFormatException e) {
+            System.out.println("ID invalide");
+        }
+    }
 }

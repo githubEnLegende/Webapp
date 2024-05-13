@@ -25,6 +25,7 @@ public class Display {
             System.out.println("5: Ajouter un stagiaire ");
             System.out.println("6: Modifier un stagiaire ");
             System.out.println("7: Supprimer un stagiaire ");
+            System.out.println("8: Supprimer une question ");
 
             System.out.print("Choix : ");
             String choix = sc.nextLine();
@@ -62,6 +63,10 @@ public class Display {
 
                 case "7":
                     DiplaySupprimerStagiaire(sc);
+                    break;
+
+                case "8":
+                    DisplaySupprimerQuestion(sc);
                     break;
 
                 default:

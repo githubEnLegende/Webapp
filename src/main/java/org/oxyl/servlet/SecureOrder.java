@@ -20,7 +20,6 @@ public enum SecureOrder {
 
     public static String inEnum(String order){
         for(SecureOrder secureOrder : SecureOrder.values()){
-            System.out.println(secureOrder.name());
             if(secureOrder.getName().equals(order)){
                 return secureOrder.getName();
             }
