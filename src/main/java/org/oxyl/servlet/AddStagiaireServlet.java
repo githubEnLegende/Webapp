@@ -30,6 +30,7 @@ public class AddStagiaireServlet extends HttpServlet {
     private PromotionDAO promotionDAO;
     private StagiaireDAO stagiaireDAO;
     private UtilitairesDAO utilitairesDAO;
+    private ValidatorStagiaire validatorStagiaire;
 
     public void init(){
         var context = new AnnotationConfigApplicationContext(DataSource.class);
@@ -37,6 +38,7 @@ public class AddStagiaireServlet extends HttpServlet {
         stagiaireDAO = context.getBean(StagiaireDAO.class);
         promotionDAO = context.getBean(PromotionDAO.class);
         utilitairesDAO = context.getBean(UtilitairesDAO.class);
+        validatorStagiaire = context.getBean(ValidatorStagiaire.class);
     }
 
 
@@ -59,20 +61,23 @@ public class AddStagiaireServlet extends HttpServlet {
         String arrival = request.getParameter("arrival");
         String finFormation = request.getParameter("finFormation");
         String promotionId = request.getParameter("promotionId");
+        String promotionName = request.getParameter("promotionName");
 
 
         StagiaireDTO stagiaire = new StagiaireDTO(lastName, firstName, arrival, finFormation, promotionId);
 
-        Map<Integer, String> stagiaireValidator = ValidatorStagiaire.getInstance().stagiaireValidator(stagiaire);
+        Map<Integer, String> stagiaireValidator = validatorStagiaire.stagiaireValidator(stagiaire);
 
         if (stagiaireValidator.isEmpty()) {
 
             LocalDate finFormationDate = mapperDate.stringtoLocalDate(finFormation);
 
+            Promotion promotion = new Promotion.PromotionBuilder(Integer.parseInt(promotionId), promotionId).build();
+
             Stagiaire intern = new Stagiaire.StagiaireBuilder(utilitairesDAO.getMaxID() + 1,
                     firstName, lastName, LocalDate.parse(arrival))
                     .formationOver(finFormationDate)
-                    .promotion(Integer.parseInt(promotionId)).build();
+                    .promotion(promotion).build();
 
             stagiaireDAO.insertIntern(intern);
             response.sendRedirect("dashboard");

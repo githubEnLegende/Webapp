@@ -4,6 +4,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.Optional;
 
+import org.oxyl.model.Promotion;
 import org.oxyl.model.Stagiaire;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -18,6 +19,9 @@ public class MapperStagiaire {
 
     public Optional<Stagiaire> rsToStagiaire(ResultSet rs) {
         try {
+
+            Promotion promotion = new Promotion.PromotionBuilder(rs.getInt("promotion_id"), rs.getString("name")).build();
+
             return Optional.of(new Stagiaire.StagiaireBuilder(rs.getInt("id"),
                     rs.getString("first_name"),
                     rs.getString("last_name"),
@@ -25,8 +29,7 @@ public class MapperStagiaire {
                             == null ? null : rs.getTimestamp("arrival").toLocalDateTime().toLocalDate())
                     .formationOver(rs.getTimestamp("formation_over")
                             == null ? null : rs.getTimestamp("formation_over").toLocalDateTime().toLocalDate())
-                    .promotion(rs.getInt("promotion_id"))
-
+                    .promotion(promotion)
                     .build());
         } catch (SQLException e) {
             logger.error("Erreur Base de donnée", e);

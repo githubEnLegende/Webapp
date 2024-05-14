@@ -14,6 +14,7 @@ public class InternDAOTest {
 
     private H2Config h2Config = H2Config.getInstance();
 
+    private StagiaireDAO stagiaireDAO;
 
     @BeforeEach
     public void setup(){
@@ -24,13 +25,13 @@ public class InternDAOTest {
     @Test
     public void testPageStagiaire(){
         Page<Stagiaire> pageStagiaire = new Page<>();
-        StagiaireDAO.getInstance().getPageStagiaire(pageStagiaire);
+        stagiaireDAO.getPageStagiaire(pageStagiaire);
 
     }
 
     @Test
     public void testIntern() {
-        var option = StagiaireDAO.getInstance().detailStagiaire(20);
+        var option = stagiaireDAO.detailStagiaire(20);
         assertTrue(option.isPresent());
         Stagiaire stagiaire = option.get();
 
@@ -50,28 +51,28 @@ public class InternDAOTest {
                 .promotion(promo)
                 .formationOver(null).build();
 
-        StagiaireDAO.getInstance().insertIntern(intern);
+        stagiaireDAO.insertIntern(intern);
 
         Page<Stagiaire> pageStagiaire = new Page<>();
-        StagiaireDAO.getInstance().getPageStagiaire(pageStagiaire);
-        StagiaireDAO.getInstance().getPageStagiaire(pageStagiaire);
+        stagiaireDAO.getPageStagiaire(pageStagiaire);
+        stagiaireDAO.getPageStagiaire(pageStagiaire);
 
         System.out.println();
 
-        Stagiaire stagiaire = StagiaireDAO.getInstance().detailStagiaire(51).get();
+        Stagiaire stagiaire = stagiaireDAO.detailStagiaire(51).get();
         assertNotNull(stagiaire);
         assertEquals(51, stagiaire.getId());
 
-        StagiaireDAO.getInstance().deleteIntern(51);
-        StagiaireDAO.getInstance().getPageStagiaire(pageStagiaire);
-        StagiaireDAO.getInstance().getPageStagiaire(pageStagiaire);
+        stagiaireDAO.deleteIntern(51);
+        stagiaireDAO.getPageStagiaire(pageStagiaire);
+        stagiaireDAO.getPageStagiaire(pageStagiaire);
 
     }
 
     @Test
     public void testUpdateIntern(){
-        StagiaireDAO.getInstance().updateIntern("Franck", "Alonso", null, null, 1, 50);
-        Stagiaire stagiaire = StagiaireDAO.getInstance().detailStagiaire(50).get();
+        stagiaireDAO.updateIntern("Franck", "Alonso", null, null, 1, 50);
+        Stagiaire stagiaire = stagiaireDAO.detailStagiaire(50).get();
 
 
     }

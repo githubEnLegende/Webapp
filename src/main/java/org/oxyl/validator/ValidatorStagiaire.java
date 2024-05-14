@@ -1,23 +1,17 @@
 package org.oxyl.validator;
 
 import org.oxyl.dto.StagiaireDTO;
+import org.springframework.stereotype.Component;
 
 import java.time.LocalDate;
 import java.util.HashMap;
 import java.util.Map;
 
+@Component
 public class ValidatorStagiaire {
 
-    private static ValidatorStagiaire Instance;
 
     private ValidatorStagiaire() {
-    }
-
-    public static ValidatorStagiaire getInstance() {
-        if (Instance == null) {
-            Instance = new ValidatorStagiaire();
-        }
-        return Instance;
     }
 
     public Map<Integer, String> stagiaireValidator(StagiaireDTO stagiaire) {

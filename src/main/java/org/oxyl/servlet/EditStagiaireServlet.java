@@ -29,11 +29,13 @@ public class EditStagiaireServlet extends HttpServlet {
 
     private PromotionDAO promotionDAO;
     private StagiaireDAO stagiaireDAO;
+    private ValidatorStagiaire validatorStagiaire;
 
     public void init(){
         var context = new AnnotationConfigApplicationContext(DataSource.class);
         stagiaireDAO = context.getBean(StagiaireDAO.class);
         promotionDAO = context.getBean(PromotionDAO.class);
+        validatorStagiaire = context.getBean(ValidatorStagiaire.class);
     }
 
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
@@ -64,7 +66,7 @@ public class EditStagiaireServlet extends HttpServlet {
         String promotionId = request.getParameter("promotionId");
 
         StagiaireDTO stagiaire = new StagiaireDTO(lastName, firstName, arrival, finFormation, promotionId);
-        Map<Integer, String> stagiaireValidator = ValidatorStagiaire.getInstance().stagiaireValidator(stagiaire);
+        Map<Integer, String> stagiaireValidator = validatorStagiaire.stagiaireValidator(stagiaire);
 
         if (stagiaireValidator.isEmpty()) {
 

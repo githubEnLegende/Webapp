@@ -24,29 +24,29 @@ public class StagiaireTest extends TestCase {
         assertEquals(1, stagiaire.getPromotion().getId());
     }
 
-    public void testPromotionIdTropEleve() {
-        // Création d'un Stagiaire avec un promotionId trop élevé
-        Stagiaire stagiaire = new Stagiaire.StagiaireBuilder(1, "John", "Doe",
-                LocalDate.of(2022, 1, 1))
-                .promotion(100)
-                .formationOver(LocalDate.of(2022, 12, 31))
-                .build();
+//    public void testPromotionIdTropEleve() {
+//        // Création d'un Stagiaire avec un promotionId trop élevé
+//        Stagiaire stagiaire = new Stagiaire.StagiaireBuilder(1, "John", "Doe",
+//                LocalDate.of(2022, 1, 1))
+//                .promotion(100)
+//                .formationOver(LocalDate.of(2022, 12, 31))
+//                .build();
+//
+//        // Vérification que le promotionId est fixé à 47
+//        assertEquals(47, stagiaire.getPromotion().getId());
+//    }
 
-        // Vérification que le promotionId est fixé à 47
-        assertEquals(47, stagiaire.getPromotion().getId());
-    }
-
-    public void testPromotionIdTropBas() {
-        // Création d'un Stagiaire avec un promotionId trop élevé
-        Stagiaire stagiaire = new Stagiaire.StagiaireBuilder(1, "John", "Doe",
-                LocalDate.of(2022, 1, 1))
-                .promotion(-10)
-                .formationOver(LocalDate.of(2022, 12, 31))
-                .build();
-
-        // Vérification que le promotionId est fixé à 47
-        assertEquals(1, stagiaire.getPromotion().getId());
-    }
+//    public void testPromotionIdTropBas() {
+//        // Création d'un Stagiaire avec un promotionId trop élevé
+//        Stagiaire stagiaire = new Stagiaire.StagiaireBuilder(1, "John", "Doe",
+//                LocalDate.of(2022, 1, 1))
+//                .promotion(-10)
+//                .formationOver(LocalDate.of(2022, 12, 31))
+//                .build();
+//
+//        // Vérification que le promotionId est fixé à 47
+//        assertEquals(1, stagiaire.getPromotion().getId());
+//    }
 
 
 

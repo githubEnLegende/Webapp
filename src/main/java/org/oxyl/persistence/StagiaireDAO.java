@@ -45,14 +45,12 @@ public class StagiaireDAO {
     }
     public void getPageStagiaire(Page<Stagiaire> page) {
 
-        String sql = "SELECT id, first_name, last_name, arrival, formation_over, promotion_id FROM intern";
+        String sql = "SELECT intern.id, first_name, last_name, arrival, formation_over, promotion_id, promotion.name " +
+                "FROM intern LEFT JOIN promotion ON intern.promotion_id = promotion.id";
 
         StringBuilder query = new StringBuilder(sql);
         query.append(" ORDER BY ").append(page.getOrder()).append(" LIMIT ? OFFSET ?;");
 
-
-//        String sql2 = "SELECT intern.id, first_name, last_name, arrival, formation_over, promotion_id, promotion.name"
-//                + " FROM intern, promotion WHERE intern.promotion_id = promotion.id ORDER BY intern.id;";
         try (Connection conn = dataSource.getConnection();
              PreparedStatement stmt = conn.prepareStatement(query.toString())) {
 
@@ -79,12 +77,15 @@ public class StagiaireDAO {
 
     public void getPageStagiaire(String name, Page<Stagiaire> page){
 
-        String sql = """
-                SELECT id, first_name, last_name, arrival, formation_over, promotion_id
-                FROM intern WHERE first_name LIKE ? OR last_name LIKE ?
-                """;
+//        String sql = """
+//                SELECT id, first_name, last_name, arrival, formation_over, promotion_id
+//                FROM intern WHERE first_name LIKE ? OR last_name LIKE ?
+//                """;
 
-        StringBuilder query = new StringBuilder(sql);
+        String sql2 = "SELECT intern.id, first_name, last_name, arrival, formation_over, promotion_id, promotion.name " +
+                "FROM intern LEFT JOIN promotion ON intern.promotion_id = promotion.id WHERE first_name LIKE ? OR last_name LIKE ?";
+
+        StringBuilder query = new StringBuilder(sql2);
         query.append(" ORDER BY ").append(page.getOrder()).append(" LIMIT ? OFFSET ?;");
 
         name = "%" + name + "%";
@@ -113,30 +114,24 @@ public class StagiaireDAO {
 
     public Optional<Stagiaire> detailStagiaire(int id) {
 
-        String sql = "SELECT id, first_name, last_name, arrival, formation_over, promotion_id FROM intern WHERE id = ?";
+        String sql = "SELECT intern.id, first_name, last_name, arrival, formation_over, promotion_id, promotion.name " +
+                "FROM intern LEFT JOIN promotion ON intern.promotion_id = promotion.id WHERE intern.id = ?";
         try (Connection conn = dataSource.getConnection();
              PreparedStatement stmt = conn.prepareStatement(sql)) {
             stmt.setLong(1, id); // Remplacez 1 par l'ID du stagiaire désiré
             try (ResultSet rs = stmt.executeQuery()) {
                 if (rs.next()) {
                     // Affichage des données
-                    Stagiaire random = new Stagiaire.StagiaireBuilder(rs.getInt("id"),
-                            rs.getString("first_name"),
-                            rs.getString("last_name"),
-                            rs.getTimestamp("arrival")
-                                    == null ? null : rs.getTimestamp("arrival").toLocalDateTime().toLocalDate())
-                            .promotion(rs.getInt("promotion_id"))
-                            .formationOver(rs.getTimestamp("formation_over")
-                                    == null ? null : rs.getTimestamp("formation_over").toLocalDateTime().toLocalDate())
-                            .build();
-                    System.out.println(random.toString());
-                    return Optional.of(random);
+                    Optional<Stagiaire> random = mapperStagiaire.rsToStagiaire(rs);
+                    System.out.println(random);
+                    return random;
                 } else {
                     System.out.println("Aucun résultat trouvé.");
                 }
             }
         } catch (SQLException e) {
             logger.error("Erreur requête SQL pour le détail stagiaire");
+            System.out.println(e);
             return Optional.empty();
         }
         return Optional.empty();

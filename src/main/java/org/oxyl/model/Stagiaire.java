@@ -112,15 +112,15 @@ public class Stagiaire {
 	    	return this;
 	    }
 
-		public StagiaireBuilder promotion(int promotion){
-			Optional<Promotion> promotionOptional = promotionDAO.getPromotion(promotion);
-			if (promotionOptional.isPresent()) {
-				this.promotion = promotionOptional.get();
-			}else {
-				this.promotion = null;
-			}
-			return this;
-		}
+//		public StagiaireBuilder promotion(int promotion){
+//			Optional<Promotion> promotionOptional = promotionDAO.getPromotion(promotion);
+//			if (promotionOptional.isPresent()) {
+//				this.promotion = promotionOptional.get();
+//			}else {
+//				this.promotion = null;
+//			}
+//			return this;
+//		}
 	    
 	    public Stagiaire build() {
 	    	return new Stagiaire(this);

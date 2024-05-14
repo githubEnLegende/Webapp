@@ -136,7 +136,7 @@ public class FonctionDIsplay {
     public static void DisplayAjouterStagiaire(Scanner sc) {
         try (Connection conn = MySqlConnexion.getInstance().getConnection()) {
             System.out.println("Entrez son prénom, nom, date d'arrivée et l'id de sa promotion :");
-            Stagiaire random = new Stagiaire.StagiaireBuilder(utilitairesDAO.getMaxID() + 1, sc.next(), sc.next(), LocalDate.parse(sc.next(), DateTimeFormatter.ofPattern("dd-MM-yyyy"))).promotion(sc.nextInt()).build();
+            Stagiaire random = new Stagiaire.StagiaireBuilder(utilitairesDAO.getMaxID() + 1, sc.next(), sc.next(), LocalDate.parse(sc.next(), DateTimeFormatter.ofPattern("dd-MM-yyyy"))).build();
 
             stagiaireDAO.insertIntern(random);
         } catch (InputMismatchException e) {

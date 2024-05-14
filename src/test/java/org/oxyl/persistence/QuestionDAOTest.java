@@ -7,7 +7,7 @@ import org.junit.jupiter.api.BeforeEach;
 public class QuestionDAOTest extends TestCase {
 
     private final H2Config h2Config = H2Config.getInstance();
-    private QuestionDAO questionDAO = QuestionDAO.getInstance();
+    private QuestionDAO questionDAO;
 
     @BeforeEach
     public void setup(){
