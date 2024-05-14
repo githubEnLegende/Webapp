@@ -1,28 +1,28 @@
 package org.oxyl.persistence;
 
+import com.zaxxer.hikari.HikariDataSource;
 import jdk.jshell.execution.Util;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.stereotype.Repository;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
+@Repository
 public class UtilitairesDAO {
 
-    private static UtilitairesDAO instance;
+    private final HikariDataSource dataSource;
     private final static Logger logger = LoggerFactory.getLogger(UtilitairesDAO.class);
 
-    public static UtilitairesDAO getInstance() {
-        if (instance == null) {
-            instance = new UtilitairesDAO();
-        }
-        return instance;
+    public UtilitairesDAO(HikariDataSource dataSource) {
+        this.dataSource = dataSource;
     }
 
     public int getMaxID() {
-        try (Connection conn = DataSource.getConnection()) {
+        try (Connection conn = dataSource.getConnection()) {
             int maxId = 0;
             String sql = "SELECT MAX(ID) FROM intern";
             ResultSet rs = null;
@@ -46,7 +46,7 @@ public class UtilitairesDAO {
 
         String countQuery = "SELECT COUNT(*) FROM " + table;
 
-        try (Connection connection = DataSource.getConnection();
+        try (Connection connection = dataSource.getConnection();
              PreparedStatement stmt = connection.prepareStatement(countQuery);) {
             ResultSet rs = stmt.executeQuery();
             rs.next();

@@ -79,7 +79,7 @@ public class Stagiaire {
 	    private LocalDate arrival;
 	    private LocalDate formationOver;
 	    private Promotion promotion;
-	    
+
 	    public StagiaireBuilder (int id, String firstName, String lastName, LocalDate arrival) {
 	    	this.id = id;
 	    	this.firstName = firstName;
@@ -113,7 +113,7 @@ public class Stagiaire {
 	    }
 
 		public StagiaireBuilder promotion(int promotion){
-			Optional<Promotion> promotionOptional = PromotionDAO.getInstance().getPromotion(promotion);
+			Optional<Promotion> promotionOptional = promotionDAO.getPromotion(promotion);
 			if (promotionOptional.isPresent()) {
 				this.promotion = promotionOptional.get();
 			}else {

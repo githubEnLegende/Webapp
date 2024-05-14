@@ -1,33 +1,35 @@
 package org.oxyl.persistence;
 
+import com.zaxxer.hikari.HikariDataSource;
 import org.oxyl.model.Question;
 import org.oxyl.model.Reponse;
 import org.oxyl.mapper.MapperReponse;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.stereotype.Repository;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
+@Repository
 public class QuestionDAO {
 
     private static Logger logger = LoggerFactory.getLogger(QuestionDAO.class);
-    private static QuestionDAO instance;
+    private MapperReponse mapperReponse;
 
-    public static QuestionDAO getInstance() {
-        if (instance == null) {
-            instance = new QuestionDAO();
-        }
-        return instance;
+    private final HikariDataSource dataSource;
+
+    public QuestionDAO(HikariDataSource dataSource) {
+        this.dataSource = dataSource;
     }
 
     public void getQuestionById(int questionId) {
 
         PreparedStatement stmt = null;
         ResultSet rs = null;
-        try (Connection conn = DataSource.getConnection();) {
+        try (Connection conn = dataSource.getConnection();) {
             String sql = "SELECT id, title, statement, chapter_id FROM question WHERE id = ?";
             stmt = conn.prepareStatement(sql);
             stmt.setInt(1, questionId);
@@ -47,7 +49,7 @@ public class QuestionDAO {
                 rs = stmt.executeQuery();
 
                 while (rs.next()) {
-                    Reponse reponse = MapperReponse.getInstance().rsToReponse(rs).get();
+                    Reponse reponse = mapperReponse.rsToReponse(rs).get();
                     System.out.println(reponse.toString());
                 }
             } else {
@@ -69,7 +71,7 @@ public class QuestionDAO {
     public void deleteQuestion(int id) {
         String answerQuery = "DELETE FROM answer WHERE question_id = ?";
         String questionQuery = "DELETE FROM question WHERE id = ?";
-        try (Connection conn = DataSource.getConnection();
+        try (Connection conn = dataSource.getConnection();
              PreparedStatement answStmt = conn.prepareStatement(answerQuery);
              PreparedStatement questStmt = conn.prepareStatement(questionQuery)) {
 
@@ -80,12 +82,18 @@ public class QuestionDAO {
 
             answStmt.execute();
             questStmt.execute();
+            try{
+                conn.commit();
+            }catch (SQLException e){
+                conn.rollback();
+                System.out.println("Erreur lors du commit lors de la délétion des questions");
+                logger.error("Erreur lors du commit lors de la délétion des questions", e);
+            }
 
-            conn.commit();
-
+            System.out.println("Question suprimée");
         } catch (SQLException e) {
             logger.error("Problème lors de l'accès à la bdd", e);
-            System.out.println("Erreur lors de la supression question");
+            System.out.println("Erreur de connexion lors de la supression question");
         }
     }
 }

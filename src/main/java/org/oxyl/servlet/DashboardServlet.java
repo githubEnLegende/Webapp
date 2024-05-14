@@ -7,10 +7,12 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import org.oxyl.model.Stagiaire;
 import org.oxyl.newro.Page;
+import org.oxyl.persistence.DataSource;
 import org.oxyl.persistence.StagiaireDAO;
 import org.oxyl.persistence.UtilitairesDAO;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.context.annotation.AnnotationConfigApplicationContext;
 
 
 import java.io.IOException;
@@ -20,6 +22,15 @@ import java.io.IOException;
 public class DashboardServlet extends HttpServlet {
 
     private static final Logger logger = LoggerFactory.getLogger(DashboardServlet.class);
+
+    private StagiaireDAO stagiaireDAO;
+    private UtilitairesDAO utilitairesDAO;
+
+    public void init(){
+        var context = new AnnotationConfigApplicationContext(DataSource.class);
+        stagiaireDAO = context.getBean(StagiaireDAO.class);
+        utilitairesDAO = context.getBean(UtilitairesDAO.class);
+    }
 
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
@@ -47,18 +58,19 @@ public class DashboardServlet extends HttpServlet {
         page.setOrder(SecureOrder.inEnum(order));
 
         if (search != null && !search.isEmpty()) {
-            StagiaireDAO.getInstance().getPageStagiaire(search, page);
+            stagiaireDAO.getPageStagiaire(search, page);
         } else {
-            StagiaireDAO.getInstance().getPageStagiaire(page);
+            stagiaireDAO.getPageStagiaire(page);
         }
 
-        int totalPages = UtilitairesDAO.getInstance().getTotalPages("intern", page.getNbRow());
+        int totalPages = utilitairesDAO.getTotalPages("intern", page.getNbRow());
 
         request.setAttribute("size", page.getNbRow());
         request.setAttribute("page", page.getPageNumber());
         request.setAttribute("order", page.getOrder());
         request.setAttribute("totalPages", totalPages);
         request.setAttribute("stagiaires", page.getStagiaires());
+        request.setAttribute("search", search);
 
         request.getRequestDispatcher("WEB-INF/dashboard.jsp").forward(request, response);
 
@@ -72,7 +84,7 @@ public class DashboardServlet extends HttpServlet {
         if (!request.getParameter("selection").isEmpty()) {
             String[] idsToDelete = request.getParameter("selection").split(",");
             for (String id : idsToDelete) {
-                StagiaireDAO.getInstance().deleteIntern(Integer.parseInt(id));
+                stagiaireDAO.deleteIntern(Integer.parseInt(id));
             }
         }
         request.setAttribute("isDeleted", isDeleted);

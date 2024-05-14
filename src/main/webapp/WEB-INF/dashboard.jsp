@@ -61,20 +61,20 @@
                             </span>
                         </th>
                         <th >
-                            <a href="dashboard?page=${requestScope.page}&size=${size}&order=first_name">
+                            <a href="dashboard?page=${requestScope.page}&size=${size}&order=first_name&search=${search}">
                                 Stagiaire
                             </a>
                         </th>
                         <th>
-                            <a href="dashboard?page=${requestScope.page}&size=${size}&order=arrival">Date d'arrivée</a>
+                            <a href="dashboard?page=${requestScope.page}&size=${size}&order=arrival&search=${search}">Date d'arrivée</a>
                         </th>
                         <!-- Table header for Discontinued Date -->
                         <th>
-                            <a href="dashboard?page=${requestScope.page}&size=${size}&order=formation_over">Date de fin de formation</a>
+                            <a href="dashboard?page=${requestScope.page}&size=${size}&order=formation_over&search=${search}">Date de fin de formation</a>
                         </th>
                         <!-- Table header for Company -->
                         <th>
-                            <a href="dashboard?page=${requestScope.page}&size=${size}&order=promotion_id">Promotion</a>
+                            <a href="dashboard?page=${requestScope.page}&size=${size}&order=promotion_id&search=${search}">Promotion</a>
                         </th>
 
                     </tr>
@@ -103,19 +103,19 @@
                 <c:set var="startPage" value="${Math.min(totalPages-4,Math.max(1, page - 2))}"/>
                 <c:set var="endPage" value="${Math.max(5,Math.min(totalPages+0, page + 2))}"/>
                 <li>
-                    <a href="dashboard?page=1&size=${size}&order=${requestScope.order}" aria-label="Previous">
+                    <a href="dashboard?page=1&size=${size}&order=${requestScope.order}&search=${search}" aria-label="Previous">
                         <span aria-hidden="true">&laquo;</span>
                     </a>
                 </li>
                 <c:forEach var="pageNumber" begin="${startPage}" end="${endPage}">
                     <li class="${page == pageNumber ? "active" : ""}">
-                        <a href="dashboard?page=${pageNumber}&size=${size}&order=${requestScope.order}">
+                        <a href="dashboard?page=${pageNumber}&size=${size}&order=${requestScope.order}&search=${search}">
                             <c:out value="${pageNumber}" />
                         </a>
                     </li>
                 </c:forEach>
                 <li>
-                    <a href="dashboard?page=${totalPages}&size=${size}&order=${requestScope.order}" aria-label="Next">
+                    <a href="dashboard?page=${totalPages}&size=${size}&order=${requestScope.order}&search=${search}" aria-label="Next">
                         <span aria-hidden="true">&raquo;</span>
                     </a>
                 </li>
@@ -123,7 +123,7 @@
 
 
             <div class="btn-group btn-group-sm pull-right" role="group">
-                <form action="dashboard?page=1&&order=${requestScope.order}" method="GET">
+                <form action="dashboard?page=1&order=${requestScope.order}&search=${search}" method="GET">
                     <input type="submit" name="size" value="10" class="btn btn-default">
                     <input type="submit" name="size" value="50" class="btn btn-default">
                     <input type="submit" name="size" value="100" class="btn btn-default">

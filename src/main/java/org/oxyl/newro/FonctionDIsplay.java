@@ -10,25 +10,32 @@ import java.time.format.DateTimeParseException;
 import java.util.InputMismatchException;
 import java.util.Scanner;
 
+import org.springframework.context.ApplicationContext;
 import org.oxyl.model.Promotion;
 import org.oxyl.model.Stagiaire;
 import org.oxyl.persistence.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.context.annotation.AnnotationConfigApplicationContext;
 
 public class FonctionDIsplay {
 
     private static final Logger logger = LoggerFactory.getLogger(FonctionDIsplay.class);
+    private static ApplicationContext context = new AnnotationConfigApplicationContext(DataSource.class);
+    private static UtilitairesDAO utilitairesDAO = context.getBean(UtilitairesDAO.class);
+    private static StagiaireDAO stagiaireDAO = context.getBean(StagiaireDAO.class);
+    private static PromotionDAO promotionDAO = context.getBean(PromotionDAO.class);
+    private static QuestionDAO questionDAO = context.getBean(QuestionDAO.class);
 
     public static void DisplayAfficherPageStagiaire(Scanner sc) {
         Page<Stagiaire> pageStagiaire = new Page<>();
         boolean boucle = true;
         int pageNumber = 1;
-        int totalPages = UtilitairesDAO.getInstance().getTotalPages("intern", pageStagiaire.getNbRow());
+        int totalPages = utilitairesDAO.getTotalPages("intern", pageStagiaire.getNbRow());
 
         while (boucle) {
             System.out.println("Page " + pageNumber + " sur " + totalPages + ":");
-            StagiaireDAO.getInstance().getPageStagiaire(pageStagiaire);
+            stagiaireDAO.getPageStagiaire(pageStagiaire);
             pageStagiaire.display();
             pageStagiaire.emptyContent();
             System.out.println("1: Page suivante, 2: Page précédente, 3: Choisissez la page, 0: Quitter");
@@ -65,11 +72,11 @@ public class FonctionDIsplay {
         Page<Promotion> pagePromo = new Page<>();
         boolean boucle = true;
         int pageNumber = 1;
-        int totalPages = UtilitairesDAO.getInstance().getTotalPages("promotion", pagePromo.getNbRow());
+        int totalPages = utilitairesDAO.getTotalPages("promotion", pagePromo.getNbRow());
 
         while (boucle) {
             System.out.println("Page " + pageNumber + " sur " + totalPages + ":");
-            PromotionDAO.getInstance().afficherPagePromotion(pageNumber, pagePromo);
+            promotionDAO.afficherPagePromotion(pageNumber, pagePromo);
             System.out.println("1: Page suivante, 2: Page précédente, 3: Choisissez la page, 0: Quitter");
             System.out.println("Choix :");
 
@@ -109,7 +116,7 @@ public class FonctionDIsplay {
 
         try {
             int id = Integer.parseInt(userChoice);
-            StagiaireDAO.getInstance().detailStagiaire(id);
+            stagiaireDAO.detailStagiaire(id);
         } catch (NumberFormatException e) {
             System.out.println("not a valid ID");
         }
@@ -120,7 +127,7 @@ public class FonctionDIsplay {
         String userChoice = sc.nextLine();
         try {
             int id = Integer.parseInt(userChoice);
-            QuestionDAO.getInstance().getQuestionById(id);
+            questionDAO.getQuestionById(id);
         } catch (NumberFormatException e) {
             System.out.println("not a valid ID");
         }
@@ -129,9 +136,9 @@ public class FonctionDIsplay {
     public static void DisplayAjouterStagiaire(Scanner sc) {
         try (Connection conn = MySqlConnexion.getInstance().getConnection()) {
             System.out.println("Entrez son prénom, nom, date d'arrivée et l'id de sa promotion :");
-            Stagiaire random = new Stagiaire.StagiaireBuilder(UtilitairesDAO.getInstance().getMaxID() + 1, sc.next(), sc.next(), LocalDate.parse(sc.next(), DateTimeFormatter.ofPattern("dd-MM-yyyy"))).promotion(sc.nextInt()).build();
+            Stagiaire random = new Stagiaire.StagiaireBuilder(utilitairesDAO.getMaxID() + 1, sc.next(), sc.next(), LocalDate.parse(sc.next(), DateTimeFormatter.ofPattern("dd-MM-yyyy"))).promotion(sc.nextInt()).build();
 
-            StagiaireDAO.getInstance().insertIntern(random);
+            stagiaireDAO.insertIntern(random);
         } catch (InputMismatchException e) {
             System.out.println("not a valid Promotion ID");
         } catch (DateTimeParseException e) {
@@ -175,12 +182,12 @@ public class FonctionDIsplay {
 
             case "1":
                 prenom = sc.nextLine();
-                StagiaireDAO.getInstance().updateIntern(prenom, nom, arrive, finFormation, promo, id);
+                stagiaireDAO.updateIntern(prenom, nom, arrive, finFormation, promo, id);
                 break;
 
             case "2":
                 nom = sc.nextLine();
-                StagiaireDAO.getInstance().updateIntern(prenom, nom, arrive, finFormation, promo, id);
+                stagiaireDAO.updateIntern(prenom, nom, arrive, finFormation, promo, id);
                 break;
 
             case "3":
@@ -192,7 +199,7 @@ public class FonctionDIsplay {
                     } else if (promo < 1) {
                         promo = 1;
                     }
-                    StagiaireDAO.getInstance().updateIntern(prenom, nom, arrive, finFormation, promo, id);
+                    stagiaireDAO.updateIntern(prenom, nom, arrive, finFormation, promo, id);
                 } catch (NumberFormatException e) {
                     System.out.println("not a valid ID");
                     break;
@@ -201,7 +208,7 @@ public class FonctionDIsplay {
 
             case "4":
                 arrive = sc.nextLine();
-                StagiaireDAO.getInstance().updateIntern(prenom, nom, arrive, finFormation, promo, id);
+                stagiaireDAO.updateIntern(prenom, nom, arrive, finFormation, promo, id);
                 break;
 
             case "5":
@@ -211,7 +218,7 @@ public class FonctionDIsplay {
                 choixUtilisateur = sc.next();
                 try {
                     promo = Integer.parseInt(choixUtilisateur);
-                    StagiaireDAO.getInstance().updateIntern(prenom, nom, arrive, finFormation, promo, id);
+                    stagiaireDAO.updateIntern(prenom, nom, arrive, finFormation, promo, id);
                 } catch (NumberFormatException e) {
                     System.out.println("not a valid ID");
                     break;
@@ -230,7 +237,7 @@ public class FonctionDIsplay {
         String userChoice = sc.nextLine();
         try {
             int id = Integer.parseInt(userChoice);
-            StagiaireDAO.getInstance().deleteIntern(id);
+            stagiaireDAO.deleteIntern(id);
         } catch (NumberFormatException e) {
             System.out.println("ID invalide");
         }
@@ -241,7 +248,7 @@ public class FonctionDIsplay {
         String userChoice = sc.nextLine();
         try{
             int id = Integer.parseInt(userChoice);
-            QuestionDAO.getInstance().deleteQuestion(id);
+            questionDAO.deleteQuestion(id);
         } catch (NumberFormatException e) {
             System.out.println("ID invalide");
         }

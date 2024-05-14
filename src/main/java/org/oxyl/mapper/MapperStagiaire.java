@@ -7,19 +7,14 @@ import java.util.Optional;
 import org.oxyl.model.Stagiaire;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.stereotype.Component;
 
-
+@Component
 public class MapperStagiaire {
 
     private static final Logger logger = LoggerFactory.getLogger(MapperStagiaire.class);
-    private static MapperStagiaire instance;
 
-    public static MapperStagiaire getInstance() {
-        if (instance == null) {
-            instance = new MapperStagiaire();
-        }
-        return instance;
-    }
+    public MapperStagiaire() {}
 
     public Optional<Stagiaire> rsToStagiaire(ResultSet rs) {
         try {

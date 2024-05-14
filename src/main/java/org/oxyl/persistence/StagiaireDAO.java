@@ -1,10 +1,12 @@
 package org.oxyl.persistence;
 
+import com.zaxxer.hikari.HikariDataSource;
 import org.oxyl.mapper.MapperStagiaire;
 import org.oxyl.model.Stagiaire;
 import org.oxyl.newro.Page;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.stereotype.Repository;
 
 import java.sql.*;
 import java.time.LocalDate;
@@ -12,27 +14,28 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
+
+@Repository
 public class StagiaireDAO {
 
     private static final Logger logger = LoggerFactory.getLogger(StagiaireDAO.class);
-    private static StagiaireDAO instance;
+    private HikariDataSource dataSource;
+    private MapperStagiaire mapperStagiaire;
 
-    public static StagiaireDAO getInstance() {
-        if (instance == null) {
-            instance = new StagiaireDAO();
-        }
-        return instance;
+    public StagiaireDAO(HikariDataSource dataSource, MapperStagiaire mapperStagiaire) {
+        this.dataSource = dataSource;
+        this.mapperStagiaire = mapperStagiaire;
     }
 
     public Optional<List<Stagiaire>> getAllStagiaires() {
         String sql = "SELECT id, first_name, last_name, arrival, formation_over, promotion_id FROM intern";
-        try (Connection conn = DataSource.getConnection();
+        try (Connection conn = dataSource.getConnection();
              PreparedStatement stmt = conn.prepareStatement(sql)) {
             List<Stagiaire> stagiaires = new ArrayList<>();
 
             ResultSet rs = stmt.executeQuery();
             while (rs.next()) {
-                stagiaires.add(MapperStagiaire.getInstance().rsToStagiaire(rs).get());
+                stagiaires.add(mapperStagiaire.rsToStagiaire(rs).get());
             }
             return Optional.of(stagiaires);
         } catch (SQLException e) {
@@ -50,7 +53,7 @@ public class StagiaireDAO {
 
 //        String sql2 = "SELECT intern.id, first_name, last_name, arrival, formation_over, promotion_id, promotion.name"
 //                + " FROM intern, promotion WHERE intern.promotion_id = promotion.id ORDER BY intern.id;";
-        try (Connection conn = DataSource.getConnection();
+        try (Connection conn = dataSource.getConnection();
              PreparedStatement stmt = conn.prepareStatement(query.toString())) {
 
             stmt.setInt(1, page.getNbRow());
@@ -61,7 +64,7 @@ public class StagiaireDAO {
             while (rs.next()) {
 
                 Stagiaire stagiaire = null;
-                Optional<Stagiaire> intern = MapperStagiaire.getInstance().rsToStagiaire(rs);
+                Optional<Stagiaire> intern = mapperStagiaire.rsToStagiaire(rs);
                 if (intern.isPresent()) {
                     stagiaire = intern.get();
                 }
@@ -85,7 +88,7 @@ public class StagiaireDAO {
         query.append(" ORDER BY ").append(page.getOrder()).append(" LIMIT ? OFFSET ?;");
 
         name = "%" + name + "%";
-        try (Connection conn = DataSource.getConnection();
+        try (Connection conn = dataSource.getConnection();
              PreparedStatement stmt = conn.prepareStatement(query.toString())) {
 
             stmt.setString(1, name);
@@ -96,7 +99,7 @@ public class StagiaireDAO {
             try (ResultSet rs = stmt.executeQuery()) {
                 while (rs.next()) {
                     Stagiaire stagiaire = null;
-                    Optional<Stagiaire> intern = MapperStagiaire.getInstance().rsToStagiaire(rs);
+                    Optional<Stagiaire> intern = mapperStagiaire.rsToStagiaire(rs);
                     if (intern.isPresent()) {
                         stagiaire = intern.get();
                     }
@@ -111,7 +114,7 @@ public class StagiaireDAO {
     public Optional<Stagiaire> detailStagiaire(int id) {
 
         String sql = "SELECT id, first_name, last_name, arrival, formation_over, promotion_id FROM intern WHERE id = ?";
-        try (Connection conn = DataSource.getConnection();
+        try (Connection conn = dataSource.getConnection();
              PreparedStatement stmt = conn.prepareStatement(sql)) {
             stmt.setLong(1, id); // Remplacez 1 par l'ID du stagiaire désiré
             try (ResultSet rs = stmt.executeQuery()) {
@@ -142,7 +145,7 @@ public class StagiaireDAO {
     public void insertIntern(Stagiaire intern) {
         String sql = "INSERT INTO intern (first_name, last_name, arrival, formation_over, promotion_id)"
                 + " VALUES (?, ?, ?, ?, ?)";
-        try (Connection conn = DataSource.getConnection();
+        try (Connection conn = dataSource.getConnection();
              PreparedStatement stmt = conn.prepareStatement(sql)) {
 
             stmt.setString(1, intern.getFirstName());
@@ -176,7 +179,7 @@ public class StagiaireDAO {
 
         String sql = "DELETE FROM intern WHERE id = ?";
 
-        try (Connection conn = DataSource.getConnection();
+        try (Connection conn = dataSource.getConnection();
              PreparedStatement stmt = conn.prepareStatement(sql)) {
             stmt.setLong(1, id);
 
@@ -223,7 +226,7 @@ public class StagiaireDAO {
         sql += " WHERE id = ?";
         parameters.add(id);
 
-        try (Connection conn = DataSource.getConnection();
+        try (Connection conn = dataSource.getConnection();
              PreparedStatement stmt = conn.prepareStatement(sql)) {
 
             // Définir les paramètres

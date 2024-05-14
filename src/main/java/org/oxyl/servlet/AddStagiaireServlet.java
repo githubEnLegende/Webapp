@@ -9,6 +9,7 @@ import org.oxyl.dto.StagiaireDTO;
 import org.oxyl.mapper.MapperDate;
 import org.oxyl.model.Promotion;
 import org.oxyl.model.Stagiaire;
+import org.oxyl.persistence.DataSource;
 import org.oxyl.persistence.PromotionDAO;
 import org.oxyl.persistence.StagiaireDAO;
 import org.oxyl.persistence.UtilitairesDAO;
@@ -19,15 +20,30 @@ import java.time.LocalDate;
 import java.util.List;
 import java.util.Map;
 
+import org.springframework.context.annotation.AnnotationConfigApplicationContext;
+
 
 @WebServlet("/addStagiaire")
 public class AddStagiaireServlet extends HttpServlet {
+
+    private MapperDate mapperDate;
+    private PromotionDAO promotionDAO;
+    private StagiaireDAO stagiaireDAO;
+    private UtilitairesDAO utilitairesDAO;
+
+    public void init(){
+        var context = new AnnotationConfigApplicationContext(DataSource.class);
+        mapperDate = context.getBean(MapperDate.class);
+        stagiaireDAO = context.getBean(StagiaireDAO.class);
+        promotionDAO = context.getBean(PromotionDAO.class);
+        utilitairesDAO = context.getBean(UtilitairesDAO.class);
+    }
 
 
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
 
-        List<Promotion> listPromo = PromotionDAO.getInstance().getAllPromotion();
+        List<Promotion> listPromo = promotionDAO.getAllPromotion();
         request.setAttribute("listPromo", listPromo);
 
         request.getRequestDispatcher("WEB-INF/addStagiaire.jsp").forward(request, response);
@@ -51,14 +67,14 @@ public class AddStagiaireServlet extends HttpServlet {
 
         if (stagiaireValidator.isEmpty()) {
 
-            LocalDate finFormationDate = MapperDate.getInstance().stringtoLocalDate(finFormation);
+            LocalDate finFormationDate = mapperDate.stringtoLocalDate(finFormation);
 
-            Stagiaire intern = new Stagiaire.StagiaireBuilder(UtilitairesDAO.getInstance().getMaxID() + 1,
+            Stagiaire intern = new Stagiaire.StagiaireBuilder(utilitairesDAO.getMaxID() + 1,
                     firstName, lastName, LocalDate.parse(arrival))
                     .formationOver(finFormationDate)
                     .promotion(Integer.parseInt(promotionId)).build();
 
-            StagiaireDAO.getInstance().insertIntern(intern);
+            stagiaireDAO.insertIntern(intern);
             response.sendRedirect("dashboard");
         } else {
             System.out.println("Stagiaire non valide");

@@ -9,9 +9,12 @@ import org.oxyl.dto.StagiaireDTO;
 import org.oxyl.mapper.MapperDate;
 import org.oxyl.model.Promotion;
 import org.oxyl.model.Stagiaire;
+import org.oxyl.persistence.DataSource;
 import org.oxyl.persistence.PromotionDAO;
 import org.oxyl.persistence.StagiaireDAO;
+import org.oxyl.persistence.UtilitairesDAO;
 import org.oxyl.validator.ValidatorStagiaire;
+import org.springframework.context.annotation.AnnotationConfigApplicationContext;
 
 import java.io.IOException;
 import java.time.LocalDate;
@@ -24,18 +27,27 @@ import static org.oxyl.persistence.StagiaireDAO.*;
 @WebServlet("/editStagiaire")
 public class EditStagiaireServlet extends HttpServlet {
 
+    private PromotionDAO promotionDAO;
+    private StagiaireDAO stagiaireDAO;
+
+    public void init(){
+        var context = new AnnotationConfigApplicationContext(DataSource.class);
+        stagiaireDAO = context.getBean(StagiaireDAO.class);
+        promotionDAO = context.getBean(PromotionDAO.class);
+    }
+
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 
         int id = Integer.parseInt(request.getParameter("id"));
 
-        Optional<Stagiaire> optStagiaire = StagiaireDAO.getInstance().detailStagiaire(id);
+        Optional<Stagiaire> optStagiaire = stagiaireDAO.detailStagiaire(id);
         if (optStagiaire.isPresent()) {
             Stagiaire stagiaire = optStagiaire.get();
             request.setAttribute("stagiaire", stagiaire);
         }
 
 
-        List<Promotion> listPromo = PromotionDAO.getInstance().getAllPromotion();
+        List<Promotion> listPromo = promotionDAO.getAllPromotion();
         request.setAttribute("listPromo", listPromo);
 
         request.getRequestDispatcher("WEB-INF/editStagiaire.jsp").forward(request, response);
@@ -59,7 +71,7 @@ public class EditStagiaireServlet extends HttpServlet {
             int stagId = Integer.parseInt(id);
             int promoId = Integer.parseInt(promotionId);
 
-            StagiaireDAO.getInstance().updateIntern(firstName, lastName, arrival, finFormation, promoId, stagId);
+            stagiaireDAO.updateIntern(firstName, lastName, arrival, finFormation, promoId, stagId);
             response.sendRedirect("dashboard");
         } else {
             System.out.println("Stagiaire non valide");

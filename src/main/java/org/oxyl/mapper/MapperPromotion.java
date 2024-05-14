@@ -8,22 +8,16 @@ import org.oxyl.model.Promotion;
 import org.oxyl.newro.Main;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.stereotype.Component;
 
 import javax.swing.text.html.Option;
 
-
+@Component
 public class MapperPromotion {
 
-    private static MapperPromotion instance;
     private static Logger logger = LoggerFactory.getLogger(MapperPromotion.class);
 
-
-    public static MapperPromotion getInstance() {
-        if (instance == null) {
-            instance = new MapperPromotion();
-        }
-        return instance;
-    }
+    public MapperPromotion() {}
 
 
     public Optional<Promotion> rsToPromotion(ResultSet rs) {
