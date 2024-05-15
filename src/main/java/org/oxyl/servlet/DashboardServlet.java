@@ -5,6 +5,7 @@ import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import org.oxyl.context.Context;
 import org.oxyl.model.Stagiaire;
 import org.oxyl.newro.Page;
 import org.oxyl.persistence.DataSource;
@@ -12,6 +13,7 @@ import org.oxyl.persistence.StagiaireDAO;
 import org.oxyl.persistence.UtilitairesDAO;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.AnnotationConfigApplicationContext;
 
 
@@ -25,9 +27,9 @@ public class DashboardServlet extends HttpServlet {
 
     private StagiaireDAO stagiaireDAO;
     private UtilitairesDAO utilitairesDAO;
+    ApplicationContext context = Context.getInstance().getContext();
 
     public void init(){
-        var context = new AnnotationConfigApplicationContext(DataSource.class);
         stagiaireDAO = context.getBean(StagiaireDAO.class);
         utilitairesDAO = context.getBean(UtilitairesDAO.class);
     }

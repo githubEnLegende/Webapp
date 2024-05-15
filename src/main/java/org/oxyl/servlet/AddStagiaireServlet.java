@@ -5,6 +5,7 @@ import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import org.oxyl.context.Context;
 import org.oxyl.dto.StagiaireDTO;
 import org.oxyl.mapper.MapperDate;
 import org.oxyl.model.Promotion;
@@ -20,6 +21,7 @@ import java.time.LocalDate;
 import java.util.List;
 import java.util.Map;
 
+import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.AnnotationConfigApplicationContext;
 
 
@@ -31,9 +33,10 @@ public class AddStagiaireServlet extends HttpServlet {
     private StagiaireDAO stagiaireDAO;
     private UtilitairesDAO utilitairesDAO;
     private ValidatorStagiaire validatorStagiaire;
+    ApplicationContext context = Context.getInstance().getContext();
+
 
     public void init(){
-        var context = new AnnotationConfigApplicationContext(DataSource.class);
         mapperDate = context.getBean(MapperDate.class);
         stagiaireDAO = context.getBean(StagiaireDAO.class);
         promotionDAO = context.getBean(PromotionDAO.class);

@@ -5,6 +5,7 @@ import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import org.oxyl.context.Context;
 import org.oxyl.dto.StagiaireDTO;
 import org.oxyl.mapper.MapperDate;
 import org.oxyl.model.Promotion;
@@ -14,6 +15,7 @@ import org.oxyl.persistence.PromotionDAO;
 import org.oxyl.persistence.StagiaireDAO;
 import org.oxyl.persistence.UtilitairesDAO;
 import org.oxyl.validator.ValidatorStagiaire;
+import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.AnnotationConfigApplicationContext;
 
 import java.io.IOException;
@@ -30,9 +32,9 @@ public class EditStagiaireServlet extends HttpServlet {
     private PromotionDAO promotionDAO;
     private StagiaireDAO stagiaireDAO;
     private ValidatorStagiaire validatorStagiaire;
+    ApplicationContext context = Context.getInstance().getContext();
 
     public void init(){
-        var context = new AnnotationConfigApplicationContext(DataSource.class);
         stagiaireDAO = context.getBean(StagiaireDAO.class);
         promotionDAO = context.getBean(PromotionDAO.class);
         validatorStagiaire = context.getBean(ValidatorStagiaire.class);

@@ -4,7 +4,7 @@
     <jmxConfigurator contextName="Tomcat" />
     <!-- Définition de l'appender pour écrire dans un fichier -->
     <appender name="FILE" class="ch.qos.logback.core.FileAppender">
-        <File>/home/oxyl/eclipse-workspace/NewroFactoryMaven//logs/logs.log</File>
+        <File>/home/oxyl/eclipse-workspace/NewroFactoryMaven/logs/logs.log</File>
         <Append>true</Append>
         <BufferedIO>false</BufferedIO>
         <ImmediateFlush>true</ImmediateFlush>
