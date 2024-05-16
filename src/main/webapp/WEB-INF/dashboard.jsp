@@ -104,7 +104,7 @@
                 <c:if test="${totalPages>4}">
                     <c:set var="endPage" value="${Math.max(5,Math.min(totalPages+0, page + 2))}"/>
                 </c:if>
-                <c:if test="${totalPages<4}">
+                <c:if test="${totalPages<=4}">
                     <c:set var="endPage" value="${Math.max(1,Math.min(totalPages+0, page + 2))}"/>
                 </c:if>
                 <li>
