@@ -14,9 +14,7 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
 
 @Repository
 public class QuestionDAO {
@@ -118,6 +116,32 @@ public class QuestionDAO {
         } catch (SQLException e) {
             logger.error("Erreur lors de la récupération des stagiaires.", e);
             return Optional.empty();
+        }
+    }
+
+    public List<String> getQuestionAnswer(int id){
+        String sql ="SELECT question.id, title, statement, chapter_id, answer.text" +
+                " FROM question LEFT JOIN answer ON answer.question_id = question.id WHERE question.id = ?";
+
+        List<String> result = new ArrayList<>();
+
+        try(Connection conn = dataSource.getConnection();
+            PreparedStatement stmt = conn.prepareStatement(sql)){
+            stmt.setInt(1, id);
+            ResultSet rs = stmt.executeQuery();
+            rs.next();
+
+            result.add(rs.getString("title"));
+            result.add(rs.getString("statement"));
+            result.add(rs.getString("chapter_id"));
+            do {
+                result.add(rs.getString("text"));
+            } while (rs.next());
+            return result;
+
+        } catch (SQLException e) {
+            logger.error("Erreur lors de la récupération de la question et des réponses", e);
+            return null;
         }
     }
 }

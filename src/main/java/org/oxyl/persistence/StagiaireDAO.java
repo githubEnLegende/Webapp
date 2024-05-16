@@ -95,6 +95,8 @@ public class StagiaireDAO {
 
         String sql = "SELECT intern.id, first_name, last_name, arrival, formation_over, promotion_id, promotion.name " +
                 "FROM intern LEFT JOIN promotion ON intern.promotion_id = promotion.id WHERE first_name LIKE ? OR last_name LIKE ?";
+
+
         String countSql = "SELECT COUNT(*) FROM intern WHERE first_name LIKE ? OR last_name LIKE ?";
 
         StringBuilder query = new StringBuilder(sql);
