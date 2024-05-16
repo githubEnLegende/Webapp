@@ -14,10 +14,11 @@ public class MapperChapitre {
 
     private final static Logger logger = LoggerFactory.getLogger(MapperChapitre.class);
 
-    public MapperChapitre() {}
+    public MapperChapitre() {
+    }
 
-    public Optional<Chapitre> rsToChapitre(ResultSet rs)  {
-        try{
+    public Optional<Chapitre> rsToChapitre(ResultSet rs) {
+        try {
             return Optional.of(new Chapitre.ChapitreBuilder(rs.getInt("id"),
                     rs.getString("name"),
                     rs.getString("parent_path")).build());

@@ -56,7 +56,7 @@ public class PromotionDAO {
             stmt.setInt(1, page.getNbRow());
             stmt.setInt(2, (pageNumber - 1) * page.getNbRow());
             ResultSet rs = stmt.executeQuery();
-            
+
             while (rs.next()) {
                 page.addContent(mapperPromotion.rsToPromotion(rs).get());
             }
@@ -73,7 +73,7 @@ public class PromotionDAO {
     public Optional<Promotion> getPromotion(int id) {
 
         try (Connection conn = dataSource.getConnection();
-                PreparedStatement stmt = conn.prepareStatement("SELECT id, name FROM promotion WHERE id = ?")) {
+             PreparedStatement stmt = conn.prepareStatement("SELECT id, name FROM promotion WHERE id = ?")) {
             stmt.setInt(1, id);
             ResultSet rs2 = stmt.executeQuery();
             rs2.next();

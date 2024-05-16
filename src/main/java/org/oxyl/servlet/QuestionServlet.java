@@ -24,20 +24,20 @@ public class QuestionServlet extends HttpServlet {
     private QuestionDAO questionDAO;
 
 
-    public void init(){
-         questionDAO = context.getBean(QuestionDAO.class);
+    public void init() {
+        questionDAO = context.getBean(QuestionDAO.class);
     }
 
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
 
-        logger.info("Entrez dans le Get Chapitre");
+        logger.info("Entrée dans le Get Chapitre");
 
         var optQuestions = questionDAO.getAllQuestion();
         List<Question> questions;
-        if(optQuestions.isPresent()){
+        if (optQuestions.isPresent()) {
             questions = optQuestions.get();
-        }else {
+        } else {
             questions = new ArrayList<>();
         }
 

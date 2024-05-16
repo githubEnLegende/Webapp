@@ -20,18 +20,20 @@ public class DataSource {
 
         try {
             Class.forName("com.mysql.cj.jdbc.Driver");
-        } catch (ClassNotFoundException ignored) {}
+        } catch (ClassNotFoundException ignored) {
+        }
 
-        config.setJdbcUrl( "jdbc:mysql://localhost:3306/newro-factory-db" );
-        config.setUsername( "adminnewro" );
-        config.setPassword( "Qw€rty1234" );
-        config.addDataSourceProperty( "cachePrepStmts" , "true" );
-        config.addDataSourceProperty( "prepStmtCacheSize" , "250" );
-        config.addDataSourceProperty( "prepStmtCacheSqlLimit" , "2048" );
+        config.setJdbcUrl("jdbc:mysql://localhost:3306/newro-factory-db");
+        config.setUsername("adminnewro");
+        config.setPassword("Qw€rty1234");
+        config.addDataSourceProperty("cachePrepStmts", "true");
+        config.addDataSourceProperty("prepStmtCacheSize", "250");
+        config.addDataSourceProperty("prepStmtCacheSqlLimit", "2048");
         return new HikariDataSource(config);
     }
 
-    public DataSource() {}
+    public DataSource() {
+    }
 
     public static Connection getConnection(HikariDataSource dataSource) throws SQLException {
         return dataSource.getConnection();

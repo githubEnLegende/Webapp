@@ -18,7 +18,7 @@ public class DisplayQuestionServlet extends HttpServlet {
     private final ApplicationContext context = Context.getInstance().getContext();
     private QuestionDAO questionDAO;
 
-    public void init(){
+    public void init() {
         questionDAO = context.getBean(QuestionDAO.class);
     }
 
@@ -40,9 +40,6 @@ public class DisplayQuestionServlet extends HttpServlet {
     }
 
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-
-
-
 
 
     }

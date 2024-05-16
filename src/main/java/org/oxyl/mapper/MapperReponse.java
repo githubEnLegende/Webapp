@@ -14,7 +14,8 @@ public class MapperReponse {
 
     private static final Logger logger = LoggerFactory.getLogger(MapperReponse.class);
 
-    public MapperReponse() {}
+    public MapperReponse() {
+    }
 
     public Optional<Reponse> rsToReponse(ResultSet rs) {
         try {

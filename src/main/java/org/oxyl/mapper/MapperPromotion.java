@@ -17,7 +17,8 @@ public class MapperPromotion {
 
     private static Logger logger = LoggerFactory.getLogger(MapperPromotion.class);
 
-    public MapperPromotion() {}
+    public MapperPromotion() {
+    }
 
 
     public Optional<Promotion> rsToPromotion(ResultSet rs) {

@@ -12,11 +12,11 @@ import static org.oxyl.newro.Display.*;
 
 public class Main {
 
-	private static Logger logger = LoggerFactory.getLogger(Main.class);
+    private static Logger logger = LoggerFactory.getLogger(Main.class);
 
-	public static void main(String[] args) {
-		logger.info("Starting Newro...");
-    	feur();
+    public static void main(String[] args) {
+        logger.info("Starting Newro...");
+        feur();
     }
 
 //	private static void e(){

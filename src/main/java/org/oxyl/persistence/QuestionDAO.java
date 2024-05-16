@@ -87,9 +87,9 @@ public class QuestionDAO {
 
             answStmt.execute();
             questStmt.execute();
-            try{
+            try {
                 conn.commit();
-            }catch (SQLException e){
+            } catch (SQLException e) {
                 conn.rollback();
                 System.out.println("Erreur lors du commit lors de la délétion des questions");
                 logger.error("Erreur lors du commit lors de la délétion des questions", e);
@@ -102,7 +102,7 @@ public class QuestionDAO {
         }
     }
 
-    public Optional<List<Question>> getAllQuestion(){
+    public Optional<List<Question>> getAllQuestion() {
         String sql = "SELECT id, title, statement, chapter_id FROM question";
         try (Connection conn = dataSource.getConnection();
              PreparedStatement stmt = conn.prepareStatement(sql)) {
@@ -119,14 +119,14 @@ public class QuestionDAO {
         }
     }
 
-    public List<String> getQuestionAnswer(int id){
-        String sql ="SELECT question.id, title, statement, chapter_id, answer.text" +
+    public List<String> getQuestionAnswer(int id) {
+        String sql = "SELECT question.id, title, statement, chapter_id, answer.text" +
                 " FROM question LEFT JOIN answer ON answer.question_id = question.id WHERE question.id = ?";
 
         List<String> result = new ArrayList<>();
 
-        try(Connection conn = dataSource.getConnection();
-            PreparedStatement stmt = conn.prepareStatement(sql)){
+        try (Connection conn = dataSource.getConnection();
+             PreparedStatement stmt = conn.prepareStatement(sql)) {
             stmt.setInt(1, id);
             ResultSet rs = stmt.executeQuery();
             rs.next();

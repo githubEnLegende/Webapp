@@ -15,7 +15,8 @@ public class MapperStagiaire {
 
     private static final Logger logger = LoggerFactory.getLogger(MapperStagiaire.class);
 
-    public MapperStagiaire() {}
+    public MapperStagiaire() {
+    }
 
     public Optional<Stagiaire> rsToStagiaire(ResultSet rs) {
         try {

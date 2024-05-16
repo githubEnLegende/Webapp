@@ -247,7 +247,7 @@ public class FonctionDIsplay {
     public static void DisplaySupprimerQuestion(Scanner sc) {
         System.out.println("Entrez l'ID de la question à supprimer : ");
         String userChoice = sc.nextLine();
-        try{
+        try {
             int id = Integer.parseInt(userChoice);
             questionDAO.deleteQuestion(id);
         } catch (NumberFormatException e) {

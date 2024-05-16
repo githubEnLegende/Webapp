@@ -24,7 +24,7 @@ public class ChapitreServlet extends HttpServlet {
     private ChapterDAO chapterDAO;
 
 
-    public void init(){
+    public void init() {
         chapterDAO = context.getBean(ChapterDAO.class);
     }
 
@@ -35,9 +35,9 @@ public class ChapitreServlet extends HttpServlet {
 
         var optChapitre = chapterDAO.getAllChapter();
         List<Chapitre> chapitres;
-        if(optChapitre.isPresent()){
+        if (optChapitre.isPresent()) {
             chapitres = optChapitre.get();
-        }else {
+        } else {
             chapitres = new ArrayList<>();
         }
 

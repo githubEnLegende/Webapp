@@ -30,8 +30,8 @@ public class StagiaireDAO {
     public int countStagiaire() {
         String query = "SELECT COUNT(*) FROM intern";
 
-        try(Connection conn = dataSource.getConnection();
-        PreparedStatement stmt = conn.prepareStatement(query)){
+        try (Connection conn = dataSource.getConnection();
+             PreparedStatement stmt = conn.prepareStatement(query)) {
 
             ResultSet rs = stmt.executeQuery(query);
             rs.next();
@@ -59,6 +59,7 @@ public class StagiaireDAO {
             return Optional.empty();
         }
     }
+
     public void getPageStagiaire(Page<Stagiaire> page) {
 
         String sql = "SELECT intern.id, first_name, last_name, arrival, formation_over, promotion_id, promotion.name " +
@@ -91,7 +92,7 @@ public class StagiaireDAO {
 
     }
 
-    public int getPageStagiaire(String name, Page<Stagiaire> page){
+    public int getPageStagiaire(String name, Page<Stagiaire> page) {
 
         String sql = "SELECT intern.id, first_name, last_name, arrival, formation_over, promotion_id, promotion.name " +
                 "FROM intern LEFT JOIN promotion ON intern.promotion_id = promotion.id WHERE first_name LIKE ? OR last_name LIKE ?";
@@ -116,7 +117,7 @@ public class StagiaireDAO {
             stmtCount.setString(2, name);
 
             try (ResultSet rsData = stmtData.executeQuery();
-                ResultSet rsCount = stmtCount.executeQuery();) {
+                 ResultSet rsCount = stmtCount.executeQuery();) {
                 while (rsData.next()) {
                     Stagiaire stagiaire = null;
                     Optional<Stagiaire> intern = mapperStagiaire.rsToStagiaire(rsData);
@@ -168,17 +169,17 @@ public class StagiaireDAO {
             stmt.setString(1, intern.getFirstName());
             stmt.setString(2, intern.getLastName());
 
-            if (intern.getArrival() != null){
+            if (intern.getArrival() != null) {
                 Timestamp timestamp = Timestamp.valueOf(intern.getArrival().atStartOfDay());
                 stmt.setTimestamp(3, timestamp);
-            }else{
+            } else {
                 stmt.setTimestamp(3, null);
             }
 
-            if (intern.getFormationOver() != null){
+            if (intern.getFormationOver() != null) {
                 Timestamp timestamp = Timestamp.valueOf(intern.getFormationOver().atStartOfDay());
                 stmt.setTimestamp(4, timestamp);
-            }else{
+            } else {
                 stmt.setTimestamp(4, null);
             }
             stmt.setInt(5, intern.getPromotion().getId());

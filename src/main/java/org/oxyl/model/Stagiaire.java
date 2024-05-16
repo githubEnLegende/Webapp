@@ -7,110 +7,122 @@ import org.oxyl.persistence.PromotionDAO;
 
 
 public class Stagiaire {
-	
-	private int id;
+
+    private int id;
     private String firstName;
     private String lastName;
     private LocalDate arrival;
     private LocalDate formationOver;
     private Promotion promotion;
-    
-    
-	private Stagiaire(StagiaireBuilder builder) {
-		this.id = builder.id;
-		this.firstName = builder.firstName;
-		this.lastName = builder.lastName;
-		this.arrival = builder.arrival;
-		this.formationOver = builder.formationOver;
-		this.promotion = builder.promotion;
-	}
-	public long getId() {
-		return id;
-	}
-	public void setId(int id) {
-		this.id = id;
-	}
-	public String getFirstName() {
-		return firstName;
-	}
-	public void setFirstName(String firstName) {
-		this.firstName = firstName;
-	}
-	public String getLastName() {
-		return lastName;
-	}
-	public void setLastName(String lastName) {
-		this.lastName = lastName;
-	}
-	public LocalDate getArrival() {
-		return arrival;
-	}
-	public void setArrival(LocalDate arrival) {
-		this.arrival = arrival;
-	}
-	public LocalDate getFormationOver() {
-		return formationOver;
-	}
-	public void setFormationOver(LocalDate formationOver) {
-		this.formationOver = formationOver;
-	}
-	public Promotion getPromotion() {
-		return promotion;
-	}
-	public void setPromotion(Promotion promotion) {
-		this.promotion = promotion;
-	}
-	
-	public String toString() {
+
+
+    private Stagiaire(StagiaireBuilder builder) {
+        this.id = builder.id;
+        this.firstName = builder.firstName;
+        this.lastName = builder.lastName;
+        this.arrival = builder.arrival;
+        this.formationOver = builder.formationOver;
+        this.promotion = builder.promotion;
+    }
+
+    public long getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
+    }
+
+    public String getFirstName() {
+        return firstName;
+    }
+
+    public void setFirstName(String firstName) {
+        this.firstName = firstName;
+    }
+
+    public String getLastName() {
+        return lastName;
+    }
+
+    public void setLastName(String lastName) {
+        this.lastName = lastName;
+    }
+
+    public LocalDate getArrival() {
+        return arrival;
+    }
+
+    public void setArrival(LocalDate arrival) {
+        this.arrival = arrival;
+    }
+
+    public LocalDate getFormationOver() {
+        return formationOver;
+    }
+
+    public void setFormationOver(LocalDate formationOver) {
+        this.formationOver = formationOver;
+    }
+
+    public Promotion getPromotion() {
+        return promotion;
+    }
+
+    public void setPromotion(Promotion promotion) {
+        this.promotion = promotion;
+    }
+
+    public String toString() {
         return "Stagiaire{" +
                 "id=" + id +
                 ", firstName='" + firstName + '\'' +
                 ", lastName='" + lastName + '\'' +
                 ", promotion=" + promotion.getName() +
-				", Arrival=" + arrival +
-				", formationOver=" + formationOver +
+                ", Arrival=" + arrival +
+                ", formationOver=" + formationOver +
                 '}';
     }
-	
-	public static class StagiaireBuilder{
-		private int id;
-	    private String firstName;
-	    private String lastName;
-	    private LocalDate arrival;
-	    private LocalDate formationOver;
-	    private Promotion promotion;
 
-	    public StagiaireBuilder (int id, String firstName, String lastName, LocalDate arrival) {
-	    	this.id = id;
-	    	this.firstName = firstName;
-	    	this.lastName = lastName;
-	    	this.arrival = arrival;
-		}
+    public static class StagiaireBuilder {
+        private int id;
+        private String firstName;
+        private String lastName;
+        private LocalDate arrival;
+        private LocalDate formationOver;
+        private Promotion promotion;
 
-		public StagiaireBuilder firstName(String firstName) {
-	    	this.firstName = firstName;
-	    	return this;
-	    }
-	    
-	    public StagiaireBuilder lastName(String lastName) {
-	    	this.lastName = lastName;
-	    	return this;
-	    }
-	    
-	    public StagiaireBuilder arrival(LocalDate arrival) {
-	    	this.arrival = arrival;
-	    	return this;
-	    }
-	    
-	    public StagiaireBuilder formationOver(LocalDate formationOver) {
-	    	this.formationOver = formationOver;
-	    	return this;
-	    }
-	    
-	    public StagiaireBuilder promotion(Promotion promotion) {
-	    	this.promotion = promotion;
-	    	return this;
-	    }
+        public StagiaireBuilder(int id, String firstName, String lastName, LocalDate arrival) {
+            this.id = id;
+            this.firstName = firstName;
+            this.lastName = lastName;
+            this.arrival = arrival;
+        }
+
+        public StagiaireBuilder firstName(String firstName) {
+            this.firstName = firstName;
+            return this;
+        }
+
+        public StagiaireBuilder lastName(String lastName) {
+            this.lastName = lastName;
+            return this;
+        }
+
+        public StagiaireBuilder arrival(LocalDate arrival) {
+            this.arrival = arrival;
+            return this;
+        }
+
+        public StagiaireBuilder formationOver(LocalDate formationOver) {
+            this.formationOver = formationOver;
+            return this;
+        }
+
+        public StagiaireBuilder promotion(Promotion promotion) {
+            this.promotion = promotion;
+            return this;
+        }
 
 //		public StagiaireBuilder promotion(int promotion){
 //			Optional<Promotion> promotionOptional = promotionDAO.getPromotion(promotion);
@@ -121,13 +133,13 @@ public class Stagiaire {
 //			}
 //			return this;
 //		}
-	    
-	    public Stagiaire build() {
-	    	return new Stagiaire(this);
-	    }
 
-		
-	}
+        public Stagiaire build() {
+            return new Stagiaire(this);
+        }
+
+
+    }
 }
 
 

@@ -1,98 +1,98 @@
 <!DOCTYPE html>
 
-<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
-<%@ taglib prefix = "c" uri = "http://java.sun.com/jsp/jstl/core" %>
+<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 
 <html>
 <head>
-<title>Newro Factory</title>
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<meta charset="utf-8">
-<!-- Bootstrap -->
-<link href="static/css/bootstrap.min.css" rel="stylesheet" media="screen">
-<link href="static/css/font-awesome.css" rel="stylesheet" media="screen">
-<link href="static/css/main.css" rel="stylesheet" media="screen">
+    <title>Newro Factory</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta charset="utf-8">
+    <!-- Bootstrap -->
+    <link href="static/css/bootstrap.min.css" rel="stylesheet" media="screen">
+    <link href="static/css/font-awesome.css" rel="stylesheet" media="screen">
+    <link href="static/css/main.css" rel="stylesheet" media="screen">
 </head>
 <body>
-    <header class="navbar navbar-inverse navbar-fixed-top">
-        <div class="container">
-            <a class="navbar-brand" href="dashboard"> Newro Factory </a>
-        </div>
-    </header>
+<header class="navbar navbar-inverse navbar-fixed-top">
+    <div class="container">
+        <a class="navbar-brand" href="dashboard"> Newro Factory </a>
+    </div>
+</header>
 
-    <section id="main">
-        <div class="container">
-            <h1 id="homeTitle">
-                <c:out value="${requestScope.countStagiaire} Questions trouvés"/>
-            </h1>
-<%--            <div id="actions" class="form-horizontal">--%>
-<%--                <div class="pull-left">--%>
-<%--                    <form id="searchForm" action="#" method="GET" class="form-inline">--%>
+<section id="main">
+    <div class="container">
+        <h1 id="homeTitle">
+            <c:out value="${requestScope.countStagiaire} Questions trouvés"/>
+        </h1>
+        <%--            <div id="actions" class="form-horizontal">--%>
+        <%--                <div class="pull-left">--%>
+        <%--                    <form id="searchForm" action="#" method="GET" class="form-inline">--%>
 
-<%--                        <input type="search" id="searchbox" name="search" class="form-control" placeholder="Search name" />--%>
-<%--                        <input type="submit" id="searchsubmit" value="Filter by name"--%>
-<%--                        class="btn btn-primary" />--%>
-<%--                    </form>--%>
-<%--                </div>--%>
-<%--                <div class="pull-right">--%>
-<%--                    <a class="btn btn-success" id="addStagiaire" href="addStagiaire">Ajout stagiaire</a>--%>
-<%--                    <a class="btn btn-default" id="editStagiaire" href="#" onclick="$.fn.toggleEditMode();">Modifier</a>--%>
-<%--                </div>--%>
-<%--            </div>--%>
-        </div>
+        <%--                        <input type="search" id="searchbox" name="search" class="form-control" placeholder="Search name" />--%>
+        <%--                        <input type="submit" id="searchsubmit" value="Filter by name"--%>
+        <%--                        class="btn btn-primary" />--%>
+        <%--                    </form>--%>
+        <%--                </div>--%>
+        <%--                <div class="pull-right">--%>
+        <%--                    <a class="btn btn-success" id="addStagiaire" href="addStagiaire">Ajout stagiaire</a>--%>
+        <%--                    <a class="btn btn-default" id="editStagiaire" href="#" onclick="$.fn.toggleEditMode();">Modifier</a>--%>
+        <%--                </div>--%>
+        <%--            </div>--%>
+    </div>
 
-        <form id="deleteForm" action="#" method="POST">
-            <input type="hidden" name="selection" value="">
-        </form>
+    <form id="deleteForm" action="#" method="POST">
+        <input type="hidden" name="selection" value="">
+    </form>
 
-        <div class="container" style="margin-top: 10px;">
-            <table class="table table-striped table-bordered">
-                <thead>
-                    <tr>
-                        <!-- Variable declarations for passing labels as parameters -->
-                        <!-- Table header for Computer Name -->
+    <div class="container" style="margin-top: 10px;">
+        <table class="table table-striped table-bordered">
+            <thead>
+            <tr>
+                <!-- Variable declarations for passing labels as parameters -->
+                <!-- Table header for Computer Name -->
 
-                         <th class="editMode" style="width: 60px; height: 22px;">
-                            <input type="checkbox" id="selectall" /> 
-                            <span style="vertical-align: top;">
+                <th class="editMode" style="width: 60px; height: 22px;">
+                    <input type="checkbox" id="selectall"/>
+                    <span style="vertical-align: top;">
                                  -  <a href="#" id="deleteSelected" onclick="$.fn.deleteSelected();">
                                         <i class="fa fa-trash-o fa-lg"></i>
                                     </a>
                             </span>
-                        </th>
-                        <!-- Table header for Discontinued Date -->
-                        <th>
-<%--                            <a href="dashboard?page=${requestScope.page}&size=${size}&order=formation_over&search=${search}">title</a>--%>
-                            <a>title</a>
-                        </th>
-                        <!-- Table header for Company -->
-                        <th>
-<%--                            <a href="dashboard?page=${requestScope.page}&size=${size}&order=promotion_id&search=${search}">statement</a>--%>
-                            <a>statement</a>
-                        </th>
-                        <th>
-<%--                            <a href="dashboard?page=${requestScope.page}&size=${size}&order=promotion_id&search=${search}">chapter_id</a>--%>
-                            <a>chapterID</a>
-                        </th>
+                </th>
+                <!-- Table header for Discontinued Date -->
+                <th>
+                    <%--                            <a href="dashboard?page=${requestScope.page}&size=${size}&order=formation_over&search=${search}">title</a>--%>
+                    <a>title</a>
+                </th>
+                <!-- Table header for Company -->
+                <th>
+                    <%--                            <a href="dashboard?page=${requestScope.page}&size=${size}&order=promotion_id&search=${search}">statement</a>--%>
+                    <a>statement</a>
+                </th>
+                <th>
+                    <%--                            <a href="dashboard?page=${requestScope.page}&size=${size}&order=promotion_id&search=${search}">chapter_id</a>--%>
+                    <a>chapterID</a>
+                </th>
 
-                    </tr>
-                </thead>
-                <!-- Browse attribute computers -->
-                <tbody id="results">
-                <c:forEach var="question" items="${requestScope.questions}">
-                    <tr>
-                        <td class="editMode">
-                            <input type="checkbox" name="cb" class="cb" value="${question.id}">
-                        </td>
-                        <td><a href="displayQuestion?id=${question.id}" onclick="">${question.title}</a></td>
-                        <td>${question.statement}</td>
-                        <td>${question.chapitreId}</td>
-                    </tr>
-                </c:forEach>
-                </tbody>
-            </table>
-        </div>
-    </section>
+            </tr>
+            </thead>
+            <!-- Browse attribute computers -->
+            <tbody id="results">
+            <c:forEach var="question" items="${requestScope.questions}">
+                <tr>
+                    <td class="editMode">
+                        <input type="checkbox" name="cb" class="cb" value="${question.id}">
+                    </td>
+                    <td><a href="displayQuestion?id=${question.id}" onclick="">${question.title}</a></td>
+                    <td>${question.statement}</td>
+                    <td>${question.chapitreId}</td>
+                </tr>
+            </c:forEach>
+            </tbody>
+        </table>
+    </div>
+</section>
 
 <%--    <footer class="navbar-fixed-bottom">--%>
 <%--        <div class="container text-center">--%>

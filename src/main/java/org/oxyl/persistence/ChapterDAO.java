@@ -28,7 +28,7 @@ public class ChapterDAO {
         this.mapperChapitre = mapperChapitre;
     }
 
-    public Optional<List<Chapitre>> getAllChapter(){
+    public Optional<List<Chapitre>> getAllChapter() {
         String sql = "SELECT id, name, parent_path FROM chapter";
         try (Connection conn = dataSource.getConnection();
              PreparedStatement stmt = conn.prepareStatement(sql)) {
