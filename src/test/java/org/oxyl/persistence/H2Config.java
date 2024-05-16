@@ -43,7 +43,7 @@ public class H2Config {
             System.out.println("Failed to load SETUP.sql");
             System.exit(-1);
         } catch (SQLException e) {
-            System.out.println("Failed to populate database");
+            System.out.println("Failed to populate database" + e);
             System.exit(-1);
         }
 

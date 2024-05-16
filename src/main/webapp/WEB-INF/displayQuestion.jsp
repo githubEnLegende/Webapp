@@ -17,6 +17,8 @@
 <header class="navbar navbar-inverse navbar-fixed-top">
     <div class="container">
         <a class="navbar-brand" href="dashboard"> Newro Factory </a>
+        <a class="navbar-brand" href="question"> Questions </a>
+        <a class="navbar-brand" href="chapitre"> Chapitres </a>
     </div>
 </header>
 <section id="main">
@@ -30,7 +32,9 @@
                 <div>${requestScope.statement}</div>
                 <div><br>Réponses : <br><br></div>
                 <c:forEach var="answer" items="${requestScope.answers}">
-                    <div>${answer}</div>
+                    <div>
+                        <input type="checkbox" name="selectedAnswers" value="${answer}" /> ${answer}
+                    </div>
                 </c:forEach>
 
                 <%--                    <form action="editStagiaire" method="POST" onsubmit="return validateForm()">--%>

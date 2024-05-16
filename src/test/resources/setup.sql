@@ -1,4 +1,4 @@
-// Default H2 collation does not match default MySQL connection
+-- Default H2 collation does not match default MySQL connection
 SET COLLATION ENGLISH STRENGTH PRIMARY;
 
 DROP SCHEMA IF EXISTS `newro-factory-db` CASCADE;
@@ -7,18 +7,20 @@ SET SCHEMA `newro-factory-db`;
 
 CREATE TABLE `newro-factory-db`.promotion
 (
-    id   IDENTITY NOT NULL PRIMARY KEY,
-    name VARCHAR(255)
+    id   BIGINT NOT NULL AUTO_INCREMENT,
+    name VARCHAR(255),
+    PRIMARY KEY (id)
 );
 
 CREATE TABLE `newro-factory-db`.intern
 (
-    id             IDENTITY NOT NULL PRIMARY KEY,
+    id             BIGINT    NOT NULL AUTO_INCREMENT,
     first_name     VARCHAR(255),
     last_name      VARCHAR(255),
     arrival        TIMESTAMP NULL,
     formation_over TIMESTAMP NULL,
     promotion_id   BIGINT DEFAULT NULL,
+    PRIMARY KEY (id),
     FOREIGN KEY (promotion_id) REFERENCES `newro-factory-db`.promotion (id)
         ON DELETE RESTRICT ON UPDATE RESTRICT
 );
@@ -26,31 +28,31 @@ CREATE INDEX ix_intern_promotion_1 ON `newro-factory-db`.intern (promotion_id);
 
 CREATE TABLE `newro-factory-db`.chapter
 (
-    id          INT          NOT NULL AUTO_INCREMENT,
-    name        VARCHAR(100) NOT NULL,
-    parent_path VARCHAR(500) NOT NULL DEFAULT '/',
-    PRIMARY KEY (id)
+    `id`          INT          NOT NULL AUTO_INCREMENT,
+    `name`        VARCHAR(100) NOT NULL,
+    `parent_path` VARCHAR(500) NOT NULL DEFAULT '/',
+    PRIMARY KEY (`id`)
 );
 
 CREATE TABLE `newro-factory-db`.question
 (
-    id         INT          NOT NULL AUTO_INCREMENT,
-    title      VARCHAR(255) NOT NULL,
-    statement  TEXT         NOT NULL,
-    chapter_id INT          NOT NULL,
-    PRIMARY KEY (id),
-    FOREIGN KEY (chapter_id) REFERENCES `newro-factory-db`.chapter (id)
+    `id`         INT          NOT NULL AUTO_INCREMENT,
+    `title`      VARCHAR(255) NOT NULL,
+    `statement`  TEXT         NOT NULL,
+    `chapter_id` INT          NOT NULL,
+    PRIMARY KEY (`id`),
+    FOREIGN KEY (`chapter_id`) REFERENCES `newro-factory-db`.chapter (`id`)
 );
 
 CREATE TABLE `newro-factory-db`.answer
 (
-    id           INT          NOT NULL AUTO_INCREMENT,
-    label        VARCHAR(1)   NOT NULL,
-    text         VARCHAR(255) NOT NULL,
-    valid_answer BOOLEAN      NOT NULL,
-    question_id  INT          NOT NULL,
-    PRIMARY KEY (id),
-    FOREIGN KEY (question_id) REFERENCES `newro-factory-db`.question (id)
+    `id`           INT          NOT NULL AUTO_INCREMENT,
+    `label`        VARCHAR(1)   NOT NULL,
+    `text`         VARCHAR(255) NOT NULL,
+    `valid_answer` BOOLEAN      NOT NULL,
+    `question_id`  INT          NOT NULL,
+    PRIMARY KEY (`id`),
+    FOREIGN KEY (`question_id`) REFERENCES `newro-factory-db`.question (`id`)
 );
 
 INSERT INTO `newro-factory-db`.promotion (id, name)
@@ -58,64 +60,61 @@ VALUES  (1, 'Février 2011'),
         (2, 'Mars 2011'),
         (3, 'Avril 2011'),
         (4, 'Février 2012');
-ALTER TABLE `newro-factory-db`.promotion ALTER COLUMN id RESTART WITH 5;
 
-INSERT INTO `newro-factory-db`.intern (id, first_name, last_name, arrival, formation_over, promotion_id)
-VALUES  (1, 'Abel', 'Boulle', null, null, 1),
-        (2, 'Abélard', 'Grandjean', null, null, 1),
-        (3, 'Abelin', 'Bourguignon', null, null, 1),
-        (4, 'Abraham', 'Delannoy', null, null, 1),
-        (5, 'Achille', 'Charbonnier', null, null, 1),
-        (6, 'Adam', 'Bousquet', null, null, 1),
-        (7, 'Adélie', 'Bellegarde', null, null, 1),
-        (8, 'Adélie', 'Lavaud', null, null, 1),
-        (9, 'Adélie', 'Rouzet', null, null, 1),
-        (10, 'Adrienne', 'Geiger', null, null, 1),
-        (11, 'Adrienne', 'Mazet', null, null, 1),
-        (12, 'Agnès', 'Courtial', null, null, 1),
-        (13, 'Alain', 'Delcroix', null, null, 1),
-        (14, 'Alberte', 'Dimont', null, null, 1),
-        (15, 'Alceste', 'Marchant', null, null, 2),
-        (16, 'Alceste', 'Serre', null, null, 2),
-        (17, 'Alexandre', 'Bethune', null, null, 2),
-        (18, 'Alfred', 'Lacan', null, null, 2),
-        (19, 'Alix', 'Arsenault', null, null, 2),
-        (20, 'JOHN', 'JONES', null, null, 2),
-        (21, 'Amand', 'Baschet', null, null, 2),
-        (22, 'Amand', 'Silvestre', null, null, 2),
-        (23, 'Amanda', 'Morel', null, null, 2),
-        (24, 'Anaïs', 'Monteil', null, null, 2),
-        (25, 'Andrée', 'Philidor', null, null, 2),
-        (26, 'Angèle', 'Beauchamp', null, null, 2),
-        (27, 'Angèle', 'Cochet', null, null, 2),
-        (28, 'Angeline', 'Cuvier', null, null, 2),
-        (29, 'Anne-Laure', 'Bertillon', null, null, 2),
-        (30, 'Anne-Marie', 'Brochard', null, null, 2),
-        (31, 'Anne-Sophie', 'Berger', null, null, 2),
-        (32, 'Annick', 'Desmarais', null, null, 2),
-        (33, 'Annick', 'Gérald', null, null, 3),
-        (34, 'Annick', 'Picard', null, null, 3),
-        (35, 'Antoine', 'Berger', null, null, 3),
-        (36, 'Ariane', 'Magnier', null, null, 3),
-        (37, 'Armel', 'Ardouin', null, null, 3),
-        (38, 'Armelle', 'Ouvrard', null, null, 3),
-        (39, 'Arsène', 'Simon', null, null, 3),
-        (40, 'Arsène', 'Trouvé', null, null, 4),
-        (41, 'Aubin', 'Guilloux', null, null, 4),
-        (42, 'Aude', 'Besson', null, null, 4),
-        (43, 'Audrey', 'Bélanger', null, null, 4),
-        (44, 'Augustin', 'Chaney', null, null, 4),
-        (45, 'Augustine', 'Niel', null, null, 4),
-        (46, 'Aurélia', 'Allard', null, null, 4),
-        (47, 'Axelle', 'Chuquet', null, null, 4),
-        (48, 'Axelle', 'Thiers', null, null, 4),
-        (49, 'Aymeric', 'Moreau', null, null, 4),
-        (50, 'Barbe', 'Droz', null, null, 4);
-ALTER TABLE `newro-factory-db`.intern ALTER COLUMN id RESTART WITH 51;
+INSERT INTO `newro-factory-db`.intern (first_name, last_name, arrival, formation_over, promotion_id)
+VALUES  ('Abel', 'Boulle', null, null, 1),
+        ('Abélard', 'Grandjean', null, null, 1),
+        ('Abelin', 'Bourguignon', null, null, 1),
+        ('Abraham', 'Delannoy', null, null, 1),
+        ('Achille', 'Charbonnier', null, null, 1),
+        ('Adam', 'Bousquet', null, null, 1),
+        ('Adélie', 'Bellegarde', null, null, 1),
+        ('Adélie', 'Lavaud', null, null, 1),
+        ('Adélie', 'Rouzet', null, null, 1),
+        ('Adrienne', 'Geiger', null, null, 1),
+        ('Adrienne', 'Mazet', null, null, 1),
+        ('Agnès', 'Courtial', null, null, 1),
+        ('Alain', 'Delcroix', null, null, 1),
+        ('Alberte', 'Dimont', null, null, 1),
+        ('Alceste', 'Marchant', null, null, 2),
+        ('Alceste', 'Serre', null, null, 2),
+        ('Alexandre', 'Bethune', null, null, 2),
+        ('Alfred', 'Lacan', null, null, 2),
+        ('Alix', 'Arsenault', null, null, 2),
+        ('Alix', 'Gardet', null, null, 2),
+        ('Amand', 'Baschet', null, null, 2),
+        ('Amand', 'Silvestre', null, null, 2),
+        ('Amanda', 'Morel', null, null, 2),
+        ('Anaïs', 'Monteil', null, null, 2),
+        ('Andrée', 'Philidor', null, null, 2),
+        ('Angèle', 'Beauchamp', null, null, 2),
+        ('Angèle', 'Cochet', null, null, 2),
+        ('Angeline', 'Cuvier', null, null, 2),
+        ('Anne-Laure', 'Bertillon', null, null, 2),
+        ('Anne-Marie', 'Brochard', null, null, 2),
+        ('Anne-Sophie', 'Berger', null, null, 2),
+        ('Annick', 'Desmarais', null, null, 2),
+        ('Annick', 'Gérald', null, null, 3),
+        ('Annick', 'Picard', null, null, 3),
+        ('Antoine', 'Berger', null, null, 3),
+        ('Ariane', 'Magnier', null, null, 3),
+        ('Armel', 'Ardouin', null, null, 3),
+        ('Armelle', 'Ouvrard', null, null, 3),
+        ('Arsène', 'Simon', null, null, 3),
+        ('Arsène', 'Trouvé', null, null, 4),
+        ('Aubin', 'Guilloux', null, null, 4),
+        ('Aude', 'Besson', null, null, 4),
+        ('Audrey', 'Bélanger', null, null, 4),
+        ('Augustin', 'Chaney', null, null, 4),
+        ('Augustine', 'Niel', null, null, 4),
+        ('Aurélia', 'Allard', null, null, 4),
+        ('Axelle', 'Chuquet', null, null, 4),
+        ('Axelle', 'Thiers', null, null, 4),
+        ('Aymeric', 'Moreau', null, null, 4),
+        ('Barbe', 'Droz', null, null, 4);
 
 INSERT INTO `newro-factory-db`.chapter (id, name, parent_path)
 VALUES  (5, 'OCA', '/');
-ALTER TABLE `newro-factory-db`.chapter ALTER COLUMN id RESTART WITH 6;
 
 INSERT INTO `newro-factory-db`.question (id, title, statement, chapter_id)
 VALUES  (364, 'OCA Final Exam - 1', '<p>What is the output if this class is run with java Indexing cars carts?&nbsp;</p><p>&nbsp;</p><pre><code class="language-java">public class Indexing {
@@ -376,7 +375,6 @@ public class Deer {
 		System.out.print(seeds);
 	}
 }</code></pre>', 5);
-ALTER TABLE `newro-factory-db`.question ALTER COLUMN id RESTART WITH 404;
 
 INSERT INTO `newro-factory-db`.answer (id, label, text, valid_answer, question_id)
 VALUES  (3, 'A', 'cars', 0, 364),
@@ -606,4 +604,4 @@ VALUES  (3, 'A', 'cars', 0, 364),
         (226, 'E', 'static import food.Grass.getGrass;
     static import food.Grass.seeds;', 0, 403),
         (227, 'F', 'import static food.Grass.*;', 1, 403);
-ALTER TABLE `newro-factory-db`.answer ALTER COLUMN id RESTART WITH 227;
+

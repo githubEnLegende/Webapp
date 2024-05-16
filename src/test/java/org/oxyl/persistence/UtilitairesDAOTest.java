@@ -1,15 +1,28 @@
 package org.oxyl.persistence;
 
 import org.junit.Test;
-import static org.junit.Assert.assertEquals;
+import org.junit.jupiter.api.BeforeEach;
+import org.oxyl.context.Context;
 
+import static org.junit.Assert.assertEquals;
+import org.springframework.context.ApplicationContext;
 
 import java.sql.Connection;
 
 
 public class UtilitairesDAOTest{
 
-    private UtilitairesDAO utilitairesDAO;
+
+    private ApplicationContext context = Context.getInstance().getContext();
+    private UtilitairesDAO utilitairesDAO = context.getBean(UtilitairesDAO.class);
+
+    private H2Config h2Config = H2Config.getInstance();
+
+    @BeforeEach
+    public void setup(){
+        h2Config.setup();
+    }
+
     @Test
     public void testGetMaxID() {
         System.setProperty("environment", "test");

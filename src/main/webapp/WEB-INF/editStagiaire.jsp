@@ -17,6 +17,8 @@
 <header class="navbar navbar-inverse navbar-fixed-top">
     <div class="container">
         <a class="navbar-brand" href="dashboard"> Newro Factory </a>
+        <a class="navbar-brand" href="question"> Questions </a>
+        <a class="navbar-brand" href="chapitre"> Chapitres </a>
     </div>
 </header>
 <section id="main">

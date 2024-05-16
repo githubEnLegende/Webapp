@@ -2,23 +2,24 @@ package org.oxyl.persistence;
 
 import org.junit.Test;
 import org.junit.jupiter.api.BeforeEach;
+import org.oxyl.context.Context;
 import org.oxyl.model.Promotion;
 import org.oxyl.model.Stagiaire;
 import org.oxyl.model.Page;
+import org.springframework.context.ApplicationContext;
 
 import static org.junit.Assert.*;
 import static org.mockito.Mockito.mock;
 
 public class InternDAOTest {
 
-    private H2Config h2Config = H2Config.getInstance();
-
-    private StagiaireDAO stagiaireDAO;
+    private final H2Config h2Config = H2Config.getInstance();
+    private StagiaireDAO stagiaireDAO = Context.getInstance().getContext().getBean(StagiaireDAO.class);
 
     @BeforeEach
     public void setup(){
-        System.setProperty("environment", "test");
         h2Config.setup();
+
     }
 
     @Test
@@ -30,6 +31,7 @@ public class InternDAOTest {
 
     @Test
     public void testIntern() {
+        setup();
         var option = stagiaireDAO.detailStagiaire(20);
         assertTrue(option.isPresent());
         Stagiaire stagiaire = option.get();
