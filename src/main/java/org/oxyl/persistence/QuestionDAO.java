@@ -1,6 +1,8 @@
 package org.oxyl.persistence;
 
 import com.zaxxer.hikari.HikariDataSource;
+import org.oxyl.mapper.MapperQuestion;
+import org.oxyl.model.Chapitre;
 import org.oxyl.model.Question;
 import org.oxyl.model.Reponse;
 import org.oxyl.mapper.MapperReponse;
@@ -12,6 +14,9 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Optional;
 
 @Repository
 public class QuestionDAO {
@@ -20,9 +25,11 @@ public class QuestionDAO {
     private MapperReponse mapperReponse;
 
     private final HikariDataSource dataSource;
+    private MapperQuestion mapperQuestion;
 
-    public QuestionDAO(HikariDataSource dataSource) {
+    public QuestionDAO(HikariDataSource dataSource, MapperQuestion mapperQuestion) {
         this.dataSource = dataSource;
+        this.mapperQuestion = mapperQuestion;
     }
 
     public void getQuestionById(int questionId) {
@@ -94,6 +101,23 @@ public class QuestionDAO {
         } catch (SQLException e) {
             logger.error("Problème lors de l'accès à la bdd", e);
             System.out.println("Erreur de connexion lors de la supression question");
+        }
+    }
+
+    public Optional<List<Question>> getAllQuestion(){
+        String sql = "SELECT id, title, statement, chapter_id FROM question";
+        try (Connection conn = dataSource.getConnection();
+             PreparedStatement stmt = conn.prepareStatement(sql)) {
+            List<Question> questions = new ArrayList<>();
+
+            ResultSet rs = stmt.executeQuery();
+            while (rs.next()) {
+                questions.add(mapperQuestion.rsToQuestion(rs).get());
+            }
+            return Optional.of(questions);
+        } catch (SQLException e) {
+            logger.error("Erreur lors de la récupération des stagiaires.", e);
+            return Optional.empty();
         }
     }
 }
