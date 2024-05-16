@@ -4,11 +4,10 @@ import org.junit.Test;
 import org.junit.jupiter.api.BeforeEach;
 import org.oxyl.model.Promotion;
 import org.oxyl.model.Stagiaire;
-import org.oxyl.newro.Page;
+import org.oxyl.model.Page;
 
 import static org.junit.Assert.*;
 import static org.mockito.Mockito.mock;
-import static org.oxyl.persistence.StagiaireDAO.*;
 
 public class InternDAOTest {
 

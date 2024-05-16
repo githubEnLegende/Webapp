@@ -3,12 +3,12 @@ package org.oxyl.newro;
 import junit.framework.TestCase;
 import org.mockito.Mock;
 import org.mockito.Mockito;
+import org.oxyl.model.Page;
 import org.oxyl.model.Stagiaire;
 
 import java.util.List;
 
 import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.when;
 
 public class PageTest extends TestCase {
     @Mock

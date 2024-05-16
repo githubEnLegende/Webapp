@@ -3,7 +3,7 @@ package org.oxyl.persistence;
 import com.zaxxer.hikari.HikariDataSource;
 import org.oxyl.mapper.MapperStagiaire;
 import org.oxyl.model.Stagiaire;
-import org.oxyl.newro.Page;
+import org.oxyl.model.Page;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Repository;
@@ -25,6 +25,22 @@ public class StagiaireDAO {
     public StagiaireDAO(HikariDataSource dataSource, MapperStagiaire mapperStagiaire) {
         this.dataSource = dataSource;
         this.mapperStagiaire = mapperStagiaire;
+    }
+
+    public int countStagiaire() {
+        String query = "SELECT COUNT(*) FROM intern";
+
+        try(Connection conn = dataSource.getConnection();
+        PreparedStatement stmt = conn.prepareStatement(query)){
+
+            ResultSet rs = stmt.executeQuery(query);
+            rs.next();
+            return rs.getInt(1);
+
+        } catch (SQLException e) {
+            logger.error("Error while counting stagiaire", e);
+            return 0;
+        }
     }
 
     public Optional<List<Stagiaire>> getAllStagiaires() {
@@ -75,40 +91,44 @@ public class StagiaireDAO {
 
     }
 
-    public void getPageStagiaire(String name, Page<Stagiaire> page){
+    public int getPageStagiaire(String name, Page<Stagiaire> page){
 
-//        String sql = """
-//                SELECT id, first_name, last_name, arrival, formation_over, promotion_id
-//                FROM intern WHERE first_name LIKE ? OR last_name LIKE ?
-//                """;
-
-        String sql2 = "SELECT intern.id, first_name, last_name, arrival, formation_over, promotion_id, promotion.name " +
+        String sql = "SELECT intern.id, first_name, last_name, arrival, formation_over, promotion_id, promotion.name " +
                 "FROM intern LEFT JOIN promotion ON intern.promotion_id = promotion.id WHERE first_name LIKE ? OR last_name LIKE ?";
+        String countSql = "SELECT COUNT(*) FROM intern WHERE first_name LIKE ? OR last_name LIKE ?";
 
-        StringBuilder query = new StringBuilder(sql2);
+        StringBuilder query = new StringBuilder(sql);
         query.append(" ORDER BY ").append(page.getOrder()).append(" LIMIT ? OFFSET ?;");
 
         name = "%" + name + "%";
         try (Connection conn = dataSource.getConnection();
-             PreparedStatement stmt = conn.prepareStatement(query.toString())) {
+             PreparedStatement stmtData = conn.prepareStatement(query.toString());
+             PreparedStatement stmtCount = conn.prepareStatement(countSql)) {
 
-            stmt.setString(1, name);
-            stmt.setString(2, name);
-            stmt.setInt(3, page.getNbRow());
-            stmt.setInt(4, (page.getPageNumber() - 1) * page.getNbRow());
+            stmtData.setString(1, name);
+            stmtData.setString(2, name);
+            stmtData.setInt(3, page.getNbRow());
+            stmtData.setInt(4, (page.getPageNumber() - 1) * page.getNbRow());
 
-            try (ResultSet rs = stmt.executeQuery()) {
-                while (rs.next()) {
+            stmtCount.setString(1, name);
+            stmtCount.setString(2, name);
+
+            try (ResultSet rsData = stmtData.executeQuery();
+                ResultSet rsCount = stmtCount.executeQuery();) {
+                while (rsData.next()) {
                     Stagiaire stagiaire = null;
-                    Optional<Stagiaire> intern = mapperStagiaire.rsToStagiaire(rs);
+                    Optional<Stagiaire> intern = mapperStagiaire.rsToStagiaire(rsData);
                     if (intern.isPresent()) {
                         stagiaire = intern.get();
                     }
                     page.addContent(stagiaire);
                 }
+                rsCount.next();
+                return rsCount.getInt(1);
             }
         } catch (SQLException e) {
             logger.error("Probleme lors de la connexion pour l'affichage sur search", e);
+            return 0;
         }
     }
 

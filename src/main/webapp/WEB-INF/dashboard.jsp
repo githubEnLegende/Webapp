@@ -23,7 +23,7 @@
     <section id="main">
         <div class="container">
             <h1 id="homeTitle">
-                <c:out value="${requestScope.stagiaires.size()} Stagiaires trouvés"/>
+                <c:out value="${requestScope.countStagiaire} Stagiaires trouvés"/>
             </h1>
             <div id="actions" class="form-horizontal">
                 <div class="pull-left">
@@ -100,8 +100,13 @@
     <footer class="navbar-fixed-bottom">
         <div class="container text-center">
             <ul class="pagination">
-                <c:set var="startPage" value="${Math.min(totalPages-4,Math.max(1, page - 2))}"/>
-                <c:set var="endPage" value="${Math.max(5,Math.min(totalPages+0, page + 2))}"/>
+                <c:set var="startPage" value="${Math.min(Math.max(1, totalPages-4),Math.max(1, page - 2))}"/>
+                <c:if test="${totalPages>4}">
+                    <c:set var="endPage" value="${Math.max(5,Math.min(totalPages+0, page + 2))}"/>
+                </c:if>
+                <c:if test="${totalPages<4}">
+                    <c:set var="endPage" value="${Math.max(1,Math.min(totalPages+0, page + 2))}"/>
+                </c:if>
                 <li>
                     <a href="dashboard?page=1&size=${size}&order=${requestScope.order}&search=${search}" aria-label="Previous">
                         <span aria-hidden="true">&laquo;</span>

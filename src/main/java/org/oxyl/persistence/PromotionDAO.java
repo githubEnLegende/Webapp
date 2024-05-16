@@ -3,11 +3,9 @@ package org.oxyl.persistence;
 import com.zaxxer.hikari.HikariDataSource;
 import org.oxyl.mapper.MapperPromotion;
 import org.oxyl.model.Promotion;
-import org.oxyl.newro.Page;
+import org.oxyl.model.Page;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.context.ApplicationContext;
-import org.springframework.context.annotation.AnnotationConfigApplicationContext;
 import org.springframework.stereotype.Repository;
 
 import java.sql.Connection;

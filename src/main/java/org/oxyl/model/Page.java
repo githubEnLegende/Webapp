@@ -1,4 +1,4 @@
-package org.oxyl.newro;
+package org.oxyl.model;
 
 import java.util.ArrayList;
 import java.util.List;

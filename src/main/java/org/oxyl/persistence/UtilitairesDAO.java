@@ -59,4 +59,8 @@ public class UtilitairesDAO {
             return 0;
         }
     }
+
+    public int getTotalPages(int count, int rowsPerPage) {
+        return (int) Math.ceil((double) count / rowsPerPage);
+    }
 }

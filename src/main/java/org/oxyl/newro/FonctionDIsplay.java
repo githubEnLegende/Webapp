@@ -1,7 +1,5 @@
 package org.oxyl.newro;
 
-import static org.oxyl.persistence.UtilitairesDAO.*;
-
 import java.sql.Connection;
 import java.sql.SQLException;
 import java.time.LocalDate;
@@ -10,6 +8,8 @@ import java.time.format.DateTimeParseException;
 import java.util.InputMismatchException;
 import java.util.Scanner;
 
+import org.oxyl.context.Context;
+import org.oxyl.model.Page;
 import org.springframework.context.ApplicationContext;
 import org.oxyl.model.Promotion;
 import org.oxyl.model.Stagiaire;
@@ -21,7 +21,8 @@ import org.springframework.context.annotation.AnnotationConfigApplicationContext
 public class FonctionDIsplay {
 
     private static final Logger logger = LoggerFactory.getLogger(FonctionDIsplay.class);
-    private static ApplicationContext context = new AnnotationConfigApplicationContext(DataSource.class);
+
+    private static ApplicationContext context = Context.getInstance().getContext();
     private static UtilitairesDAO utilitairesDAO = context.getBean(UtilitairesDAO.class);
     private static StagiaireDAO stagiaireDAO = context.getBean(StagiaireDAO.class);
     private static PromotionDAO promotionDAO = context.getBean(PromotionDAO.class);

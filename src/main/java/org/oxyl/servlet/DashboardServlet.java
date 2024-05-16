@@ -7,14 +7,12 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import org.oxyl.context.Context;
 import org.oxyl.model.Stagiaire;
-import org.oxyl.newro.Page;
-import org.oxyl.persistence.DataSource;
+import org.oxyl.model.Page;
 import org.oxyl.persistence.StagiaireDAO;
 import org.oxyl.persistence.UtilitairesDAO;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.context.ApplicationContext;
-import org.springframework.context.annotation.AnnotationConfigApplicationContext;
 
 
 import java.io.IOException;
@@ -58,14 +56,20 @@ public class DashboardServlet extends HttpServlet {
         }
 
         page.setOrder(SecureOrder.inEnum(order));
+        int countStagiaire = stagiaireDAO.countStagiaire();
+        request.setAttribute("countStagiaire", countStagiaire);
 
+        int totalPages = 0;
         if (search != null && !search.isEmpty()) {
-            stagiaireDAO.getPageStagiaire(search, page);
+            int countSize = stagiaireDAO.getPageStagiaire(search, page);
+            request.setAttribute("countStagiaire", countSize);
+            totalPages = utilitairesDAO.getTotalPages(countSize, page.getNbRow());
+
         } else {
             stagiaireDAO.getPageStagiaire(page);
+            totalPages = utilitairesDAO.getTotalPages("intern", page.getNbRow());
         }
 
-        int totalPages = utilitairesDAO.getTotalPages("intern", page.getNbRow());
 
         request.setAttribute("size", page.getNbRow());
         request.setAttribute("page", page.getPageNumber());
