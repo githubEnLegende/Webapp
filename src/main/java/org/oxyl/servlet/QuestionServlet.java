@@ -32,7 +32,6 @@ public class QuestionServlet extends HttpServlet {
             throws ServletException, IOException {
 
         logger.info("Entrée dans le Get Chapitre");
-
         var optQuestions = questionDAO.getAllQuestion();
         List<Question> questions;
         if (optQuestions.isPresent()) {

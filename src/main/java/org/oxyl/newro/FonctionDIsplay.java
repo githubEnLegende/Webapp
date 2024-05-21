@@ -177,18 +177,19 @@ public class FonctionDIsplay {
         String finFormation = null;
         int promo = 0;
 
+
         switch (userChoice) {
             case "0":
                 break;
 
             case "1":
                 prenom = sc.nextLine();
-                stagiaireDAO.updateIntern(prenom, nom, arrive, finFormation, promo, id);
+                //stagiaireDAO.updateIntern(prenom, nom, arrive, finFormation, promo, id);
                 break;
 
             case "2":
                 nom = sc.nextLine();
-                stagiaireDAO.updateIntern(prenom, nom, arrive, finFormation, promo, id);
+                //stagiaireDAO.updateIntern(prenom, nom, arrive, finFormation, promo, id);
                 break;
 
             case "3":
@@ -200,7 +201,7 @@ public class FonctionDIsplay {
                     } else if (promo < 1) {
                         promo = 1;
                     }
-                    stagiaireDAO.updateIntern(prenom, nom, arrive, finFormation, promo, id);
+                   // stagiaireDAO.updateIntern(prenom, nom, arrive, finFormation, promo, id);
                 } catch (NumberFormatException e) {
                     System.out.println("not a valid ID");
                     break;
@@ -209,7 +210,7 @@ public class FonctionDIsplay {
 
             case "4":
                 arrive = sc.nextLine();
-                stagiaireDAO.updateIntern(prenom, nom, arrive, finFormation, promo, id);
+                //stagiaireDAO.updateIntern(prenom, nom, arrive, finFormation, promo, id);
                 break;
 
             case "5":
@@ -219,7 +220,7 @@ public class FonctionDIsplay {
                 choixUtilisateur = sc.next();
                 try {
                     promo = Integer.parseInt(choixUtilisateur);
-                    stagiaireDAO.updateIntern(prenom, nom, arrive, finFormation, promo, id);
+                    //stagiaireDAO.updateIntern(prenom, nom, arrive, finFormation, promo, id);
                 } catch (NumberFormatException e) {
                     System.out.println("not a valid ID");
                     break;

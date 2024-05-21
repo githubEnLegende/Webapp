@@ -34,7 +34,7 @@ public class Page<T> {
         return content;
     }
 
-    public void setStagiaires(List<T> content) {
+    public void setContent(List<T> content) {
         this.content = content;
     }
 

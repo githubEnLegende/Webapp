@@ -1,15 +1,13 @@
 package org.oxyl.persistence;
 
 import com.zaxxer.hikari.HikariDataSource;
-import jdk.jshell.execution.Util;
+import org.oxyl.persistence.jdbcconfig.JdbcTemplateConfig;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.dao.DataAccessException;
+import org.springframework.dao.EmptyResultDataAccessException;
+import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;
-
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
 
 @Repository
 public class UtilitairesDAO {
@@ -17,47 +15,38 @@ public class UtilitairesDAO {
     private final HikariDataSource dataSource;
     private final static Logger logger = LoggerFactory.getLogger(UtilitairesDAO.class);
 
-    public UtilitairesDAO(HikariDataSource dataSource) {
+    private final JdbcTemplate jdbcTemplate;
+
+    public UtilitairesDAO(HikariDataSource dataSource, JdbcTemplateConfig jdbcTemplate) {
         this.dataSource = dataSource;
+        this.jdbcTemplate = jdbcTemplate.jdbcTemplate();
     }
 
     public int getMaxID() {
-        try (Connection conn = dataSource.getConnection()) {
-            int maxId = 0;
-            String sql = "SELECT MAX(ID) FROM intern";
-            ResultSet rs = null;
-            try {
-                PreparedStatement stmt = conn.prepareStatement(sql);
-                rs = stmt.executeQuery();
-                if (rs.next()) {
-                    return maxId = rs.getInt(1);
-                }
-            } catch (SQLException e) {
-                logger.error("Erreur lors de la récupération du max ID", e);
-            }
-            return maxId;
-        } catch (SQLException e) {
+        int maxId = 0;
+
+        String sql = "SELECT MAX(ID) FROM intern";
+        try {
+            maxId = jdbcTemplate.queryForObject(sql, Integer.class);
+        } catch (EmptyResultDataAccessException e) {
+            logger.error("Aucun résultat trouvé pour la récupération du max ID", e);
+        } catch (DataAccessException e) {
             logger.error("Erreur lors de la récupération du max ID", e);
         }
-        return 0;
+        return maxId;
     }
 
     public int getTotalPages(String table, int rowsPerPage) {
-
         String countQuery = "SELECT COUNT(*) FROM " + table;
-
-        try (Connection connection = dataSource.getConnection();
-             PreparedStatement stmt = connection.prepareStatement(countQuery);) {
-            ResultSet rs = stmt.executeQuery();
-            rs.next();
-            int totalRows = rs.getInt(1);
-
-            // Calcul du nombre total de pages
-            return (int) Math.ceil((double) totalRows / rowsPerPage);
-        } catch (SQLException e) {
-            logger.error("Erreur lors de la récupération du total des pages", e);
-            return 0;
+        int totalRows = 0;
+        try {
+            totalRows = jdbcTemplate.queryForObject(countQuery, Integer.class);
+        } catch (EmptyResultDataAccessException e) {
+            logger.error("Aucun résultat trouvé pour la récupération du max des pages", e);
+        } catch (DataAccessException e) {
+            logger.error("Erreur lors de la récupération du max des pages", e);
         }
+        return (int) Math.ceil((double) totalRows / rowsPerPage);
     }
 
     public int getTotalPages(int count, int rowsPerPage) {

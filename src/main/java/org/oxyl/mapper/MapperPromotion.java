@@ -30,4 +30,16 @@ public class MapperPromotion {
             return Optional.empty();
         }
     }
+
+    public Promotion stringToPromotion(String promotion) {
+        String[] parts = promotion.split(",");
+
+        // La première partie est entre crochets, donc nous devons supprimer les crochets
+        String id = parts[0].replace("[", "");
+
+        // La deuxième partie est le nom de la promotion, donc nous pouvons l'utiliser telle quelle
+        String promotionName = parts[1].replace("]", "").trim();;
+
+        return new Promotion.PromotionBuilder(Integer.parseInt(id), promotionName).build();
+    }
 }

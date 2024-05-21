@@ -8,6 +8,7 @@ import jakarta.servlet.http.HttpServletResponse;
 import org.oxyl.context.Context;
 import org.oxyl.dto.StagiaireDTO;
 import org.oxyl.mapper.MapperDate;
+import org.oxyl.mapper.MapperPromotion;
 import org.oxyl.model.Promotion;
 import org.oxyl.model.Stagiaire;
 import org.oxyl.persistence.DataSource;
@@ -32,12 +33,14 @@ public class EditStagiaireServlet extends HttpServlet {
     private PromotionDAO promotionDAO;
     private StagiaireDAO stagiaireDAO;
     private ValidatorStagiaire validatorStagiaire;
+    private MapperDate mapperDate;
     ApplicationContext context = Context.getInstance().getContext();
 
     public void init(){
         stagiaireDAO = context.getBean(StagiaireDAO.class);
         promotionDAO = context.getBean(PromotionDAO.class);
         validatorStagiaire = context.getBean(ValidatorStagiaire.class);
+        mapperDate = context.getBean(MapperDate.class);
     }
 
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
@@ -65,17 +68,21 @@ public class EditStagiaireServlet extends HttpServlet {
         String firstName = request.getParameter("firstName");
         String arrival = request.getParameter("arrival");
         String finFormation = request.getParameter("finFormation");
-        String promotionId = request.getParameter("promotionId");
+        String[] promotion = request.getParameter("promotion").replace("[", "").replace("]", "").split(",");
 
-        StagiaireDTO stagiaire = new StagiaireDTO(lastName, firstName, arrival, finFormation, promotionId);
+        StagiaireDTO stagiaire = new StagiaireDTO(lastName, firstName, arrival, finFormation, promotion[0]);
         Map<Integer, String> stagiaireValidator = validatorStagiaire.stagiaireValidator(stagiaire);
 
         if (stagiaireValidator.isEmpty()) {
 
-            int stagId = Integer.parseInt(id);
-            int promoId = Integer.parseInt(promotionId);
+            Promotion promo = new Promotion.PromotionBuilder(Integer.parseInt(promotion[0]), promotion[1]).build();
 
-            stagiaireDAO.updateIntern(firstName, lastName, arrival, finFormation, promoId, stagId);
+            Stagiaire intern = new Stagiaire.StagiaireBuilder(Integer.parseInt(id),
+                    firstName,
+                    lastName,
+                    mapperDate.stringtoLocalDate(arrival)).formationOver(mapperDate.stringtoLocalDate(finFormation)).promotion(promo).build();
+
+            stagiaireDAO.updateIntern(intern);
             response.sendRedirect("dashboard");
         } else {
             System.out.println("Stagiaire non valide");
@@ -83,16 +90,6 @@ public class EditStagiaireServlet extends HttpServlet {
             doGet(request, response);
             request.getRequestDispatcher("WEB-INF/editStagiaire.jsp").forward(request, response);
         }
-
-
-//        ValidatorStagiaire stagaireValidator = new ValidatorStagiaire(stagiaire);
-//
-//        if (stagaireValidator.isValide()){
-//            insertIntern(stagiaire);
-//            response.sendRedirect("dashboard");
-//        }else{
-//            System.out.println("Stagiaire non valide");
-//            request.setAttribute("stagiaireValidator", stagaireValidator);
     }
 }
 

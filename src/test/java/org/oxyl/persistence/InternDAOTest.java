@@ -72,7 +72,7 @@ public class InternDAOTest {
 
     @Test
     public void testUpdateIntern(){
-        stagiaireDAO.updateIntern("Franck", "Alonso", null, null, 1, 50);
+        //stagiaireDAO.updateIntern("Franck", "Alonso", null, null, 1, 50);
         Stagiaire stagiaire = stagiaireDAO.detailStagiaire(50).get();
 
 

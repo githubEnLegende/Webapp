@@ -9,13 +9,20 @@ import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
 
+import com.zaxxer.hikari.HikariDataSource;
 import org.h2.tools.RunScript;
+import org.springframework.stereotype.Component;
 
-
+@Component
 public class H2Config {
     private static H2Config instance;
+    private static HikariDataSource dataSource;
 
     private H2Config() {
+    }
+
+    public H2Config(HikariDataSource hikariDataSource) {
+        dataSource = hikariDataSource;
     }
 
     public static H2Config getInstance() {
@@ -28,7 +35,7 @@ public class H2Config {
     public void setup() {
         ClassLoader loader =  H2Config.class.getClassLoader();
         try (
-                Connection connection = MySqlConnexion.getInstance().getConnection();
+                Connection connection = dataSource.getConnection();
                 InputStream input = loader.getResourceAsStream("setup.sql")
         ) {
             if (input == null) throw new NullPointerException();

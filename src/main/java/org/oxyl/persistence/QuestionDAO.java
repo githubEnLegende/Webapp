@@ -2,12 +2,13 @@ package org.oxyl.persistence;
 
 import com.zaxxer.hikari.HikariDataSource;
 import org.oxyl.mapper.MapperQuestion;
-import org.oxyl.model.Chapitre;
 import org.oxyl.model.Question;
 import org.oxyl.model.Reponse;
 import org.oxyl.mapper.MapperReponse;
+import org.oxyl.persistence.jdbcconfig.JdbcTemplateConfig;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;
 
 import java.sql.Connection;
@@ -19,15 +20,18 @@ import java.util.*;
 @Repository
 public class QuestionDAO {
 
-    private static Logger logger = LoggerFactory.getLogger(QuestionDAO.class);
-    private MapperReponse mapperReponse;
+    private static final Logger logger = LoggerFactory.getLogger(QuestionDAO.class);
 
+    private final MapperReponse mapperReponse;
     private final HikariDataSource dataSource;
-    private MapperQuestion mapperQuestion;
+    private final MapperQuestion mapperQuestion;
+    private final JdbcTemplate jdbcTemplate;
 
-    public QuestionDAO(HikariDataSource dataSource, MapperQuestion mapperQuestion) {
+    public QuestionDAO(HikariDataSource dataSource, MapperQuestion mapperQuestion, JdbcTemplateConfig jdbcTemplate, MapperReponse mapperReponse) {
         this.dataSource = dataSource;
         this.mapperQuestion = mapperQuestion;
+        this.mapperReponse = mapperReponse;
+        this.jdbcTemplate = jdbcTemplate.jdbcTemplate();
     }
 
     public void getQuestionById(int questionId) {

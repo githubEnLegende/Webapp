@@ -18,7 +18,7 @@ public class PageTest extends TestCase {
         // Création d'un mock pour le contenu de la page
         Page<Stagiaire> page = new Page<>();
         List<Stagiaire> contentMock = Mockito.mock(List.class);
-        page.setStagiaires(contentMock);
+        page.setContent(contentMock);
 
         // Ajout de contenu à la page
         page.addContent(stagiaire);
@@ -31,7 +31,7 @@ public class PageTest extends TestCase {
         // Création d'un mock pour le contenu de la page
         Page<Stagiaire> page = new Page<>();
         List<Stagiaire> contentMock = Mockito.mock(List.class);
-        page.setStagiaires(contentMock);
+        page.setContent(contentMock);
 
         // Appel à la méthode emptyContent()
         page.emptyContent();

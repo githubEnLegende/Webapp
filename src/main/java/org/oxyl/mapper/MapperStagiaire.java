@@ -8,10 +8,11 @@ import org.oxyl.model.Promotion;
 import org.oxyl.model.Stagiaire;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.jdbc.core.RowMapper;
 import org.springframework.stereotype.Component;
 
 @Component
-public class MapperStagiaire {
+public class MapperStagiaire implements RowMapper<Stagiaire> {
 
     private static final Logger logger = LoggerFactory.getLogger(MapperStagiaire.class);
 
@@ -36,5 +37,11 @@ public class MapperStagiaire {
             logger.error("Erreur Base de donnée", e);
             return Optional.empty();
         }
+    }
+
+    @Override
+    public Stagiaire mapRow(ResultSet rs, int rowNum) throws SQLException {
+        Optional<Stagiaire> stagiaire = rsToStagiaire(rs);
+        return stagiaire.orElse(null);
     }
 }

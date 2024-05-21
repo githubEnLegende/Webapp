@@ -71,9 +71,9 @@
                             <c:if test="${not empty validator && not empty validator[(3).intValue()]}">
                                 <span style="color:red"> ${validator[(3).intValue()]} </span> <br>
                             </c:if>
-                            <label for="promotionId">Promotion</label>
-                            <select class="form-control" name="promotionId" id="promotionId">
-                                <option value="${requestScope.stagiaire.promotion.id}">${requestScope.stagiaire.promotion.name} </option>
+                            <label for="promotion">Promotion</label>
+                            <select class="form-control" name="promotion" id="promotion">
+                                <option value="${[requestScope.stagiaire.promotion.id, requestScope.stagiaire.promotion.name]}">${requestScope.stagiaire.promotion.name} </option>
                                 <c:forEach items="${requestScope.listPromo}" var="promotion">
                                     <option value="${promotion.id}">${promotion.name}</option>
                                 </c:forEach>

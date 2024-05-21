@@ -25,7 +25,7 @@ public class DashboardServlet extends HttpServlet {
 
     private StagiaireDAO stagiaireDAO;
     private UtilitairesDAO utilitairesDAO;
-    ApplicationContext context = Context.getInstance().getContext();
+    private final ApplicationContext context = Context.getInstance().getContext();
 
     public void init(){
         stagiaireDAO = context.getBean(StagiaireDAO.class);
