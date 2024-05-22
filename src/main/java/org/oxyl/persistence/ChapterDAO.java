@@ -1,18 +1,15 @@
 package org.oxyl.persistence;
 
-import com.zaxxer.hikari.HikariDataSource;
 import org.oxyl.mapper.MapperChapitre;
 import org.oxyl.model.Chapitre;
-import org.oxyl.model.Stagiaire;
+import org.oxyl.persistence.jdbcconfig.JdbcTemplateConfig;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.dao.DataAccessException;
+import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;
 
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.util.ArrayList;
+
 import java.util.List;
 import java.util.Optional;
 
@@ -20,26 +17,21 @@ import java.util.Optional;
 public class ChapterDAO {
 
     private static final Logger logger = LoggerFactory.getLogger(ChapterDAO.class);
-    private HikariDataSource dataSource;
     private MapperChapitre mapperChapitre;
+    private final JdbcTemplate jdbcTemplate;
 
-    public ChapterDAO(HikariDataSource dataSource, MapperChapitre mapperChapitre) {
-        this.dataSource = dataSource;
+
+    public ChapterDAO(MapperChapitre mapperChapitre, JdbcTemplateConfig jdbcTemplate) {
         this.mapperChapitre = mapperChapitre;
+        this.jdbcTemplate = jdbcTemplate.jdbcTemplate();
     }
 
     public Optional<List<Chapitre>> getAllChapter() {
         String sql = "SELECT id, name, parent_path FROM chapter";
-        try (Connection conn = dataSource.getConnection();
-             PreparedStatement stmt = conn.prepareStatement(sql)) {
-            List<Chapitre> chapitres = new ArrayList<>();
-
-            ResultSet rs = stmt.executeQuery();
-            while (rs.next()) {
-                chapitres.add(mapperChapitre.rsToChapitre(rs).get());
-            }
+        try {
+            List<Chapitre> chapitres = jdbcTemplate.query(sql, mapperChapitre);
             return Optional.of(chapitres);
-        } catch (SQLException e) {
+        } catch (DataAccessException e) {
             logger.error("Erreur lors de la récupération des stagiaires.", e);
             return Optional.empty();
         }

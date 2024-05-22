@@ -1,10 +1,8 @@
 package org.oxyl.persistence;
 
-import com.zaxxer.hikari.HikariDataSource;
 import org.oxyl.mapper.MapperStagiaire;
 import org.oxyl.model.Stagiaire;
 import org.oxyl.model.Page;
-import org.oxyl.persistence.RowMapper.StagiaireRowMapper;
 import org.oxyl.persistence.jdbcconfig.JdbcTemplateConfig;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -15,7 +13,6 @@ import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.sql.*;
-import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -25,12 +22,10 @@ import java.util.Optional;
 public class StagiaireDAO {
 
     private static final Logger logger = LoggerFactory.getLogger(StagiaireDAO.class);
-    private final HikariDataSource dataSource;
     private final MapperStagiaire mapperStagiaire;
     private final JdbcTemplate jdbcTemplate;
 
-    public StagiaireDAO(HikariDataSource dataSource, MapperStagiaire mapperStagiaire, JdbcTemplateConfig jdbcTemplate) {
-        this.dataSource = dataSource;
+    public StagiaireDAO(MapperStagiaire mapperStagiaire, JdbcTemplateConfig jdbcTemplate) {
         this.mapperStagiaire = mapperStagiaire;
         this.jdbcTemplate = jdbcTemplate.jdbcTemplate();
     }
@@ -52,7 +47,7 @@ public class StagiaireDAO {
         String sql = "SELECT s.id, s.first_name, s.last_name, s.arrival, s.formation_over, p.id AS promotion_id, p.name AS promotion_name FROM stagiaire s JOIN promotion p ON s.promotion_id = p.id";
         List<Stagiaire> stagiaires = new ArrayList<>();
         try {
-            stagiaires = jdbcTemplate.query(sql, new MapperStagiaire());
+            stagiaires = jdbcTemplate.query(sql, mapperStagiaire);
         } catch (DataAccessException e) {
             logger.error("Erreur lors de la récupération de tous les stagiaires", e);
         }
@@ -68,7 +63,7 @@ public class StagiaireDAO {
         query.append(" ORDER BY ").append(page.getOrder()).append(" LIMIT ? OFFSET ?;");
 
         try {
-            List<Stagiaire> stagiaires = jdbcTemplate.query(query.toString(), new MapperStagiaire(), page.getNbRow(), (page.getPageNumber() - 1) * page.getNbRow());
+            List<Stagiaire> stagiaires = jdbcTemplate.query(query.toString(), mapperStagiaire, page.getNbRow(), (page.getPageNumber() - 1) * page.getNbRow());
             page.setContent(stagiaires);
         } catch (DataAccessException e) {
             logger.error("Erreur lors de l'affichage de la page des stagiaires.", e);
@@ -88,7 +83,7 @@ public class StagiaireDAO {
 
         int count = 0;
         try {
-            List<Stagiaire> stagiaires = jdbcTemplate.query(query.toString(), new MapperStagiaire(), name, name, page.getNbRow(), (page.getPageNumber() - 1) * page.getNbRow());
+            List<Stagiaire> stagiaires = jdbcTemplate.query(query.toString(), mapperStagiaire, name, name, page.getNbRow(), (page.getPageNumber() - 1) * page.getNbRow());
             page.setContent(stagiaires);
 
             count = jdbcTemplate.queryForObject(countSql, Integer.class, name, name);
@@ -104,7 +99,7 @@ public class StagiaireDAO {
                 "FROM intern LEFT JOIN promotion ON intern.promotion_id = promotion.id WHERE intern.id = ?";
 
         try {
-            Stagiaire stagiaire = jdbcTemplate.queryForObject(sql, new MapperStagiaire(), id);
+            Stagiaire stagiaire = jdbcTemplate.queryForObject(sql, mapperStagiaire, id);
             System.out.println(stagiaire);
             return Optional.of(stagiaire);
         } catch (EmptyResultDataAccessException e) {

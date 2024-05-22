@@ -1,6 +1,5 @@
 package org.oxyl.persistence;
 
-import com.zaxxer.hikari.HikariDataSource;
 import org.oxyl.mapper.MapperQuestion;
 import org.oxyl.model.Question;
 import org.oxyl.model.Reponse;
@@ -8,13 +7,11 @@ import org.oxyl.mapper.MapperReponse;
 import org.oxyl.persistence.jdbcconfig.JdbcTemplateConfig;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.dao.DataAccessException;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;
+import org.springframework.transaction.annotation.Transactional;
 
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
 import java.util.*;
 
 @Repository
@@ -23,127 +20,81 @@ public class QuestionDAO {
     private static final Logger logger = LoggerFactory.getLogger(QuestionDAO.class);
 
     private final MapperReponse mapperReponse;
-    private final HikariDataSource dataSource;
     private final MapperQuestion mapperQuestion;
     private final JdbcTemplate jdbcTemplate;
 
-    public QuestionDAO(HikariDataSource dataSource, MapperQuestion mapperQuestion, JdbcTemplateConfig jdbcTemplate, MapperReponse mapperReponse) {
-        this.dataSource = dataSource;
+    public QuestionDAO(MapperQuestion mapperQuestion, JdbcTemplateConfig jdbcTemplate, MapperReponse mapperReponse) {
         this.mapperQuestion = mapperQuestion;
         this.mapperReponse = mapperReponse;
         this.jdbcTemplate = jdbcTemplate.jdbcTemplate();
     }
 
     public void getQuestionById(int questionId) {
-
-        PreparedStatement stmt = null;
-        ResultSet rs = null;
-        try (Connection conn = dataSource.getConnection();) {
+        try {
             String sql = "SELECT id, title, statement, chapter_id FROM question WHERE id = ?";
-            stmt = conn.prepareStatement(sql);
-            stmt.setInt(1, questionId);
-            rs = stmt.executeQuery();
+            Question question = jdbcTemplate.queryForObject(sql, mapperQuestion, questionId);
 
-            if (rs.next()) {
-                Question question = new Question.QuestionBuilder(
-                        rs.getInt("id"),
-                        rs.getString("title"),
-                        rs.getString("statement"),
-                        rs.getInt("chapter_id")).build();
-                System.out.print(question.toString());
+            if (question != null) {
+                System.out.print(question);
 
                 String answer = "SELECT id, text, valid_answer, question_id FROM answer WHERE question_id = ?";
-                stmt = conn.prepareStatement(answer);
-                stmt.setInt(1, question.getId());
-                rs = stmt.executeQuery();
+                List<Reponse> reponses = jdbcTemplate.query(answer, mapperReponse, question.getId());
 
-                while (rs.next()) {
-                    Reponse reponse = mapperReponse.rsToReponse(rs).get();
-                    System.out.println(reponse.toString());
+                for (Reponse reponse : reponses) {
+                    System.out.println(reponse);
                 }
             } else {
                 System.out.println("Aucun résultat trouvé.");
             }
-        } catch (SQLException e) {
-            logger.error("Erreur lors de l'affichage des questions", e);
-            throw new RuntimeException(e);
-        } finally {
-            try {
-                if (rs != null) rs.close();
-                if (stmt != null) stmt.close();
-            } catch (SQLException e) {
-                logger.error("Erreur lors de la fermeture des statements et result sets", e);
-            }
+        } catch(DataAccessException e){
+            logger.error("Erreur lors du get question by Id", e);
         }
     }
 
+    @Transactional
     public void deleteQuestion(int id) {
         String answerQuery = "DELETE FROM answer WHERE question_id = ?";
         String questionQuery = "DELETE FROM question WHERE id = ?";
-        try (Connection conn = dataSource.getConnection();
-             PreparedStatement answStmt = conn.prepareStatement(answerQuery);
-             PreparedStatement questStmt = conn.prepareStatement(questionQuery)) {
 
-            conn.setAutoCommit(false);
+        try {
+            jdbcTemplate.update(answerQuery, id);
+            jdbcTemplate.update(questionQuery, id);
 
-            answStmt.setInt(1, id);
-            questStmt.setInt(1, id);
-
-            answStmt.execute();
-            questStmt.execute();
-            try {
-                conn.commit();
-            } catch (SQLException e) {
-                conn.rollback();
-                System.out.println("Erreur lors du commit lors de la délétion des questions");
-                logger.error("Erreur lors du commit lors de la délétion des questions", e);
-            }
-
-            System.out.println("Question suprimée");
-        } catch (SQLException e) {
-            logger.error("Problème lors de l'accès à la bdd", e);
-            System.out.println("Erreur de connexion lors de la supression question");
+            System.out.println("Question supprimée avec succès");
+        } catch (DataAccessException e) {
+            logger.error("Erreur lors de la suppression de la question", e);
         }
     }
 
     public Optional<List<Question>> getAllQuestion() {
         String sql = "SELECT id, title, statement, chapter_id FROM question";
-        try (Connection conn = dataSource.getConnection();
-             PreparedStatement stmt = conn.prepareStatement(sql)) {
-            List<Question> questions = new ArrayList<>();
-
-            ResultSet rs = stmt.executeQuery();
-            while (rs.next()) {
-                questions.add(mapperQuestion.rsToQuestion(rs).get());
-            }
+        try {
+            List<Question> questions = jdbcTemplate.query(sql, mapperQuestion);
             return Optional.of(questions);
-        } catch (SQLException e) {
+        } catch (DataAccessException e) {
             logger.error("Erreur lors de la récupération des stagiaires.", e);
             return Optional.empty();
         }
     }
 
     public List<String> getQuestionAnswer(int id) {
-        String sql = "SELECT question.id, title, statement, chapter_id, answer.text" +
-                " FROM question LEFT JOIN answer ON answer.question_id = question.id WHERE question.id = ?";
+        String sql = "SELECT question.id, title, statement, chapter_id, answer.text "
+                + "FROM question LEFT JOIN answer ON answer.question_id = question.id WHERE question.id = ?";
 
         List<String> result = new ArrayList<>();
+        try {
+            List<Map<String, Object>> rows = jdbcTemplate.queryForList(sql, id);
 
-        try (Connection conn = dataSource.getConnection();
-             PreparedStatement stmt = conn.prepareStatement(sql)) {
-            stmt.setInt(1, id);
-            ResultSet rs = stmt.executeQuery();
-            rs.next();
-
-            result.add(rs.getString("title"));
-            result.add(rs.getString("statement"));
-            result.add(rs.getString("chapter_id"));
-            do {
-                result.add(rs.getString("text"));
-            } while (rs.next());
+            for (Map<String, Object> row : rows) {
+                if (result.isEmpty()) {
+                    result.add(row.get("title").toString());
+                    result.add(row.get("statement").toString());
+                    result.add(row.get("chapter_id").toString());
+                }
+                result.add(row.get("text").toString());
+            }
             return result;
-
-        } catch (SQLException e) {
+        } catch (DataAccessException e) {
             logger.error("Erreur lors de la récupération de la question et des réponses", e);
             return null;
         }

@@ -3,6 +3,7 @@ package org.oxyl.mapper;
 import org.oxyl.model.Chapitre;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.jdbc.core.RowMapper;
 import org.springframework.stereotype.Component;
 
 import java.sql.ResultSet;
@@ -10,7 +11,7 @@ import java.sql.SQLException;
 import java.util.Optional;
 
 @Component
-public class MapperChapitre {
+public class MapperChapitre implements RowMapper<Chapitre> {
 
     private final static Logger logger = LoggerFactory.getLogger(MapperChapitre.class);
 
@@ -26,6 +27,11 @@ public class MapperChapitre {
             logger.error("Erreur lors du passage de rs à Chapitre", e);
             return Optional.empty();
         }
+    }
+
+    public Chapitre mapRow(ResultSet rs, int rowNum) throws SQLException{
+        Optional<Chapitre> chapitre = rsToChapitre(rs);
+        return chapitre.orElse(null);
     }
 
 }

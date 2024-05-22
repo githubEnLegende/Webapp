@@ -8,12 +8,13 @@ import org.oxyl.model.Promotion;
 import org.oxyl.newro.Main;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.jdbc.core.RowMapper;
 import org.springframework.stereotype.Component;
 
 import javax.swing.text.html.Option;
 
 @Component
-public class MapperPromotion {
+public class MapperPromotion implements RowMapper<Promotion> {
 
     private static Logger logger = LoggerFactory.getLogger(MapperPromotion.class);
 
@@ -42,4 +43,11 @@ public class MapperPromotion {
 
         return new Promotion.PromotionBuilder(Integer.parseInt(id), promotionName).build();
     }
+
+    @Override
+    public Promotion mapRow(ResultSet rs, int rowNum) throws SQLException {
+        Optional<Promotion> promotion = rsToPromotion(rs);
+        return promotion.orElse(null);
+    }
+
 }

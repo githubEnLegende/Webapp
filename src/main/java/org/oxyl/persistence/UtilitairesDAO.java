@@ -1,6 +1,5 @@
 package org.oxyl.persistence;
 
-import com.zaxxer.hikari.HikariDataSource;
 import org.oxyl.persistence.jdbcconfig.JdbcTemplateConfig;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -12,13 +11,11 @@ import org.springframework.stereotype.Repository;
 @Repository
 public class UtilitairesDAO {
 
-    private final HikariDataSource dataSource;
     private final static Logger logger = LoggerFactory.getLogger(UtilitairesDAO.class);
 
     private final JdbcTemplate jdbcTemplate;
 
-    public UtilitairesDAO(HikariDataSource dataSource, JdbcTemplateConfig jdbcTemplate) {
-        this.dataSource = dataSource;
+    public UtilitairesDAO(JdbcTemplateConfig jdbcTemplate) {
         this.jdbcTemplate = jdbcTemplate.jdbcTemplate();
     }
 

@@ -77,7 +77,7 @@ public class FonctionDIsplay {
 
         while (boucle) {
             System.out.println("Page " + pageNumber + " sur " + totalPages + ":");
-            promotionDAO.afficherPagePromotion(pageNumber, pagePromo);
+            promotionDAO.afficherPagePromotion(pagePromo);
             System.out.println("1: Page suivante, 2: Page précédente, 3: Choisissez la page, 0: Quitter");
             System.out.println("Choix :");
 
