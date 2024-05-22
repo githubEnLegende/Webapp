@@ -1,95 +1,67 @@
 package org.oxyl.servlet;
 
-import jakarta.servlet.ServletException;
-import jakarta.servlet.annotation.WebServlet;
-import jakarta.servlet.http.HttpServlet;
-import jakarta.servlet.http.HttpServletRequest;
-import jakarta.servlet.http.HttpServletResponse;
-import org.oxyl.context.Context;
-import org.oxyl.dto.StagiaireDTO;
 import org.oxyl.mapper.MapperDate;
 import org.oxyl.model.Promotion;
 import org.oxyl.model.Stagiaire;
 import org.oxyl.service.InternService;
 import org.oxyl.service.PromotionService;
 import org.oxyl.service.UtilitairesService;
-import org.oxyl.validator.ValidatorStagiaire;
 
-import java.io.IOException;
 import java.time.LocalDate;
 import java.util.List;
-import java.util.Map;
 
-import org.springframework.context.ApplicationContext;
+import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 
+@Controller
+@RequestMapping("/addStagiaire")
+public class AddStagiaireServlet {
 
-@WebServlet("/addStagiaire")
-public class AddStagiaireServlet extends HttpServlet {
+    private final MapperDate mapperDate;
+    private final PromotionService promotionService;
+    private final InternService internService;
+    private final UtilitairesService utilitairesService;
 
-    private MapperDate mapperDate;
-    private PromotionService promotionService;
-    private InternService internService;
-    private UtilitairesService utilitairesService;
-    private ValidatorStagiaire validatorStagiaire;
-    ApplicationContext context = Context.getInstance().getContext();
-
-
-    public void init(){
-        mapperDate = context.getBean(MapperDate.class);
-        internService = context.getBean(InternService.class);
-        promotionService = context.getBean(PromotionService.class);
-        utilitairesService = context.getBean(UtilitairesService.class);
-        validatorStagiaire = context.getBean(ValidatorStagiaire.class);
+    public AddStagiaireServlet(MapperDate mapperDate, PromotionService promotionService,
+                               InternService internService, UtilitairesService utilitairesService) {
+        this.mapperDate = mapperDate;
+        this.promotionService = promotionService;
+        this.internService = internService;
+        this.utilitairesService = utilitairesService;
     }
 
-
-    protected void doGet(HttpServletRequest request, HttpServletResponse response)
-            throws ServletException, IOException {
-
+    @GetMapping
+    public String getPromo(Model model){
         List<Promotion> listPromo = promotionService.getAllPromotion();
-        request.setAttribute("listPromo", listPromo);
-
-        request.getRequestDispatcher("WEB-INF/addStagiaire.jsp").forward(request, response);
-
+        model.addAttribute("listPromo", listPromo);
+        return "addStagiaire";
     }
 
+    @PostMapping
+    public String addStagiaire(@RequestParam(value = "lastName") String lastName,
+                               @RequestParam(value = "firstName") String firstName,
+                               @RequestParam(value = "arrival") String arrival,
+                               @RequestParam(required = false, name = "finFormation") String finFormation,
+                               @RequestParam(value = "promotionId") String promotionId){
 
-    protected void doPost(HttpServletRequest request, HttpServletResponse response)
-            throws ServletException, IOException {
-
-        String lastName = request.getParameter("lastName");
-        String firstName = request.getParameter("firstName");
-        String arrival = request.getParameter("arrival");
-        String finFormation = request.getParameter("finFormation");
-        String promotionId = request.getParameter("promotionId");
-        String promotionName = request.getParameter("promotionName");
-
-
-        StagiaireDTO stagiaire = new StagiaireDTO(lastName, firstName, arrival, finFormation, promotionId);
-
-        Map<Integer, String> stagiaireValidator = validatorStagiaire.stagiaireValidator(stagiaire);
-
-        if (stagiaireValidator.isEmpty()) {
-
+        Promotion promotion = new Promotion.PromotionBuilder(Integer.parseInt(promotionId), promotionId).build();
+        Stagiaire intern;
+        if(!finFormation.isEmpty()){
             LocalDate finFormationDate = mapperDate.stringtoLocalDate(finFormation);
-
-            Promotion promotion = new Promotion.PromotionBuilder(Integer.parseInt(promotionId), promotionId).build();
-
-            Stagiaire intern = new Stagiaire.StagiaireBuilder(utilitairesService.getMaxID() + 1,
+            intern = new Stagiaire.StagiaireBuilder(utilitairesService.getMaxID() + 1,
                     firstName, lastName, LocalDate.parse(arrival))
                     .formationOver(finFormationDate)
                     .promotion(promotion).build();
-
-            internService.insertIntern(intern);
-            response.sendRedirect("dashboard");
-        } else {
-            System.out.println("Stagiaire non valide");
-            request.setAttribute("stagiaireValidator", stagiaireValidator);
-            doGet(request, response);
-            request.getRequestDispatcher("WEB-INF/addStagiaire.jsp").forward(request, response);
+        }else{
+            intern = new Stagiaire.StagiaireBuilder(utilitairesService.getMaxID() + 1,
+                    firstName, lastName, LocalDate.parse(arrival)).promotion(promotion).build();
         }
-
-
+        internService.insertIntern(intern);
+        return "redirect:/dashboard";
     }
 
 }

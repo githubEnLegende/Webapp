@@ -5,7 +5,6 @@ import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
-import org.oxyl.context.Context;
 import org.oxyl.dto.StagiaireDTO;
 import org.oxyl.mapper.MapperDate;
 import org.oxyl.model.Promotion;
@@ -14,77 +13,73 @@ import org.oxyl.service.PromotionService;
 import org.oxyl.service.InternService;
 import org.oxyl.validator.ValidatorStagiaire;
 import org.springframework.context.ApplicationContext;
+import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 
 import java.io.IOException;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 
+@Controller
+@RequestMapping("/editStagiaire")
+public class EditStagiaireServlet {
 
-@WebServlet("/editStagiaire")
-public class EditStagiaireServlet extends HttpServlet {
+    private final PromotionService promotionService;
+    private final InternService internService;
+    private final MapperDate mapperDate;
 
-    private PromotionService promotionService;
-    private InternService internService;
-    private ValidatorStagiaire validatorStagiaire;
-    private MapperDate mapperDate;
-    ApplicationContext context = Context.getInstance().getContext();
+   public EditStagiaireServlet(PromotionService promotionService, InternService internService, MapperDate mapperDate) {
+       this.promotionService = promotionService;
+       this.internService = internService;
+       this.mapperDate = mapperDate;
+   }
 
-    public void init(){
-        internService = context.getBean(InternService.class);
-        promotionService = context.getBean(PromotionService.class);
-        validatorStagiaire = context.getBean(ValidatorStagiaire.class);
-        mapperDate = context.getBean(MapperDate.class);
-    }
+   @GetMapping
+   public String setEdit(Model model, @RequestParam(value = "id") int id){
 
-    protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+       Optional<Stagiaire> optStagiaire = internService.detailStagiaire(id);
+       if (optStagiaire.isPresent()) {
+           Stagiaire stagiaire = optStagiaire.get();
+           model.addAttribute("stagiaire", stagiaire);
+       }
 
-        int id = Integer.parseInt(request.getParameter("id"));
+       List<Promotion> listPromo = promotionService.getAllPromotion();
+       model.addAttribute("listPromo", listPromo);
 
-        Optional<Stagiaire> optStagiaire = internService.detailStagiaire(id);
-        if (optStagiaire.isPresent()) {
-            Stagiaire stagiaire = optStagiaire.get();
-            request.setAttribute("stagiaire", stagiaire);
-        }
+       return "editStagiaire";
+   }
 
-
-        List<Promotion> listPromo = promotionService.getAllPromotion();
-        request.setAttribute("listPromo", listPromo);
-
-        request.getRequestDispatcher("WEB-INF/editStagiaire.jsp").forward(request, response);
-
-    }
-
-
-    protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        String id = request.getParameter("id");
-        String lastName = request.getParameter("lastName");
-        String firstName = request.getParameter("firstName");
-        String arrival = request.getParameter("arrival");
-        String finFormation = request.getParameter("finFormation");
-        String[] promotion = request.getParameter("promotion").replace("[", "").replace("]", "").split(",");
-
-        StagiaireDTO stagiaire = new StagiaireDTO(lastName, firstName, arrival, finFormation, promotion[0]);
-        Map<Integer, String> stagiaireValidator = validatorStagiaire.stagiaireValidator(stagiaire);
-
-        if (stagiaireValidator.isEmpty()) {
-
-            Promotion promo = new Promotion.PromotionBuilder(Integer.parseInt(promotion[0]), promotion[1]).build();
-
-            Stagiaire intern = new Stagiaire.StagiaireBuilder(Integer.parseInt(id),
-                    firstName,
-                    lastName,
-                    mapperDate.stringtoLocalDate(arrival)).formationOver(mapperDate.stringtoLocalDate(finFormation)).promotion(promo).build();
-
-            internService.updateIntern(intern);
-            response.sendRedirect("dashboard");
-        } else {
-            System.out.println("Stagiaire non valide");
-            request.setAttribute("stagiaireValidator", stagiaireValidator);
-            doGet(request, response);
-            request.getRequestDispatcher("WEB-INF/editStagiaire.jsp").forward(request, response);
-        }
-    }
+   @PostMapping
+   public String editStagiaire(@RequestParam(value = "id") String id,
+                               @RequestParam(value = "lastName") String lastName,
+                               @RequestParam(value = "firstName") String firstName,
+                               @RequestParam(value = "arrival") String arrival,
+                               @RequestParam(value = "finFormation", required = false) String finFormation,
+                               @RequestParam(value = "promotion") String promo){
+       String[] promotion = promo.replace("[", "").replace("]", "").split(",");
+       Promotion promotionObj = new Promotion.PromotionBuilder(Integer.parseInt(promotion[0]), promotion[1]).build();
+       Stagiaire intern;
+       if (!finFormation.isEmpty()){
+           intern = new Stagiaire.StagiaireBuilder(Integer.parseInt(id),
+                   firstName,
+                   lastName,
+                   mapperDate.stringtoLocalDate(arrival)).formationOver(mapperDate.stringtoLocalDate(finFormation))
+                   .promotion(promotionObj).build();
+       }else{
+           intern = new Stagiaire.StagiaireBuilder(Integer.parseInt(id),
+                   firstName,
+                   lastName,
+                   mapperDate.stringtoLocalDate(arrival)).formationOver(mapperDate.stringtoLocalDate(finFormation))
+                   .build();
+       }
+       internService.updateIntern(intern);
+       return "redirect:/dashboard";
+   }
 }
 
 

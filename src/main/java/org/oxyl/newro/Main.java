@@ -7,7 +7,7 @@ import org.slf4j.LoggerFactory;
 import java.util.ArrayList;
 import java.util.List;
 
-import static org.oxyl.newro.Display.*;
+//import static org.oxyl.newro.Display.*;
 
 
 public class Main {
@@ -16,7 +16,7 @@ public class Main {
 
     public static void main(String[] args) {
         logger.info("Starting Newro...");
-        feur();
+//        feur();
     }
 
 //	private static void e(){

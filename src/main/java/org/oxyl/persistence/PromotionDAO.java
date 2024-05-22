@@ -3,7 +3,6 @@ package org.oxyl.persistence;
 import org.oxyl.mapper.MapperPromotion;
 import org.oxyl.model.Promotion;
 import org.oxyl.model.Page;
-import org.oxyl.persistence.jdbcconfig.JdbcTemplateConfig;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.dao.DataAccessException;
@@ -20,9 +19,9 @@ public class PromotionDAO {
     private final MapperPromotion mapperPromotion;
     private final JdbcTemplate jdbcTemplate;
 
-    public PromotionDAO(MapperPromotion mapperPromotion, JdbcTemplateConfig jdbcTemplate) {
+    public PromotionDAO(MapperPromotion mapperPromotion, JdbcTemplate jdbcTemplate) {
         this.mapperPromotion = mapperPromotion;
-        this.jdbcTemplate = jdbcTemplate.jdbcTemplate();
+        this.jdbcTemplate = jdbcTemplate;
 
     }
 

@@ -1,6 +1,5 @@
 package org.oxyl.persistence;
 
-import org.oxyl.persistence.jdbcconfig.JdbcTemplateConfig;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.dao.DataAccessException;
@@ -15,8 +14,8 @@ public class UtilitairesDAO {
 
     private final JdbcTemplate jdbcTemplate;
 
-    public UtilitairesDAO(JdbcTemplateConfig jdbcTemplate) {
-        this.jdbcTemplate = jdbcTemplate.jdbcTemplate();
+    public UtilitairesDAO(JdbcTemplate jdbcTemplate) {
+        this.jdbcTemplate = jdbcTemplate;
     }
 
     public int getMaxID() {

@@ -14,7 +14,7 @@
     </appender>
 
     <!-- Configuration des niveaux de log pour chaque appender -->
-    <root level="ALL">
+    <root level="INFO">
         <appender-ref ref="FILE" />
     </root>
 

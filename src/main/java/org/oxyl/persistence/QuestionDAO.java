@@ -4,7 +4,6 @@ import org.oxyl.mapper.MapperQuestion;
 import org.oxyl.model.Question;
 import org.oxyl.model.Reponse;
 import org.oxyl.mapper.MapperReponse;
-import org.oxyl.persistence.jdbcconfig.JdbcTemplateConfig;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.dao.DataAccessException;
@@ -23,10 +22,10 @@ public class QuestionDAO {
     private final MapperQuestion mapperQuestion;
     private final JdbcTemplate jdbcTemplate;
 
-    public QuestionDAO(MapperQuestion mapperQuestion, JdbcTemplateConfig jdbcTemplate, MapperReponse mapperReponse) {
+    public QuestionDAO(MapperQuestion mapperQuestion, JdbcTemplate jdbcTemplate, MapperReponse mapperReponse) {
         this.mapperQuestion = mapperQuestion;
         this.mapperReponse = mapperReponse;
-        this.jdbcTemplate = jdbcTemplate.jdbcTemplate();
+        this.jdbcTemplate = jdbcTemplate;
     }
 
     public void getQuestionById(int questionId) {

@@ -3,7 +3,6 @@ package org.oxyl.persistence;
 import org.oxyl.mapper.MapperStagiaire;
 import org.oxyl.model.Stagiaire;
 import org.oxyl.model.Page;
-import org.oxyl.persistence.jdbcconfig.JdbcTemplateConfig;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.dao.DataAccessException;
@@ -25,9 +24,9 @@ public class StagiaireDAO {
     private final MapperStagiaire mapperStagiaire;
     private final JdbcTemplate jdbcTemplate;
 
-    public StagiaireDAO(MapperStagiaire mapperStagiaire, JdbcTemplateConfig jdbcTemplate) {
+    public StagiaireDAO(MapperStagiaire mapperStagiaire, JdbcTemplate jdbcTemplate) {
         this.mapperStagiaire = mapperStagiaire;
-        this.jdbcTemplate = jdbcTemplate.jdbcTemplate();
+        this.jdbcTemplate = jdbcTemplate;
     }
 
     public int countStagiaire() {

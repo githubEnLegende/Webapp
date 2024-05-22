@@ -1,48 +1,48 @@
 package org.oxyl.servlet;
 
 import jakarta.servlet.ServletException;
-import jakarta.servlet.annotation.WebServlet;
-import jakarta.servlet.http.HttpServlet;
+
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
-import org.oxyl.context.Context;
 import org.oxyl.model.Stagiaire;
 import org.oxyl.model.Page;
 import org.oxyl.service.InternService;
 import org.oxyl.service.UtilitairesService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.context.ApplicationContext;
+import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 
 
 import java.io.IOException;
 
-
-@WebServlet("/dashboard")
-public class DashboardServlet extends HttpServlet {
+@Controller
+@RequestMapping("/dashboard")
+public class DashboardServlet{
 
     private static final Logger logger = LoggerFactory.getLogger(DashboardServlet.class);
 
-    private InternService internService;
-    private UtilitairesService utilitairesService;
-    private final ApplicationContext context = Context.getInstance().getContext();
+    private final InternService internService;
+    private final UtilitairesService utilitairesService;
 
-    public void init(){
-        internService = context.getBean(InternService.class);
-        utilitairesService = context.getBean(UtilitairesService.class);
+    public DashboardServlet(InternService internService, UtilitairesService utilitairesService) {
+        this.internService = internService;
+        this.utilitairesService = utilitairesService;
     }
 
-    protected void doGet(HttpServletRequest request, HttpServletResponse response)
-            throws ServletException, IOException {
-
+    @GetMapping
+    public String GetInternsPage(Model model,
+                                 @RequestParam(value="page", required = false) String pageParam,
+                                 @RequestParam(value = "size", required = false) String pageTaille,
+                                 @RequestParam(value = "search", required = false) String search,
+                                 @RequestParam(value = "order", required = false) String order) {
         logger.info("Entrée dans le feur");
 
         Page<Stagiaire> page = new Page<>();
-        String pageParam = request.getParameter("page");
-        String pageTaille = request.getParameter("size");
-        String search = request.getParameter("search");
-        String order = request.getParameter("order");
-
         if (pageParam != null) {
             try {
                 page.setPageNumber(Integer.parseInt(pageParam));
@@ -57,12 +57,12 @@ public class DashboardServlet extends HttpServlet {
 
         page.setOrder(SecureOrder.inEnum(order));
         int countStagiaire = internService.countStagiaire();
-        request.setAttribute("countStagiaire", countStagiaire);
+        model.addAttribute("countStagiaire", countStagiaire);
 
         int totalPages = 0;
         if (search != null && !search.isEmpty()) {
             int countSize = internService.getPageStagiaire(search, page);
-            request.setAttribute("countStagiaire", countSize);
+            model.addAttribute("countStagiaire", countSize);
             totalPages = utilitairesService.getTotalPages(countSize, page.getNbRow());
 
         } else {
@@ -70,31 +70,24 @@ public class DashboardServlet extends HttpServlet {
             totalPages = utilitairesService.getTotalPages("intern", page.getNbRow());
         }
 
-
-        request.setAttribute("size", page.getNbRow());
-        request.setAttribute("page", page.getPageNumber());
-        request.setAttribute("order", page.getOrder());
-        request.setAttribute("totalPages", totalPages);
-        request.setAttribute("stagiaires", page.getStagiaires());
-        request.setAttribute("search", search);
-
-        request.getRequestDispatcher("WEB-INF/dashboard.jsp").forward(request, response);
-
-        page.emptyContent();
-
-
+        model.addAttribute("size", page.getNbRow());
+        model.addAttribute("page", page.getPageNumber());
+        model.addAttribute("order", page.getOrder());
+        model.addAttribute("totalPages", totalPages);
+        model.addAttribute("stagiaires", page.getStagiaires());
+        model.addAttribute("search", search);
+        return "dashboard";
     }
 
-    protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        boolean isDeleted = false;
-        if (!request.getParameter("selection").isEmpty()) {
-            String[] idsToDelete = request.getParameter("selection").split(",");
+    @PostMapping
+    public String delete(@RequestParam(value = "selection") String selection) {
+        if (!selection.isEmpty()) {
+            String[] idsToDelete = selection.split(",");
             for (String id : idsToDelete) {
                 internService.deleteIntern(Integer.parseInt(id));
             }
         }
-        request.setAttribute("isDeleted", isDeleted);
-        response.sendRedirect("dashboard");
-
+        return "redirect:/dashboard";
     }
+
 }

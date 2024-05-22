@@ -2,7 +2,6 @@ package org.oxyl.persistence;
 
 import org.oxyl.mapper.MapperChapitre;
 import org.oxyl.model.Chapitre;
-import org.oxyl.persistence.jdbcconfig.JdbcTemplateConfig;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.dao.DataAccessException;
@@ -21,9 +20,9 @@ public class ChapterDAO {
     private final JdbcTemplate jdbcTemplate;
 
 
-    public ChapterDAO(MapperChapitre mapperChapitre, JdbcTemplateConfig jdbcTemplate) {
+    public ChapterDAO(MapperChapitre mapperChapitre, JdbcTemplate jdbcTemplate) {
         this.mapperChapitre = mapperChapitre;
-        this.jdbcTemplate = jdbcTemplate.jdbcTemplate();
+        this.jdbcTemplate = jdbcTemplate;
     }
 
     public Optional<List<Chapitre>> getAllChapter() {
