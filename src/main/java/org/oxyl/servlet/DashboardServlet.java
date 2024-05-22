@@ -8,8 +8,8 @@ import jakarta.servlet.http.HttpServletResponse;
 import org.oxyl.context.Context;
 import org.oxyl.model.Stagiaire;
 import org.oxyl.model.Page;
-import org.oxyl.persistence.StagiaireDAO;
-import org.oxyl.persistence.UtilitairesDAO;
+import org.oxyl.service.InternService;
+import org.oxyl.service.UtilitairesService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.context.ApplicationContext;
@@ -23,13 +23,13 @@ public class DashboardServlet extends HttpServlet {
 
     private static final Logger logger = LoggerFactory.getLogger(DashboardServlet.class);
 
-    private StagiaireDAO stagiaireDAO;
-    private UtilitairesDAO utilitairesDAO;
+    private InternService internService;
+    private UtilitairesService utilitairesService;
     private final ApplicationContext context = Context.getInstance().getContext();
 
     public void init(){
-        stagiaireDAO = context.getBean(StagiaireDAO.class);
-        utilitairesDAO = context.getBean(UtilitairesDAO.class);
+        internService = context.getBean(InternService.class);
+        utilitairesService = context.getBean(UtilitairesService.class);
     }
 
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
@@ -56,18 +56,18 @@ public class DashboardServlet extends HttpServlet {
         }
 
         page.setOrder(SecureOrder.inEnum(order));
-        int countStagiaire = stagiaireDAO.countStagiaire();
+        int countStagiaire = internService.countStagiaire();
         request.setAttribute("countStagiaire", countStagiaire);
 
         int totalPages = 0;
         if (search != null && !search.isEmpty()) {
-            int countSize = stagiaireDAO.getPageStagiaire(search, page);
+            int countSize = internService.getPageStagiaire(search, page);
             request.setAttribute("countStagiaire", countSize);
-            totalPages = utilitairesDAO.getTotalPages(countSize, page.getNbRow());
+            totalPages = utilitairesService.getTotalPages(countSize, page.getNbRow());
 
         } else {
-            stagiaireDAO.getPageStagiaire(page);
-            totalPages = utilitairesDAO.getTotalPages("intern", page.getNbRow());
+            internService.getPageStagiaire(page);
+            totalPages = utilitairesService.getTotalPages("intern", page.getNbRow());
         }
 
 
@@ -90,7 +90,7 @@ public class DashboardServlet extends HttpServlet {
         if (!request.getParameter("selection").isEmpty()) {
             String[] idsToDelete = request.getParameter("selection").split(",");
             for (String id : idsToDelete) {
-                stagiaireDAO.deleteIntern(Integer.parseInt(id));
+                internService.deleteIntern(Integer.parseInt(id));
             }
         }
         request.setAttribute("isDeleted", isDeleted);

@@ -7,7 +7,7 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import org.oxyl.context.Context;
 import org.oxyl.model.Chapitre;
-import org.oxyl.persistence.ChapterDAO;
+import org.oxyl.service.ChapterService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.context.ApplicationContext;
@@ -21,11 +21,11 @@ public class ChapitreServlet extends HttpServlet {
 
     private final static Logger logger = LoggerFactory.getLogger(ChapitreServlet.class);
     ApplicationContext context = Context.getInstance().getContext();
-    private ChapterDAO chapterDAO;
+    private ChapterService chapterService;
 
 
     public void init() {
-        chapterDAO = context.getBean(ChapterDAO.class);
+        chapterService = context.getBean(ChapterService.class);
     }
 
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
@@ -33,7 +33,7 @@ public class ChapitreServlet extends HttpServlet {
 
         logger.info("Entrez dans le Get Chapitre");
 
-        var optChapitre = chapterDAO.getAllChapter();
+        var optChapitre = chapterService.getAllChapter();
         List<Chapitre> chapitres;
         if (optChapitre.isPresent()) {
             chapitres = optChapitre.get();

@@ -10,10 +10,9 @@ import org.oxyl.dto.StagiaireDTO;
 import org.oxyl.mapper.MapperDate;
 import org.oxyl.model.Promotion;
 import org.oxyl.model.Stagiaire;
-import org.oxyl.persistence.DataSource;
-import org.oxyl.persistence.PromotionDAO;
-import org.oxyl.persistence.StagiaireDAO;
-import org.oxyl.persistence.UtilitairesDAO;
+import org.oxyl.service.InternService;
+import org.oxyl.service.PromotionService;
+import org.oxyl.service.UtilitairesService;
 import org.oxyl.validator.ValidatorStagiaire;
 
 import java.io.IOException;
@@ -22,25 +21,24 @@ import java.util.List;
 import java.util.Map;
 
 import org.springframework.context.ApplicationContext;
-import org.springframework.context.annotation.AnnotationConfigApplicationContext;
 
 
 @WebServlet("/addStagiaire")
 public class AddStagiaireServlet extends HttpServlet {
 
     private MapperDate mapperDate;
-    private PromotionDAO promotionDAO;
-    private StagiaireDAO stagiaireDAO;
-    private UtilitairesDAO utilitairesDAO;
+    private PromotionService promotionService;
+    private InternService internService;
+    private UtilitairesService utilitairesService;
     private ValidatorStagiaire validatorStagiaire;
     ApplicationContext context = Context.getInstance().getContext();
 
 
     public void init(){
         mapperDate = context.getBean(MapperDate.class);
-        stagiaireDAO = context.getBean(StagiaireDAO.class);
-        promotionDAO = context.getBean(PromotionDAO.class);
-        utilitairesDAO = context.getBean(UtilitairesDAO.class);
+        internService = context.getBean(InternService.class);
+        promotionService = context.getBean(PromotionService.class);
+        utilitairesService = context.getBean(UtilitairesService.class);
         validatorStagiaire = context.getBean(ValidatorStagiaire.class);
     }
 
@@ -48,7 +46,7 @@ public class AddStagiaireServlet extends HttpServlet {
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
 
-        List<Promotion> listPromo = promotionDAO.getAllPromotion();
+        List<Promotion> listPromo = promotionService.getAllPromotion();
         request.setAttribute("listPromo", listPromo);
 
         request.getRequestDispatcher("WEB-INF/addStagiaire.jsp").forward(request, response);
@@ -77,12 +75,12 @@ public class AddStagiaireServlet extends HttpServlet {
 
             Promotion promotion = new Promotion.PromotionBuilder(Integer.parseInt(promotionId), promotionId).build();
 
-            Stagiaire intern = new Stagiaire.StagiaireBuilder(utilitairesDAO.getMaxID() + 1,
+            Stagiaire intern = new Stagiaire.StagiaireBuilder(utilitairesService.getMaxID() + 1,
                     firstName, lastName, LocalDate.parse(arrival))
                     .formationOver(finFormationDate)
                     .promotion(promotion).build();
 
-            stagiaireDAO.insertIntern(intern);
+            internService.insertIntern(intern);
             response.sendRedirect("dashboard");
         } else {
             System.out.println("Stagiaire non valide");

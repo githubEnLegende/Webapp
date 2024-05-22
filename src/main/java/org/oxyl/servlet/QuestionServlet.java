@@ -7,7 +7,7 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import org.oxyl.context.Context;
 import org.oxyl.model.Question;
-import org.oxyl.persistence.QuestionDAO;
+import org.oxyl.service.QuestionService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.context.ApplicationContext;
@@ -21,18 +21,18 @@ public class QuestionServlet extends HttpServlet {
 
     private final static Logger logger = LoggerFactory.getLogger(QuestionServlet.class);
     ApplicationContext context = Context.getInstance().getContext();
-    private QuestionDAO questionDAO;
+    private QuestionService questionService;
 
 
     public void init() {
-        questionDAO = context.getBean(QuestionDAO.class);
+        questionService = context.getBean(QuestionService.class);
     }
 
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
 
         logger.info("Entrée dans le Get Chapitre");
-        var optQuestions = questionDAO.getAllQuestion();
+        var optQuestions = questionService.getAllQuestion();
         List<Question> questions;
         if (optQuestions.isPresent()) {
             questions = optQuestions.get();

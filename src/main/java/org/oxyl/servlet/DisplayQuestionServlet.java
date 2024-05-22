@@ -6,7 +6,7 @@ import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import org.oxyl.context.Context;
-import org.oxyl.persistence.QuestionDAO;
+import org.oxyl.service.QuestionService;
 import org.springframework.context.ApplicationContext;
 
 import java.util.List;
@@ -16,16 +16,16 @@ import java.io.IOException;
 public class DisplayQuestionServlet extends HttpServlet {
 
     private final ApplicationContext context = Context.getInstance().getContext();
-    private QuestionDAO questionDAO;
+    private QuestionService questionService;
 
     public void init() {
-        questionDAO = context.getBean(QuestionDAO.class);
+        questionService = context.getBean(QuestionService.class);
     }
 
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 
         String id = request.getParameter("id");
-        List<String> result = questionDAO.getQuestionAnswer(Integer.parseInt(id));
+        List<String> result = questionService.getQuestionAnswer(Integer.parseInt(id));
 
         String title = result.removeFirst();
         String statement = result.removeFirst();
