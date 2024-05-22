@@ -1,46 +1,37 @@
-//package org.oxyl.servlet;
-//
-//import jakarta.servlet.ServletException;
-//import jakarta.servlet.annotation.WebServlet;
-//import jakarta.servlet.http.HttpServlet;
-//import jakarta.servlet.http.HttpServletRequest;
-//import jakarta.servlet.http.HttpServletResponse;
-//import org.oxyl.service.QuestionService;
-//import org.springframework.context.ApplicationContext;
-//
-//import java.util.List;
-//import java.io.IOException;
-//
-//@WebServlet("/displayQuestion")
-//public class DisplayQuestionServlet extends HttpServlet {
-//
-//    private final ApplicationContext context = Context.getInstance().getContext();
-//    private QuestionService questionService;
-//
-//    public void init() {
-//        questionService = context.getBean(QuestionService.class);
-//    }
-//
-//    protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-//
-//        String id = request.getParameter("id");
-//        List<String> result = questionService.getQuestionAnswer(Integer.parseInt(id));
-//
-//        String title = result.removeFirst();
-//        String statement = result.removeFirst();
-//        String chapter_id = result.removeFirst();
-//
-//        request.setAttribute("title", title);
-//        request.setAttribute("statement", statement);
-//        request.setAttribute("chapter_id", chapter_id);
-//        request.setAttribute("answers", result);
-//
-//        request.getRequestDispatcher("WEB-INF/displayQuestion.jsp").forward(request, response);
-//    }
-//
-//    protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-//
-//
-//    }
-//
-//}
+package org.oxyl.servlet;
+
+import org.oxyl.service.QuestionService;
+import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+
+import java.util.List;
+
+@Controller
+@RequestMapping("/displayQuestion")
+public class DisplayQuestionServlet{
+
+    private QuestionService questionService;
+
+    public DisplayQuestionServlet(QuestionService questionService) {
+        this.questionService = questionService;
+    }
+
+    @GetMapping
+    public String displayQuestion(Model model, @RequestParam(value = "id") String id) {
+        List<String> result = questionService.getQuestionAnswer(Integer.parseInt(id));
+
+        String title = result.removeFirst();
+        String statement = result.removeFirst();
+        String chapter_id = result.removeFirst();
+
+        model.addAttribute("title", title);
+        model.addAttribute("statement", statement);
+        model.addAttribute("chapter_id", chapter_id);
+        model.addAttribute("answers", result);
+
+        return "displayQuestion";
+    }
+}
