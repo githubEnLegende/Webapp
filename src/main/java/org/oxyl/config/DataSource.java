@@ -1,4 +1,4 @@
-package org.oxyl.persistence;
+package org.oxyl.config;
 
 import com.zaxxer.hikari.HikariConfig;
 import com.zaxxer.hikari.HikariDataSource;
@@ -8,15 +8,12 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.datasource.DataSourceTransactionManager;
 
-import java.sql.Connection;
-import java.sql.SQLException;
 
 @Configuration
 @ComponentScan(basePackages = "org.oxyl")
 public class DataSource {
     @Bean
     public HikariDataSource DataSource() {
-
         try {
             Class.forName("com.mysql.cj.jdbc.Driver");
         } catch (ClassNotFoundException ignored) {

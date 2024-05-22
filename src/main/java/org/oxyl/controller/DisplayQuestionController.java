@@ -1,4 +1,4 @@
-package org.oxyl.servlet;
+package org.oxyl.controller;
 
 import org.oxyl.service.QuestionService;
 import org.springframework.stereotype.Controller;
@@ -11,11 +11,11 @@ import java.util.List;
 
 @Controller
 @RequestMapping("/displayQuestion")
-public class DisplayQuestionServlet{
+public class DisplayQuestionController {
 
     private QuestionService questionService;
 
-    public DisplayQuestionServlet(QuestionService questionService) {
+    public DisplayQuestionController(QuestionService questionService) {
         this.questionService = questionService;
     }
 

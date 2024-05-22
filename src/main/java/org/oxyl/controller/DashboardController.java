@@ -1,9 +1,5 @@
-package org.oxyl.servlet;
+package org.oxyl.controller;
 
-import jakarta.servlet.ServletException;
-
-import jakarta.servlet.http.HttpServletRequest;
-import jakarta.servlet.http.HttpServletResponse;
 import org.oxyl.model.Stagiaire;
 import org.oxyl.model.Page;
 import org.oxyl.service.InternService;
@@ -17,26 +13,23 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
-
-import java.io.IOException;
-
 @Controller
 @RequestMapping("/dashboard")
-public class DashboardServlet{
+public class DashboardController {
 
-    private static final Logger logger = LoggerFactory.getLogger(DashboardServlet.class);
+    private static final Logger logger = LoggerFactory.getLogger(DashboardController.class);
 
     private final InternService internService;
     private final UtilitairesService utilitairesService;
 
-    public DashboardServlet(InternService internService, UtilitairesService utilitairesService) {
+    public DashboardController(InternService internService, UtilitairesService utilitairesService) {
         this.internService = internService;
         this.utilitairesService = utilitairesService;
     }
 
     @GetMapping
     public String GetInternsPage(Model model,
-                                 @RequestParam(value="page", required = false) String pageParam,
+                                 @RequestParam(value = "page", required = false) String pageParam,
                                  @RequestParam(value = "size", required = false) String pageTaille,
                                  @RequestParam(value = "search", required = false) String search,
                                  @RequestParam(value = "order", required = false) String order) {

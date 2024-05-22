@@ -1,4 +1,4 @@
-package org.oxyl.servlet;
+package org.oxyl.controller;
 
 import org.oxyl.model.Chapitre;
 import org.oxyl.service.ChapterService;
@@ -14,17 +14,17 @@ import java.util.List;
 
 @Controller
 @RequestMapping("/chapitre")
-public class ChapitreServlet {
+public class ChapitreController {
 
-    private final static Logger logger = LoggerFactory.getLogger(ChapitreServlet.class);
+    private final static Logger logger = LoggerFactory.getLogger(ChapitreController.class);
     private ChapterService chapterService;
 
-    public ChapitreServlet(ChapterService chapterService) {
+    public ChapitreController(ChapterService chapterService) {
         this.chapterService = chapterService;
     }
 
     @GetMapping
-    public String displayChapter(Model model){
+    public String displayChapter(Model model) {
         logger.info("Entrez dans le Display Chapitre");
 
         var optChapitre = chapterService.getAllChapter();

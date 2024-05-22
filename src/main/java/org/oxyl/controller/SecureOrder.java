@@ -1,4 +1,4 @@
-package org.oxyl.servlet;
+package org.oxyl.controller;
 
 public enum SecureOrder {
 

@@ -1,13 +1,8 @@
-package org.oxyl;
+package org.oxyl.config;
 
-import com.zaxxer.hikari.HikariConfig;
-import com.zaxxer.hikari.HikariDataSource;
 import org.springframework.context.annotation.Bean;
-import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.jdbc.datasource.DataSourceTransactionManager;
-import org.springframework.transaction.TransactionManager;
-import org.springframework.transaction.annotation.EnableTransactionManagement;
+
 import org.springframework.web.servlet.ViewResolver;
 import org.springframework.web.servlet.config.annotation.EnableWebMvc;
 import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry;
@@ -37,7 +32,6 @@ public class WebConfig implements WebMvcConfigurer {
         registry.addResourceHandler("static/css/**").addResourceLocations("static/css/");
         registry.addResourceHandler("static/views/**").addResourceLocations("static/views/");
     }
-
 
 
 }

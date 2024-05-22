@@ -1,4 +1,4 @@
-package org.oxyl.servlet;
+package org.oxyl.controller;
 
 import org.oxyl.mapper.MapperDate;
 import org.oxyl.model.Promotion;
@@ -19,15 +19,15 @@ import org.springframework.web.bind.annotation.RequestParam;
 
 @Controller
 @RequestMapping("/addStagiaire")
-public class AddStagiaireServlet {
+public class AddStagiaireController {
 
     private final MapperDate mapperDate;
     private final PromotionService promotionService;
     private final InternService internService;
     private final UtilitairesService utilitairesService;
 
-    public AddStagiaireServlet(MapperDate mapperDate, PromotionService promotionService,
-                               InternService internService, UtilitairesService utilitairesService) {
+    public AddStagiaireController(MapperDate mapperDate, PromotionService promotionService,
+                                  InternService internService, UtilitairesService utilitairesService) {
         this.mapperDate = mapperDate;
         this.promotionService = promotionService;
         this.internService = internService;
@@ -35,7 +35,7 @@ public class AddStagiaireServlet {
     }
 
     @GetMapping
-    public String getPromo(Model model){
+    public String getPromo(Model model) {
         List<Promotion> listPromo = promotionService.getAllPromotion();
         model.addAttribute("listPromo", listPromo);
         return "addStagiaire";
@@ -46,17 +46,17 @@ public class AddStagiaireServlet {
                                @RequestParam(value = "firstName") String firstName,
                                @RequestParam(value = "arrival") String arrival,
                                @RequestParam(required = false, name = "finFormation") String finFormation,
-                               @RequestParam(value = "promotionId") String promotionId){
+                               @RequestParam(value = "promotionId") String promotionId) {
 
         Promotion promotion = new Promotion.PromotionBuilder(Integer.parseInt(promotionId), promotionId).build();
         Stagiaire intern;
-        if(!finFormation.isEmpty()){
+        if (!finFormation.isEmpty()) {
             LocalDate finFormationDate = mapperDate.stringtoLocalDate(finFormation);
             intern = new Stagiaire.StagiaireBuilder(utilitairesService.getMaxID() + 1,
                     firstName, lastName, LocalDate.parse(arrival))
                     .formationOver(finFormationDate)
                     .promotion(promotion).build();
-        }else{
+        } else {
             intern = new Stagiaire.StagiaireBuilder(utilitairesService.getMaxID() + 1,
                     firstName, lastName, LocalDate.parse(arrival)).promotion(promotion).build();
         }
