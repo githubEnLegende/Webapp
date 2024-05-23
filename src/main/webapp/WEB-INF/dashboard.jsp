@@ -21,7 +21,14 @@
         <a class="navbar-brand" href="dashboard"> Newro Factory </a>
         <a class="navbar-brand" href="question"> Questions </a>
         <a class="navbar-brand" href="chapitre"> <spring:message code="HEADER.chapitre"/> </a>
-
+        <div class="pull-right">
+            <form action="#" method="get" class = "form-inline">
+                <select class = "form-control" style="margin-top: 8px" name="lang" onchange="this.form.submit()">
+                    <option value="fr" ${requestScope.lang.equals("fr") ? "selected" : ""}><spring:message code="HEADER.LANG.fr"/></option>
+                    <option value="en" ${requestScope.lang.equals("en") ? "selected" : ""}><spring:message code="HEADER.LANG.en"/></option>
+                </select>
+            </form>
+        </div>
     </div>
 </header>
 

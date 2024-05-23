@@ -8,6 +8,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -24,7 +25,7 @@ public class ChapitreController {
     }
 
     @GetMapping
-    public String displayChapter(Model model) {
+    public String displayChapter(Model model, @RequestParam(value = "lang", required = false) String lang) {
         logger.info("Entrez dans le Display Chapitre");
 
         var optChapitre = chapterService.getAllChapter();
@@ -32,6 +33,8 @@ public class ChapitreController {
         chapitres = optChapitre.orElseGet(ArrayList::new);
 
         model.addAttribute("chapitres", chapitres);
+        model.addAttribute("lang", lang);
+
 
         return "chapitre";
     }

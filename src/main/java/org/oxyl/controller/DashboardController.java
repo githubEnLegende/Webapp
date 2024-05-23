@@ -12,6 +12,9 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.servlet.i18n.SessionLocaleResolver;
+
+import java.util.Locale;
 
 @Controller
 @RequestMapping(value ={"/dashboard", "feur"})
@@ -32,7 +35,8 @@ public class DashboardController {
                                  @RequestParam(value = "page", required = false) String pageParam,
                                  @RequestParam(value = "size", required = false) String pageTaille,
                                  @RequestParam(value = "search", required = false) String search,
-                                 @RequestParam(value = "order", required = false) String order) {
+                                 @RequestParam(value = "order", required = false) String order,
+                                 @RequestParam(value = "lang", required = false) String lang) {
         logger.info("Entrée dans le feur");
 
         Page<Stagiaire> page = new Page<>();
@@ -69,6 +73,7 @@ public class DashboardController {
         model.addAttribute("totalPages", totalPages);
         model.addAttribute("stagiaires", page.getStagiaires());
         model.addAttribute("search", search);
+        model.addAttribute("lang", lang);
         return "dashboard";
     }
 

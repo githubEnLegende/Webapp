@@ -30,7 +30,8 @@ public class EditStagiaireController {
     }
 
     @GetMapping
-    public String setEdit(Model model, @RequestParam(value = "id") int id) {
+    public String setEdit(Model model, @RequestParam(value = "id") int id,
+                          @RequestParam(value = "lang", required = false) String lang) {
 
         Optional<Stagiaire> optStagiaire = internService.detailStagiaire(id);
         if (optStagiaire.isPresent()) {
@@ -42,6 +43,7 @@ public class EditStagiaireController {
 
         List<Promotion> listPromo = promotionService.getAllPromotion();
         model.addAttribute("listPromo", listPromo);
+        model.addAttribute("lang", lang);
 
         return "editStagiaire";
     }

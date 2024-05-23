@@ -2,6 +2,7 @@
 
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="spring" uri="http://www.springframework.org/tags" %>
 
 <html>
 <head>
@@ -18,14 +19,22 @@
     <div class="container">
         <a class="navbar-brand" href="dashboard"> Newro Factory </a>
         <a class="navbar-brand" href="question"> Questions </a>
-        <a class="navbar-brand" href="chapitre"> Chapitres </a>
+        <a class="navbar-brand" href="chapitre"> <spring:message code="HEADER.chapitre"/> </a>
+        <div class="pull-right">
+            <form action="#" method="get" class = "form-inline">
+                <select class = "form-control" style="margin-top: 8px" name="lang" onchange="this.form.submit()">
+                    <option value="fr" ${requestScope.lang.equals("fr") ? "selected" : ""}><spring:message code="HEADER.LANG.fr"/></option>
+                    <option value="en" ${requestScope.lang.equals("en") ? "selected" : ""}><spring:message code="HEADER.LANG.en"/></option>
+                </select>
+            </form>
+        </div>
     </div>
 </header>
 
 <section id="main">
     <div class="container">
         <h1 id="homeTitle">
-            <c:out value="${requestScope.countStagiaire} Questions trouvés"/>
+            <spring:message code="QUESTION.titre"/>
         </h1>
         <%--            <div id="actions" class="form-horizontal">--%>
         <%--                <div class="pull-left">--%>
@@ -65,16 +74,16 @@
                 <!-- Table header for Discontinued Date -->
                 <th>
                     <%--                            <a href="dashboard?page=${requestScope.page}&size=${size}&order=formation_over&search=${search}">title</a>--%>
-                    <a>title</a>
+                    <a><spring:message code="QUESTION.ennonce"/></a>
                 </th>
                 <!-- Table header for Company -->
                 <th>
                     <%--                            <a href="dashboard?page=${requestScope.page}&size=${size}&order=promotion_id&search=${search}">statement</a>--%>
-                    <a>statement</a>
+                    <a><spring:message code="QUESTION.corps"/></a>
                 </th>
                 <th>
                     <%--                            <a href="dashboard?page=${requestScope.page}&size=${size}&order=promotion_id&search=${search}">chapter_id</a>--%>
-                    <a>chapterID</a>
+                    <a><spring:message code="QUESTION.chapitre"/></a>
                 </th>
 
             </tr>

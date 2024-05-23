@@ -20,6 +20,7 @@
         <a class="navbar-brand" href="dashboard"> Newro Factory </a>
         <a class="navbar-brand" href="question"> Questions </a>
         <a class="navbar-brand" href="chapitre"> <spring:message code="HEADER.chapitre"/> </a>
+
     </div>
 </header>
 <section id="main">

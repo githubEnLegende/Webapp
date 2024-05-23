@@ -82,7 +82,7 @@ public class QuestionDAO {
 
         List<String> result = new ArrayList<>();
         try {
-            List<Map<String, Object>> rows = jdbcTemplate.queryForList(sql, id);
+            var rows = jdbcTemplate.queryForList(sql, id);
 
             for (Map<String, Object> row : rows) {
                 if (result.isEmpty()) {
