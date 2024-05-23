@@ -16,7 +16,7 @@ public class ChapterService {
         this.chapterDAO = chapterDAO;
     }
 
-    public Optional<List<Chapitre>> getAllChapter(){
+    public Optional<List<Chapitre>> getAllChapter() {
         return chapterDAO.getAllChapter();
     }
 

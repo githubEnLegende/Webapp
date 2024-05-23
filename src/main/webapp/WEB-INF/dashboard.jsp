@@ -2,6 +2,8 @@
 
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="spring" uri="http://www.springframework.org/tags" %>
+
 
 <html>
 <head>
@@ -18,7 +20,7 @@
     <div class="container">
         <a class="navbar-brand" href="dashboard"> Newro Factory </a>
         <a class="navbar-brand" href="question"> Questions </a>
-        <a class="navbar-brand" href="chapitre"> Chapitres </a>
+        <a class="navbar-brand" href="chapitre"> <spring:message code="HEADER.chapitre"/> </a>
 
     </div>
 </header>
@@ -26,20 +28,19 @@
 <section id="main">
     <div class="container">
         <h1 id="homeTitle">
-            <c:out value="${requestScope.countStagiaire} Stagiaires trouvés"/>
+            <c:out value="${requestScope.countStagiaire}"/> <spring:message code="DASHBOARD.stagiaire_trouve"/>
         </h1>
         <div id="actions" class="form-horizontal">
             <div class="pull-left">
                 <form id="searchForm" action="#" method="GET" class="form-inline">
 
-                    <input type="search" id="searchbox" name="search" class="form-control" placeholder="Search name"/>
-                    <input type="submit" id="searchsubmit" value="Filter by name"
-                           class="btn btn-primary"/>
+                    <input type="search" id="searchbox" name="search" class="form-control" placeholder=<spring:message code="DASHBOARD.recherche"/>/>
+                    <input type="submit" id="searchsubmit" class="btn btn-primary" value=<spring:message code="DASHBOARD.bouton_recherche"/>/>
                 </form>
             </div>
             <div class="pull-right">
-                <a class="btn btn-success" id="addStagiaire" href="addStagiaire">Ajout stagiaire</a>
-                <a class="btn btn-default" id="editStagiaire" href="#" onclick="$.fn.toggleEditMode();">Modifier</a>
+                <a class="btn btn-success" id="addStagiaire" href="addStagiaire"><spring:message code="DASHBOARD.bouton_ajout_stagiaire"/></a>
+                <a class="btn btn-default" id="editStagiaire" href="#" onclick="$.fn.toggleEditMode();"><spring:message code="DASHBOARD.bouton_modifier"/></a>
             </div>
         </div>
     </div>
@@ -65,21 +66,25 @@
                 </th>
                 <th>
                     <a href="dashboard?page=${requestScope.page}&size=${size}&order=first_name&search=${search}">
-                        Stagiaire
+                        <spring:message code="DASHBOARD.TABLE.HEADER.stagiaire"/>
                     </a>
                 </th>
                 <th>
-                    <a href="dashboard?page=${requestScope.page}&size=${size}&order=arrival&search=${search}">Date
-                        d'arrivée</a>
+                    <a href="dashboard?page=${requestScope.page}&size=${size}&order=arrival&search=${search}">
+                        <spring:message code="DASHBOARD.TABLE.HEADER.arrivee"/>
+                    </a>
                 </th>
                 <!-- Table header for Discontinued Date -->
                 <th>
-                    <a href="dashboard?page=${requestScope.page}&size=${size}&order=formation_over&search=${search}">Date
-                        de fin de formation</a>
+                    <a href="dashboard?page=${requestScope.page}&size=${size}&order=formation_over&search=${search}">
+                        <spring:message code="DASHBOARD.TABLE.HEADER.fin_formation"/>
+                    </a>
                 </th>
                 <!-- Table header for Company -->
                 <th>
-                    <a href="dashboard?page=${requestScope.page}&size=${size}&order=promotion_id&search=${search}">Promotion</a>
+                    <a href="dashboard?page=${requestScope.page}&size=${size}&order=promotion_id&search=${search}">
+                        <spring:message code="DASHBOARD.TABLE.HEADER.promotion"/>
+                    </a>
                 </th>
 
             </tr>

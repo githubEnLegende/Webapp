@@ -12,15 +12,15 @@ public class PromotionService {
 
     private final PromotionDAO promotionDAO;
 
-    public PromotionService (PromotionDAO promotionDAO) {
+    public PromotionService(PromotionDAO promotionDAO) {
         this.promotionDAO = promotionDAO;
     }
 
-    public List<Promotion> getAllPromotion(){
+    public List<Promotion> getAllPromotion() {
         return promotionDAO.getAllPromotion();
     }
 
-    public void afficherPagePromotion(Page<Promotion> page){
+    public void afficherPagePromotion(Page<Promotion> page) {
         promotionDAO.afficherPagePromotion(page);
     }
 }

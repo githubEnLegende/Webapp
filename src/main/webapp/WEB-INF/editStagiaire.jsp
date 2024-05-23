@@ -2,6 +2,7 @@
 
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="spring" uri="http://www.springframework.org/tags" %>
 
 
 <html>
@@ -18,7 +19,7 @@
     <div class="container">
         <a class="navbar-brand" href="dashboard"> Newro Factory </a>
         <a class="navbar-brand" href="question"> Questions </a>
-        <a class="navbar-brand" href="chapitre"> Chapitres </a>
+        <a class="navbar-brand" href="chapitre"> <spring:message code="HEADER.chapitre"/> </a>
     </div>
 </header>
 <section id="main">
@@ -28,7 +29,7 @@
                 <div class="label label-default pull-right">
                     id: <%= request.getParameter("id") %>
                 </div>
-                <h1>Modification stagiaire</h1>
+                <h1><spring:message code="EDIT.titre"/></h1>
 
                 <form action="editStagiaire" method="POST" onsubmit="return validateForm()">
                     <input type="hidden" name="id" value="<%= request.getParameter("id") %>" id="id"/>
@@ -39,7 +40,7 @@
                             <c:if test="${not empty validator && not empty validator[(0).intValue()]}">
                                 <span style="color:red"> ${validator[(0).intValue()]} </span><br>
                             </c:if>
-                            <label for="lastName">Nom</label>
+                            <label for="lastName"><spring:message code="EDIT.nom"/></label>
                             <input type="text" class="form-control" name="lastName" id="lastName"
                                    placeholder="Nom du stagiaire" value="${requestScope.stagiaire.lastName}" required>
 
@@ -48,7 +49,7 @@
                             <c:if test="${not empty validator && not empty validator[(1).intValue()]}">
                                 <span style="color:red"> ${validator[(1).intValue()]} </span><br>
                             </c:if>
-                            <label for="firstName">Prénom</label>
+                            <label for="firstName"><spring:message code="EDIT.prenom"/></label>
                             <input type="text" class="form-control" name="firstName" id="firstName"
                                    placeholder="Prénom du stagiaire" value="${requestScope.stagiaire.firstName}"
                                    required>
@@ -57,12 +58,12 @@
                             <c:if test="${not empty validator && not empty validator[(2).intValue()]}">
                                 <span style="color:red"> ${validator[(2).intValue()]} </span><br>
                             </c:if>
-                            <label for="arrival">Date d'arrivée</label>
+                            <label for="arrival"><spring:message code="EDIT.arrive"/></label>
                             <input type="date" class="form-control" name="arrival" id="arrival"
                                    placeholder="Date d'arrivée" value="${requestScope.stagiaire.arrival}" required>
                         </div>
                         <div class="form-group">
-                            <label for="finFormation">Date de fin de formation</label>
+                            <label for="finFormation"><spring:message code="EDIT.finFormation"/></label>
                             <input type="date" class="form-control" name="finFormation" id="finFormation"
                                    placeholder="Date de fin de formation"
                                    value="${requestScope.stagiaire.formationOver}">
@@ -71,19 +72,19 @@
                             <c:if test="${not empty validator && not empty validator[(3).intValue()]}">
                                 <span style="color:red"> ${validator[(3).intValue()]} </span> <br>
                             </c:if>
-                            <label for="promotion">Promotion</label>
+                            <label for="promotion"><spring:message code="EDIT.promotion"/></label>
                             <select class="form-control" name="promotion" id="promotion">
                                 <option value="${[requestScope.stagiaire.promotion.id, requestScope.stagiaire.promotion.name]}">${requestScope.stagiaire.promotion.name} </option>
                                 <c:forEach items="${requestScope.listPromo}" var="promotion">
-                                    <option value="${promotion.id}">${promotion.name}</option>
+                                    <option value="${[promotion.id, promotion.name]}">${promotion.name}</option>
                                 </c:forEach>
                             </select>
                         </div>
                     </fieldset>
                     <div class="actions pull-right">
-                        <input type="submit" value="Edit" class="btn btn-primary">
+                        <input type="submit" class="btn btn-primary" value=<spring:message code="EDIT.editBouton"/>>
                         or
-                        <a href="dashboard" class="btn btn-default">Cancel</a>
+                        <a href="dashboard" class="btn btn-default"><spring:message code="EDIT.quitBouton"/></a>
                     </div>
                 </form>
             </div>

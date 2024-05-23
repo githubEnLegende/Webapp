@@ -99,7 +99,6 @@ public class StagiaireDAO {
 
         try {
             Stagiaire stagiaire = jdbcTemplate.queryForObject(sql, mapperStagiaire, id);
-            System.out.println(stagiaire);
             return Optional.of(stagiaire);
         } catch (EmptyResultDataAccessException e) {
             System.out.println("Aucun résultat trouvé.");

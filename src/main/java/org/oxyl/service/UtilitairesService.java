@@ -12,15 +12,15 @@ public class UtilitairesService {
         this.utilitairesDAO = utilitairesDAO;
     }
 
-    public int getMaxID(){
+    public int getMaxID() {
         return utilitairesDAO.getMaxID();
     }
 
-    public int getTotalPages(String table, int rowsPerPage){
+    public int getTotalPages(String table, int rowsPerPage) {
         return utilitairesDAO.getTotalPages(table, rowsPerPage);
     }
 
-    public int getTotalPages(int count, int rowsPerPage){
+    public int getTotalPages(int count, int rowsPerPage) {
         return utilitairesDAO.getTotalPages(count, rowsPerPage);
     }
 

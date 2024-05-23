@@ -17,35 +17,35 @@ public class InternService {
         this.stagiaireDAO = stagiaireDAO;
     }
 
-    public int countStagiaire(){
+    public int countStagiaire() {
         return stagiaireDAO.countStagiaire();
     }
 
-    public Optional<List<Stagiaire>> getAllStagiaire(){
+    public Optional<List<Stagiaire>> getAllStagiaire() {
         return stagiaireDAO.getAllStagiaires();
     }
 
-    public void getPageStagiaire(Page<Stagiaire> page){
+    public void getPageStagiaire(Page<Stagiaire> page) {
         stagiaireDAO.getPageStagiaire(page);
     }
 
-    public int getPageStagiaire(String name, Page<Stagiaire> page){
+    public int getPageStagiaire(String name, Page<Stagiaire> page) {
         return stagiaireDAO.getPageStagiaire(name, page);
     }
 
-    public Optional<Stagiaire> detailStagiaire(int id){
+    public Optional<Stagiaire> detailStagiaire(int id) {
         return stagiaireDAO.detailStagiaire(id);
     }
 
-    public void insertIntern(Stagiaire intern){
+    public void insertIntern(Stagiaire intern) {
         stagiaireDAO.insertIntern(intern);
     }
 
-    public void deleteIntern(int id){
+    public void deleteIntern(int id) {
         stagiaireDAO.deleteIntern(id);
     }
 
-    public void updateIntern(Stagiaire intern){
+    public void updateIntern(Stagiaire intern) {
         stagiaireDAO.updateIntern(intern);
     }
 

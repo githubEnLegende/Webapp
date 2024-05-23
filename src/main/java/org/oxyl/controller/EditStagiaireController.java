@@ -36,6 +36,8 @@ public class EditStagiaireController {
         if (optStagiaire.isPresent()) {
             Stagiaire stagiaire = optStagiaire.get();
             model.addAttribute("stagiaire", stagiaire);
+        }else{
+            return "redirect:/404";
         }
 
         List<Promotion> listPromo = promotionService.getAllPromotion();
@@ -51,8 +53,10 @@ public class EditStagiaireController {
                                 @RequestParam(value = "arrival") String arrival,
                                 @RequestParam(value = "finFormation", required = false) String finFormation,
                                 @RequestParam(value = "promotion") String promo) {
+
         String[] promotion = promo.replace("[", "").replace("]", "").split(",");
         Promotion promotionObj = new Promotion.PromotionBuilder(Integer.parseInt(promotion[0]), promotion[1]).build();
+
         Stagiaire intern;
         if (!finFormation.isEmpty()) {
             intern = new Stagiaire.StagiaireBuilder(Integer.parseInt(id),
@@ -64,8 +68,7 @@ public class EditStagiaireController {
             intern = new Stagiaire.StagiaireBuilder(Integer.parseInt(id),
                     firstName,
                     lastName,
-                    mapperDate.stringtoLocalDate(arrival)).formationOver(mapperDate.stringtoLocalDate(finFormation))
-                    .build();
+                    mapperDate.stringtoLocalDate(arrival)).promotion(promotionObj).build();
         }
         internService.updateIntern(intern);
         return "redirect:/dashboard";

@@ -16,19 +16,19 @@ public class QuestionService {
         this.questionDAO = questionDAO;
     }
 
-    public void getQuestionById(int questionId){
+    public void getQuestionById(int questionId) {
         questionDAO.getQuestionById(questionId);
     }
 
-    public void deleteQuestion(int id){
+    public void deleteQuestion(int id) {
         questionDAO.deleteQuestion(id);
     }
 
-    public Optional<List<Question>> getAllQuestion(){
+    public Optional<List<Question>> getAllQuestion() {
         return questionDAO.getAllQuestion();
     }
 
-    public List<String> getQuestionAnswer(int id){
+    public List<String> getQuestionAnswer(int id) {
         return questionDAO.getQuestionAnswer(id);
     }
 }
