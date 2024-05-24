@@ -28,11 +28,11 @@
         <div class="row">
             <div class="col-xs-8 col-xs-offset-2 box">
                 <div class="label label-default pull-right">
-                    id: <%= request.getParameter("id") %>
+                    id: <c:out value="${requestScope.id}"/>
                 </div>
                 <h1><spring:message code="EDIT.titre"/></h1>
 
-                <form action="editStagiaire" method="POST" onsubmit="return validateForm()">
+                <form action="${requestScope.id}" method="POST" onsubmit="return validateForm()">
                     <input type="hidden" name="id" value="<%= request.getParameter("id") %>" id="id"/>
                     <!-- TODO: Change this value with the computer id -->
                     <fieldset>

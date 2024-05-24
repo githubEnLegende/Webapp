@@ -7,6 +7,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
@@ -29,15 +30,27 @@ public class QuestionController {
         logger.info("Entrée dans le Get Chapitre");
         var optQuestions = questionService.getAllQuestion();
         List<Question> questions;
-        if (optQuestions.isPresent()) {
-            questions = optQuestions.get();
-        } else {
-            questions = new ArrayList<>();
-        }
+        questions = optQuestions.orElseGet(ArrayList::new);
 
         model.addAttribute("questions", questions);
         model.addAttribute("lang", lang);
         return "question";
+    }
+
+    @GetMapping("/{id}")
+    public String displayQuestion(Model model, @PathVariable(value = "id") String id) {
+        List<String> result = questionService.getQuestionAnswer(Integer.parseInt(id));
+
+        String title = result.removeFirst();
+        String statement = result.removeFirst();
+        String chapter_id = result.removeFirst();
+
+        model.addAttribute("title", title);
+        model.addAttribute("statement", statement);
+        model.addAttribute("chapter_id", chapter_id);
+        model.addAttribute("answers", result);
+
+        return "displayQuestion";
     }
 
 }

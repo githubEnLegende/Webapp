@@ -95,7 +95,7 @@
                     <td class="editMode">
                         <input type="checkbox" name="cb" class="cb" value="${question.id}">
                     </td>
-                    <td><a href="displayQuestion?id=${question.id}" onclick="">${question.title}</a></td>
+                    <td><a href="question/${question.id}" onclick="">${question.title}</a></td>
                     <td>${question.statement}</td>
                     <td>${question.chapitreId}</td>
                 </tr>
