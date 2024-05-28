@@ -1,42 +1,51 @@
 package org.oxyl.persistence.entities;
 
 import jakarta.persistence.*;
+import jakarta.validation.constraints.NotNull;
+import org.hibernate.validator.constraints.Length;
 
 import java.time.LocalDate;
 
 @Entity
-@Table(name="intern")
+@Table(name = "intern")
 public class InternEntity {
     @Id
-    @GeneratedValue(strategy=GenerationType.IDENTITY)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
 
-    @Column(name = "first_name")
+    @Column(name = "first_name", nullable = false)
+    @Length(min = 2, max = 50)
+    @NotNull
     private String firstName;
 
-    @Column(name = "last_name")
+    @Column(name = "last_name", nullable = false, length = 50)
+    @Length(min = 2, max = 50)
+    @NotNull
     private String lastName;
 
-    @Column(name = "arrival")
+    @Column(name = "arrival", nullable = false)
+    @NotNull
     private LocalDate arrival;
 
-    @Column(name = "formation_over")
+    @Column(name = "formation_over", nullable = false)
     private LocalDate formationOver;
 
-    @Column(name = "promotion_id")
-    private int promotionId;
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "promotion_id", nullable = false)
+    @NotNull
+    private PromotionEntity promotion;
 
     public InternEntity() {
 
     }
 
-    public InternEntity(int id, String firstName, String lastName, LocalDate arrival, LocalDate formationOver, int promotionId) {
+    public InternEntity(int id, String firstName, String lastName, LocalDate arrival, LocalDate formationOver, PromotionEntity promotion) {
         this.id = id;
         this.firstName = firstName;
         this.lastName = lastName;
         this.arrival = arrival;
         this.formationOver = formationOver;
-        this.promotionId = promotionId;
+        this.promotion = promotion;
     }
 
     public int getId() {
@@ -79,11 +88,11 @@ public class InternEntity {
         this.formationOver = formationOver;
     }
 
-    public int getPromotionId() {
-        return promotionId;
+    public PromotionEntity getPromotion() {
+        return promotion;
     }
 
-    public void setPromotionId(int promotionId) {
-        this.promotionId = promotionId;
+    public void setPromotion(PromotionEntity promotion) {
+        this.promotion = promotion;
     }
 }

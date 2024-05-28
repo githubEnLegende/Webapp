@@ -1,6 +1,5 @@
 package org.oxyl.mapper;
 
-import org.oxyl.model.Chapitre;
 import org.oxyl.model.Question;
 import org.oxyl.persistence.entities.QuestionEntity;
 import org.slf4j.Logger;
@@ -17,10 +16,11 @@ public class MapperQuestion implements RowMapper<Question> {
 
     private final static Logger logger = LoggerFactory.getLogger(MapperChapitre.class);
 
-    public MapperQuestion() {}
+    public MapperQuestion() {
+    }
 
-    public Optional<Question> rsToQuestion(ResultSet rs)  {
-        try{
+    public Optional<Question> rsToQuestion(ResultSet rs) {
+        try {
             return Optional.of(new Question.QuestionBuilder(rs.getInt("id"),
                     rs.getString("title"),
                     rs.getString("statement"),
@@ -30,6 +30,7 @@ public class MapperQuestion implements RowMapper<Question> {
             return Optional.empty();
         }
     }
+
     @Override
     public Question mapRow(ResultSet rs, int rowNum) throws SQLException {
         Optional<Question> question = rsToQuestion(rs);

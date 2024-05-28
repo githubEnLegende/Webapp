@@ -49,5 +49,4 @@ public class StagiaireTest extends TestCase {
 //    }
 
 
-
 }

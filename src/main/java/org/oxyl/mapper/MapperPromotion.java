@@ -1,17 +1,15 @@
 package org.oxyl.mapper;
 
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.util.Optional;
-
 import org.oxyl.model.Promotion;
-import org.oxyl.newro.Main;
+import org.oxyl.persistence.entities.PromotionEntity;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.stereotype.Component;
 
-import javax.swing.text.html.Option;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.util.Optional;
 
 @Component
 public class MapperPromotion implements RowMapper<Promotion> {
@@ -39,7 +37,8 @@ public class MapperPromotion implements RowMapper<Promotion> {
         String id = parts[0].replace("[", "");
 
         // La deuxième partie est le nom de la promotion, donc nous pouvons l'utiliser telle quelle
-        String promotionName = parts[1].replace("]", "").trim();;
+        String promotionName = parts[1].replace("]", "").trim();
+        ;
 
         return new Promotion.PromotionBuilder(Integer.parseInt(id), promotionName).build();
     }
@@ -48,6 +47,13 @@ public class MapperPromotion implements RowMapper<Promotion> {
     public Promotion mapRow(ResultSet rs, int rowNum) throws SQLException {
         Optional<Promotion> promotion = rsToPromotion(rs);
         return promotion.orElse(null);
+    }
+
+    public Promotion toModel(PromotionEntity promotionEntity) {
+        return new Promotion.PromotionBuilder(
+                promotionEntity.getId(),
+                promotionEntity.getName()
+        ).build();
     }
 
 }

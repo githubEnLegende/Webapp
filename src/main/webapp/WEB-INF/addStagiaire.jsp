@@ -44,7 +44,8 @@
                             </c:if>
                             <label for="firstName"><spring:message code="ADD.prenom"/></label>
                             <input type="text" class="form-control" name="firstName" id="firstName"
-                                   placeholder=<spring:message code="ADD.prenomInput"/> value="" required>
+                                   placeholder=
+                                   <spring:message code="ADD.prenomInput"/> value="" required>
                         </div>
                         <div class="form-group">
                             <c:if test="${not empty validator && not empty validator[(2).intValue()]}">

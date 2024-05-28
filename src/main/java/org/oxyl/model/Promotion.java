@@ -1,7 +1,7 @@
 package org.oxyl.model;
 
 public class Promotion {
-    private int id;
+    private long id;
     private String name;
 
 
@@ -10,11 +10,11 @@ public class Promotion {
         this.name = builder.name;
     }
 
-    public int getId() {
+    public long getId() {
         return id;
     }
 
-    public void setId(int id) {
+    public void setId(long id) {
         this.id = id;
     }
 
@@ -31,15 +31,15 @@ public class Promotion {
     }
 
     public static class PromotionBuilder {
-        private int id;
+        private long id;
         private String name;
 
-        public PromotionBuilder(int id, String name) {
+        public PromotionBuilder(long id, String name) {
             this.id = id;
             this.name = name;
         }
 
-        public PromotionBuilder id(int id) {
+        public PromotionBuilder id(long id) {
             this.id = id;
             return this;
         }

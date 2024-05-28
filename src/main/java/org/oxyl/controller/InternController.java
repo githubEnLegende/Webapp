@@ -1,9 +1,9 @@
 package org.oxyl.controller;
 
 import org.oxyl.mapper.MapperDate;
+import org.oxyl.model.Page;
 import org.oxyl.model.Promotion;
 import org.oxyl.model.Stagiaire;
-import org.oxyl.model.Page;
 import org.oxyl.service.InternService;
 import org.oxyl.service.PromotionService;
 import org.oxyl.service.UtilitairesService;
@@ -12,7 +12,10 @@ import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Controller;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 
 import java.time.LocalDate;
 import java.util.List;
@@ -38,8 +41,8 @@ public class InternController {
 
     @GetMapping("/dashboard")
     public String GetInternsPage(Model model,
-                                 @RequestParam(value = "page", defaultValue = "1") int pageParam,
-                                 @RequestParam(value = "size", defaultValue = "50") int pageTaille,
+                                 @RequestParam(value = "page", defaultValue = "1") long pageParam,
+                                 @RequestParam(value = "size", defaultValue = "50") long pageTaille,
                                  @RequestParam(value = "search", required = false) String search,
                                  @RequestParam(value = "order", required = false) String order,
                                  @RequestParam(value = "lang", required = false) String lang) {
@@ -50,12 +53,12 @@ public class InternController {
         page.setNbRow(pageTaille);
 
         page.setOrder(SecureOrder.inEnum(order));
-        int countStagiaire = internService.countStagiaire();
+        long countStagiaire = internService.countStagiaire();
         model.addAttribute("countStagiaire", countStagiaire);
 
-        int totalPages = 0;
+        long totalPages = 0;
         if (search != null && !search.isEmpty()) {
-            int countSize = internService.getPageStagiaire(search, page);
+            long countSize = internService.getPageStagiaire(search, page);
             model.addAttribute("countStagiaire", countSize);
             totalPages = utilitairesService.getTotalPages(countSize, page.getNbRow());
 
@@ -80,7 +83,7 @@ public class InternController {
         if (!selection.isEmpty()) {
             String[] idsToDelete = selection.split(",");
             for (String id : idsToDelete) {
-                internService.deleteIntern(Integer.parseInt(id));
+                internService.deleteIntern(Long.parseLong(id));
             }
         }
         return "redirect:/dashboard";
@@ -101,7 +104,7 @@ public class InternController {
                                @RequestParam(required = false, name = "finFormation") String finFormation,
                                @RequestParam(value = "promotionId") String promotionId) {
 
-        Promotion promotion = new Promotion.PromotionBuilder(Integer.parseInt(promotionId), promotionId).build();
+        Promotion promotion = new Promotion.PromotionBuilder(Long.parseLong(promotionId), promotionId).build();
         Stagiaire intern;
         if (!finFormation.isEmpty()) {
             LocalDate finFormationDate = mapperDate.stringtoLocalDate(finFormation);
@@ -118,13 +121,13 @@ public class InternController {
     }
 
     @GetMapping("/{id}")
-    public String setEdit(Model model, @PathVariable(value = "id") int id) {
+    public String setEdit(Model model, @PathVariable(value = "id") long id) {
 
         Optional<Stagiaire> optStagiaire = internService.detailStagiaire(id);
         if (optStagiaire.isPresent()) {
             Stagiaire stagiaire = optStagiaire.get();
             model.addAttribute("stagiaire", stagiaire);
-        }else{
+        } else {
             return "redirect:/404";
         }
 
@@ -135,7 +138,7 @@ public class InternController {
     }
 
     @PostMapping("/{id}")
-    public String editStagiaire(@PathVariable(value = "id") int id,
+    public String editStagiaire(@PathVariable(value = "id") long id,
                                 @RequestParam(value = "lastName") String lastName,
                                 @RequestParam(value = "firstName") String firstName,
                                 @RequestParam(value = "arrival") String arrival,
@@ -143,7 +146,7 @@ public class InternController {
                                 @RequestParam(value = "promotion") String promo) {
 
         String[] promotion = promo.replace("[", "").replace("]", "").split(",");
-        Promotion promotionObj = new Promotion.PromotionBuilder(Integer.parseInt(promotion[0]), promotion[1]).build();
+        Promotion promotionObj = new Promotion.PromotionBuilder(Long.parseLong(promotion[0]), promotion[1]).build();
         System.out.println(id);
         Stagiaire intern;
         if (!finFormation.isEmpty()) {

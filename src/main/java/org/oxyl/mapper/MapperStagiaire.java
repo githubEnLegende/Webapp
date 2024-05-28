@@ -1,22 +1,25 @@
 package org.oxyl.mapper;
 
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.util.Optional;
-
 import org.oxyl.model.Promotion;
 import org.oxyl.model.Stagiaire;
+import org.oxyl.persistence.entities.InternEntity;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.stereotype.Component;
 
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.util.Optional;
+
 @Component
 public class MapperStagiaire implements RowMapper<Stagiaire> {
 
     private static final Logger logger = LoggerFactory.getLogger(MapperStagiaire.class);
+    private final MapperPromotion promotionMapper;
 
-    public MapperStagiaire() {
+    public MapperStagiaire(MapperPromotion promotionMapper) {
+        this.promotionMapper = promotionMapper;
     }
 
     public Optional<Stagiaire> rsToStagiaire(ResultSet rs) {
@@ -43,5 +46,16 @@ public class MapperStagiaire implements RowMapper<Stagiaire> {
     public Stagiaire mapRow(ResultSet rs, int rowNum) throws SQLException {
         Optional<Stagiaire> stagiaire = rsToStagiaire(rs);
         return stagiaire.orElse(null);
+    }
+
+    public Stagiaire toModel(InternEntity internEntity) {
+        Promotion promo = promotionMapper.toModel(internEntity.getPromotion());
+        return new Stagiaire.StagiaireBuilder(
+                internEntity.getId(),
+                internEntity.getFirstName(),
+                internEntity.getLastName(),
+                internEntity.getArrival()
+        ).promotion(promo).
+                formationOver(internEntity.getFormationOver()).build();
     }
 }

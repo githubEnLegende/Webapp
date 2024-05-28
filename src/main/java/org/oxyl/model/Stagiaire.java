@@ -1,14 +1,11 @@
 package org.oxyl.model;
 
 import java.time.LocalDate;
-import java.util.Optional;
-
-import org.oxyl.persistence.PromotionDAO;
 
 
 public class Stagiaire {
 
-    private int id;
+    private long id;
     private String firstName;
     private String lastName;
     private LocalDate arrival;
@@ -29,7 +26,7 @@ public class Stagiaire {
         return id;
     }
 
-    public void setId(int id) {
+    public void setId(long id) {
         this.id = id;
     }
 
@@ -85,14 +82,14 @@ public class Stagiaire {
     }
 
     public static class StagiaireBuilder {
-        private int id;
+        private long id;
         private String firstName;
         private String lastName;
         private LocalDate arrival;
         private LocalDate formationOver;
         private Promotion promotion;
 
-        public StagiaireBuilder(int id, String firstName, String lastName, LocalDate arrival) {
+        public StagiaireBuilder(long id, String firstName, String lastName, LocalDate arrival) {
             this.id = id;
             this.firstName = firstName;
             this.lastName = lastName;
@@ -124,7 +121,7 @@ public class Stagiaire {
             return this;
         }
 
-//		public StagiaireBuilder promotion(int promotion){
+//		public StagiaireBuilder promotion(long promotion){
 //			Optional<Promotion> promotionOptional = promotionDAO.getPromotion(promotion);
 //			if (promotionOptional.isPresent()) {
 //				this.promotion = promotionOptional.get();

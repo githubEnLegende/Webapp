@@ -1,8 +1,9 @@
 package org.oxyl.persistence;
 
 import org.oxyl.mapper.MapperStagiaire;
-import org.oxyl.model.Stagiaire;
 import org.oxyl.model.Page;
+import org.oxyl.model.Stagiaire;
+import org.oxyl.persistence.repository.StagiaireRepository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.dao.DataAccessException;
@@ -11,7 +12,7 @@ import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.sql.*;
+import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -23,23 +24,21 @@ public class StagiaireDAO {
     private static final Logger logger = LoggerFactory.getLogger(StagiaireDAO.class);
     private final MapperStagiaire mapperStagiaire;
     private final JdbcTemplate jdbcTemplate;
+    private final StagiaireRepository stagiaireRepository;
 
-    public StagiaireDAO(MapperStagiaire mapperStagiaire, JdbcTemplate jdbcTemplate) {
+    public StagiaireDAO(MapperStagiaire mapperStagiaire, JdbcTemplate jdbcTemplate, StagiaireRepository stagiaireRepository) {
         this.mapperStagiaire = mapperStagiaire;
         this.jdbcTemplate = jdbcTemplate;
+        this.stagiaireRepository = stagiaireRepository;
     }
 
-    public int countStagiaire() {
-        String query = "SELECT COUNT(*) FROM intern";
-        int count = 0;
+    public long countStagiaire() {
         try {
-            count = jdbcTemplate.queryForObject(query, Integer.class);
-        } catch (EmptyResultDataAccessException e) {
-            logger.error("Aucun résultat trouvé pour la récupération du max des stagiaires", e);
-        } catch (DataAccessException e) {
-            logger.error("Erreur lors de la récupération du max des stagiaires", e);
+            return stagiaireRepository.count();
+        } catch (Exception e) {
+            logger.error("Erreur lors de la récupération du nombre total de stagiaires", e);
+            return 0;
         }
-        return count;
     }
 
     public Optional<List<Stagiaire>> getAllStagiaires() {
@@ -71,7 +70,7 @@ public class StagiaireDAO {
     }
 
     @Transactional
-    public int getPageStagiaire(String name, Page<Stagiaire> page) {
+    public long getPageStagiaire(String name, Page<Stagiaire> page) {
 
         String sql = "SELECT intern.id, first_name, last_name, arrival, formation_over, promotion_id, promotion.name " +
                 "FROM intern LEFT JOIN promotion ON intern.promotion_id = promotion.id WHERE first_name LIKE ? OR last_name LIKE ?";
@@ -92,7 +91,7 @@ public class StagiaireDAO {
         return count;
     }
 
-    public Optional<Stagiaire> detailStagiaire(int id) {
+    public Optional<Stagiaire> detailStagiaire(long id) {
 
         String sql = "SELECT intern.id, first_name, last_name, arrival, formation_over, promotion_id, promotion.name " +
                 "FROM intern LEFT JOIN promotion ON intern.promotion_id = promotion.id WHERE intern.id = ?";
@@ -126,7 +125,7 @@ public class StagiaireDAO {
         }
     }
 
-    public void deleteIntern(int id) {
+    public void deleteIntern(long id) {
 
         String sql = "DELETE FROM intern WHERE id = ?";
 

@@ -2,10 +2,10 @@ package org.oxyl.model;
 
 public class Question {
 
-    private int id;
+    private long id;
     private String title;
     private String statement;
-    private int chapitreId;
+    private long chapitreId;
 
     public Question(QuestionBuilder builder) {
         this.id = builder.id;
@@ -21,11 +21,11 @@ public class Question {
         this.chapitreId = 0;
     }
 
-    public int getId() {
+    public long getId() {
         return id;
     }
 
-    public void setId(int id) {
+    public void setId(long id) {
         this.id = id;
     }
 
@@ -45,11 +45,11 @@ public class Question {
         this.statement = statement;
     }
 
-    public int getChapitreId() {
+    public long getChapitreId() {
         return chapitreId;
     }
 
-    public void setChapitreId(int i) {
+    public void setChapitreId(long i) {
         this.chapitreId = i;
     }
 
@@ -63,19 +63,19 @@ public class Question {
     }
 
     public static class QuestionBuilder {
-        private int id;
+        private long id;
         private String title;
         private String statement;
-        private int chapitreId;
+        private long chapitreId;
 
-        public QuestionBuilder(int id, String title, String statement, int chapitreId) {
+        public QuestionBuilder(long id, String title, String statement, long chapitreId) {
             this.id = id;
             this.title = title;
             this.statement = statement;
             this.chapitreId = chapitreId;
         }
 
-        public QuestionBuilder id(int id) {
+        public QuestionBuilder id(long id) {
             this.id = id;
             return this;
         }
@@ -90,7 +90,7 @@ public class Question {
             return this;
         }
 
-        public QuestionBuilder chapitreId(int chapitreId) {
+        public QuestionBuilder chapitreId(long chapitreId) {
             this.chapitreId = chapitreId;
             return this;
         }

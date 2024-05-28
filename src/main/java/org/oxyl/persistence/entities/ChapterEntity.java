@@ -7,13 +7,13 @@ import jakarta.persistence.*;
 public class ChapterEntity {
 
     @Id
-    @GeneratedValue(strategy=GenerationType.IDENTITY)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
 
-    @Column(name = "name")
+    @Column(name = "name", nullable = false)
     private String name;
 
-    @Column(name = "parent_path")
+    @Column(name = "parent_path", nullable = false)
     private String parentPath;
 
     public ChapterEntity() {

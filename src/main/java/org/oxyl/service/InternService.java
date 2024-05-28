@@ -17,7 +17,7 @@ public class InternService {
         this.stagiaireDAO = stagiaireDAO;
     }
 
-    public int countStagiaire() {
+    public long countStagiaire() {
         return stagiaireDAO.countStagiaire();
     }
 
@@ -29,11 +29,11 @@ public class InternService {
         stagiaireDAO.getPageStagiaire(page);
     }
 
-    public int getPageStagiaire(String name, Page<Stagiaire> page) {
+    public long getPageStagiaire(String name, Page<Stagiaire> page) {
         return stagiaireDAO.getPageStagiaire(name, page);
     }
 
-    public Optional<Stagiaire> detailStagiaire(int id) {
+    public Optional<Stagiaire> detailStagiaire(long id) {
         return stagiaireDAO.detailStagiaire(id);
     }
 
@@ -41,7 +41,7 @@ public class InternService {
         stagiaireDAO.insertIntern(intern);
     }
 
-    public void deleteIntern(int id) {
+    public void deleteIntern(long id) {
         stagiaireDAO.deleteIntern(id);
     }
 

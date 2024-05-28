@@ -1,17 +1,16 @@
 package org.oxyl.persistence;
 
+import com.zaxxer.hikari.HikariDataSource;
+import org.h2.tools.RunScript;
+import org.springframework.stereotype.Component;
+
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.Reader;
 import java.nio.charset.StandardCharsets;
 import java.sql.Connection;
-import java.sql.DriverManager;
 import java.sql.SQLException;
-
-import com.zaxxer.hikari.HikariDataSource;
-import org.h2.tools.RunScript;
-import org.springframework.stereotype.Component;
 
 @Component
 public class H2Config {
@@ -33,7 +32,7 @@ public class H2Config {
     }
 
     public void setup() {
-        ClassLoader loader =  H2Config.class.getClassLoader();
+        ClassLoader loader = H2Config.class.getClassLoader();
         try (
                 Connection connection = dataSource.getConnection();
                 InputStream input = loader.getResourceAsStream("setup.sql")

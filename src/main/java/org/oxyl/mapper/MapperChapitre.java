@@ -30,7 +30,7 @@ public class MapperChapitre implements RowMapper<Chapitre> {
         }
     }
 
-    public Chapitre mapRow(ResultSet rs, int rowNum) throws SQLException{
+    public Chapitre mapRow(ResultSet rs, int rowNum) throws SQLException {
         Optional<Chapitre> chapitre = rsToChapitre(rs);
         return chapitre.orElse(null);
     }

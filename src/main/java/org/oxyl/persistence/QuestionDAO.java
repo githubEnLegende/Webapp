@@ -5,17 +5,15 @@ import org.hibernate.Session;
 import org.hibernate.query.Query;
 import org.oxyl.mapper.MapperQuestion;
 import org.oxyl.model.Question;
-import org.oxyl.model.Reponse;
-import org.oxyl.mapper.MapperReponse;
 import org.oxyl.persistence.entities.QuestionEntity;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.dao.DataAccessException;
-import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Optional;
 
 @Repository
 public class QuestionDAO {
@@ -54,12 +52,12 @@ public class QuestionDAO {
     }
 
 
-    public Optional<List<Question>> getAllQuestion(){
+    public Optional<List<Question>> getAllQuestion() {
         Query<QuestionEntity> query = session.createQuery("from QuestionEntity", QuestionEntity.class);
         return Optional.of(query.list().stream().map(mapperQuestion::toModel).toList());
     }
 
-//    public List<String> getQuestionAnswer(int id) {
+    //    public List<String> getQuestionAnswer(int id) {
 //        String sql = "SELECT question.id, title, statement, chapter_id, answer.text "
 //                + "FROM question LEFT JOIN answer ON answer.question_id = question.id WHERE question.id = ?";
 //
@@ -82,7 +80,7 @@ public class QuestionDAO {
 //        }
 //    }
     @Transactional
-    public List<String> getQuestionAnswer(int id) {
+    public List<String> getQuestionAnswer(long id) {
         String hql = "SELECT q.title, q.statement, q.chapterId, a.text FROM QuestionEntity q LEFT JOIN q.answers a WHERE q.id = :id";
         List<Object[]> result = session.createQuery(hql).setParameter("id", id).getResultList();
         List<String> response = new ArrayList<>();

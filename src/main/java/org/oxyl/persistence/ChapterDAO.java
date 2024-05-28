@@ -11,7 +11,6 @@ import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
-
 import java.util.List;
 import java.util.Optional;
 
@@ -29,7 +28,7 @@ public class ChapterDAO {
     }
 
     @Transactional
-    public Optional<List<Chapitre>> getAllChapter(){
+    public Optional<List<Chapitre>> getAllChapter() {
         try {
             Query<ChapterEntity> query = session.createQuery("from ChapterEntity", ChapterEntity.class);
             return Optional.of(query.list().stream().map(mapperChapitre::toModel).toList());

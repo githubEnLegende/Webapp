@@ -18,7 +18,7 @@ public class UtilitairesDAO {
         this.jdbcTemplate = jdbcTemplate;
     }
 
-    public int getMaxID() {
+    public long getMaxID() {
         int maxId = 0;
 
         String sql = "SELECT MAX(ID) FROM intern";
@@ -32,7 +32,7 @@ public class UtilitairesDAO {
         return maxId;
     }
 
-    public int getTotalPages(String table, int rowsPerPage) {
+    public long getTotalPages(String table, long rowsPerPage) {
         String countQuery = "SELECT COUNT(*) FROM " + table;
         int totalRows = 0;
         try {
@@ -45,7 +45,7 @@ public class UtilitairesDAO {
         return (int) Math.ceil((double) totalRows / rowsPerPage);
     }
 
-    public int getTotalPages(int count, int rowsPerPage) {
+    public int getTotalPages(long count, long rowsPerPage) {
         return (int) Math.ceil((double) count / rowsPerPage);
     }
 }

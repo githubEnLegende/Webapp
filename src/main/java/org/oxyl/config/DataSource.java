@@ -7,8 +7,8 @@ import org.hibernate.Session;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 import org.springframework.jdbc.core.JdbcTemplate;
-import org.springframework.jdbc.datasource.DataSourceTransactionManager;
 import org.springframework.orm.jpa.JpaTransactionManager;
 import org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean;
 import org.springframework.orm.jpa.vendor.HibernateJpaVendorAdapter;
@@ -18,6 +18,7 @@ import java.util.Properties;
 
 @Configuration
 @ComponentScan(basePackages = "org.oxyl")
+@EnableJpaRepositories("org.oxyl.persistence.repository")
 public class DataSource {
 
     public DataSource() {
@@ -45,7 +46,7 @@ public class DataSource {
 //    }
 
     @Bean
-    public EntityManagerFactory entityManagerFactory(){
+    public EntityManagerFactory entityManagerFactory() {
         HibernateJpaVendorAdapter vendorAdapter = new HibernateJpaVendorAdapter();
         vendorAdapter.setGenerateDdl(true);
 
@@ -70,7 +71,7 @@ public class DataSource {
     }
 
     @Bean
-    public Session session(){
+    public Session session() {
         return entityManagerFactory().createEntityManager().unwrap(Session.class);
     }
 

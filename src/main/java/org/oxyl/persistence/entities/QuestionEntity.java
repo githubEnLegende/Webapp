@@ -1,6 +1,7 @@
 package org.oxyl.persistence.entities;
 
 import jakarta.persistence.*;
+import jakarta.validation.constraints.NotNull;
 
 import java.util.List;
 
@@ -8,22 +9,26 @@ import java.util.List;
 @Table(name = "question")
 public class QuestionEntity {
     @Id
-    @GeneratedValue(strategy= GenerationType.IDENTITY)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
 
     @Column(name = "title")
+    @NotNull
     private String title;
 
     @Column(name = "statement")
+    @NotNull
     private String statement;
 
     @Column(name = "chapter_id")
+    @NotNull
     private int chapterId;
 
     @OneToMany(mappedBy = "question", fetch = FetchType.LAZY)
     private List<AnswerEntity> answers;
 
-    public QuestionEntity() {}
+    public QuestionEntity() {
+    }
 
     public QuestionEntity(int id, String title, String statement, int chapterId) {
         this.id = id;

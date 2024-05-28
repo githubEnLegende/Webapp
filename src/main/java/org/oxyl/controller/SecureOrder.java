@@ -18,9 +18,9 @@ public enum SecureOrder {
         return name;
     }
 
-    public static String inEnum(String order){
-        for(SecureOrder secureOrder : SecureOrder.values()){
-            if(secureOrder.getName().equals(order)){
+    public static String inEnum(String order) {
+        for (SecureOrder secureOrder : SecureOrder.values()) {
+            if (secureOrder.getName().equals(order)) {
                 return secureOrder.getName();
             }
         }

@@ -1,7 +1,7 @@
 package org.oxyl.model;
 
 public class Chapitre {
-    private int id;
+    private long id;
     private String name;
     private String parent;
 
@@ -13,11 +13,11 @@ public class Chapitre {
     }
 
 
-    public int getId() {
+    public long getId() {
         return id;
     }
 
-    public void setId(int id) {
+    public void setId(long id) {
         this.id = id;
     }
 
@@ -38,17 +38,17 @@ public class Chapitre {
     }
 
     public static class ChapitreBuilder {
-        private int id;
+        private long id;
         private String name;
         private String parent;
 
-        public ChapitreBuilder(int id, String name, String parent) {
+        public ChapitreBuilder(long id, String name, String parent) {
             this.id = id;
             this.name = name;
             this.parent = parent;
         }
 
-        public ChapitreBuilder id(int id) {
+        public ChapitreBuilder id(long id) {
             this.id = id;
             return this;
         }

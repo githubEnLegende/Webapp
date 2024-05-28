@@ -28,7 +28,7 @@ public class QuestionService {
         return questionDAO.getAllQuestion();
     }
 
-    public List<String> getQuestionAnswer(int id) {
+    public List<String> getQuestionAnswer(long id) {
         return questionDAO.getQuestionAnswer(id);
     }
 }

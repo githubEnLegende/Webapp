@@ -1,18 +1,21 @@
 package org.oxyl.newro;
 
+import org.oxyl.model.Page;
+import org.oxyl.model.Promotion;
+import org.oxyl.model.Stagiaire;
+import org.oxyl.persistence.PromotionDAO;
+import org.oxyl.persistence.QuestionDAO;
+import org.oxyl.persistence.StagiaireDAO;
+import org.oxyl.persistence.UtilitairesDAO;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.stereotype.Component;
+
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeParseException;
 import java.util.InputMismatchException;
 import java.util.Scanner;
-
-import org.oxyl.model.Page;
-import org.oxyl.model.Promotion;
-import org.oxyl.model.Stagiaire;
-import org.oxyl.persistence.*;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-import org.springframework.stereotype.Component;
 
 @Component
 public class FonctionDisplay {

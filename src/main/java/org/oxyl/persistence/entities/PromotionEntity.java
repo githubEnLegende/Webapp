@@ -1,16 +1,18 @@
 package org.oxyl.persistence.entities;
 
 import jakarta.persistence.*;
+import jakarta.validation.constraints.NotNull;
 
 @Entity
 @Table(name = "promotion")
 public class PromotionEntity {
 
     @Id
-    @GeneratedValue(strategy=GenerationType.IDENTITY)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
 
-    @Column(name = "name")
+    @Column(name = "name", unique = true)
+    @NotNull
     private String name;
 
     public PromotionEntity() {
@@ -21,19 +23,19 @@ public class PromotionEntity {
         this.id = id;
     }
 
-    private int getId() {
+    public int getId() {
         return id;
     }
 
-    private void setId(int id) {
+    public void setId(int id) {
         this.id = id;
     }
 
-    private String getName() {
+    public String getName() {
         return name;
     }
 
-    private void setName(String name) {
+    public void setName(String name) {
         this.name = name;
     }
 }

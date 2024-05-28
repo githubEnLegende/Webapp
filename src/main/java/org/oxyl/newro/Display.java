@@ -9,7 +9,7 @@ public class Display {
 
     private final FonctionDisplay fonctionDisplay;
 
-    public Display(FonctionDisplay fonctionDisplay){
+    public Display(FonctionDisplay fonctionDisplay) {
         this.fonctionDisplay = fonctionDisplay;
     }
 

@@ -1,14 +1,10 @@
 package org.oxyl.model;
 
-import java.sql.ResultSet;
-import java.sql.SQLException;
-
-
 public class Reponse {
-    private int id;
+    private long id;
     private String texte;
-    private int valid;
-    private int questionId;
+    private long valid;
+    private long questionId;
 
 
     public Reponse(ReponseBuilder builder) {
@@ -20,11 +16,11 @@ public class Reponse {
     }
 
 
-    public int getId() {
+    public long getId() {
         return id;
     }
 
-    public void setId(int id) {
+    public void setId(long id) {
         this.id = id;
     }
 
@@ -36,19 +32,19 @@ public class Reponse {
         this.texte = texte;
     }
 
-    public int getValid() {
+    public long getValid() {
         return valid;
     }
 
-    public void setValid(int valid) {
+    public void setValid(long valid) {
         this.valid = valid;
     }
 
-    public int getQuestionId() {
+    public long getQuestionId() {
         return questionId;
     }
 
-    public void setQuestionId(int questionId) {
+    public void setQuestionId(long questionId) {
         this.questionId = questionId;
     }
 
@@ -62,13 +58,13 @@ public class Reponse {
     }
 
     public static class ReponseBuilder {
-        private int id;
+        private long id;
         private String texte;
-        private int valid;
-        private int questionId;
+        private long valid;
+        private long questionId;
 
 
-        public ReponseBuilder(int id, String texte, int valid, int questionId) {
+        public ReponseBuilder(long id, String texte, long valid, long questionId) {
             super();
             this.id = id;
             this.texte = texte;
@@ -76,7 +72,7 @@ public class Reponse {
             this.questionId = questionId;
         }
 
-        public ReponseBuilder id(int id) {
+        public ReponseBuilder id(long id) {
             this.id = id;
             return this;
         }
@@ -86,12 +82,12 @@ public class Reponse {
             return this;
         }
 
-        public ReponseBuilder valid(int valid) {
+        public ReponseBuilder valid(long valid) {
             this.valid = valid;
             return this;
         }
 
-        public ReponseBuilder questionId(int questionId) {
+        public ReponseBuilder questionId(long questionId) {
             this.questionId = questionId;
             return this;
         }

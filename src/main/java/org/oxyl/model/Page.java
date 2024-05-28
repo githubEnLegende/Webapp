@@ -5,28 +5,28 @@ import java.util.List;
 
 
 public class Page<T> {
-    private int nbRow = 50;
+    private long nbRow = 50;
     private String order = "id";
-    private int pageNumber = 1;
+    private long pageNumber = 1;
     private List<T> content = new ArrayList<>();
 
 
     public Page() {
     }
 
-    public int getNbRow() {
+    public long getNbRow() {
         return nbRow;
     }
 
-    public int getPageNumber() {
+    public long getPageNumber() {
         return pageNumber;
     }
 
-    public void setPageNumber(int pageNumber) {
+    public void setPageNumber(long pageNumber) {
         this.pageNumber = pageNumber;
     }
 
-    public void setNbRow(int nbRow) {
+    public void setNbRow(long nbRow) {
         this.nbRow = nbRow;
     }
 

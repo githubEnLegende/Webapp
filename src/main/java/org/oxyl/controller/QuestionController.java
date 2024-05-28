@@ -39,7 +39,7 @@ public class QuestionController {
 
     @GetMapping("/{id}")
     public String displayQuestion(Model model, @PathVariable(value = "id") String id) {
-        List<String> result = questionService.getQuestionAnswer(Integer.parseInt(id));
+        List<String> result = questionService.getQuestionAnswer(Long.parseLong(id));
 
         String title = result.removeFirst();
         String statement = result.removeFirst();

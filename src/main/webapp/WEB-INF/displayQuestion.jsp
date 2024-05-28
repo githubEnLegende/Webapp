@@ -33,7 +33,7 @@
                 <div><br>Réponses : <br><br></div>
                 <c:forEach var="answer" items="${requestScope.answers}">
                     <div>
-                        <input type="checkbox" name="selectedAnswers" value="${answer}" /> ${answer}
+                        <input type="checkbox" name="selectedAnswers" value="${answer}"/> ${answer}
                     </div>
                 </c:forEach>
 

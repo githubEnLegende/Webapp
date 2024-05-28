@@ -1,29 +1,30 @@
 package org.oxyl.persistence.entities;
 
 import jakarta.persistence.*;
+import jakarta.validation.constraints.NotNull;
 
 @Entity
 @Table(name = "answer")
 public class AnswerEntity {
 
     @Id
-    @GeneratedValue(strategy=GenerationType.IDENTITY)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
 
     @Column(name = "label")
+    @NotNull
     private String label;
 
     @Column(name = "text")
+    @NotNull
     private String text;
 
     @Column(name = "valid_answer")
+    @NotNull
     private int validAnswer;
-//
-//    @Column(name = "question_id")
-//    private int questionId;
 
     @ManyToOne
-    @JoinColumn(name = "question_id", nullable = false)
+    @JoinColumn(name = "question_id")
     private QuestionEntity question;
 
     public AnswerEntity() {

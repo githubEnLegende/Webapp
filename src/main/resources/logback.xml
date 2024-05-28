@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <configuration>
     <contextName>Tomcat</contextName>
-    <jmxConfigurator contextName="Tomcat" />
+    <jmxConfigurator contextName="Tomcat"/>
     <!-- Définition de l'appender pour écrire dans un fichier -->
     <appender name="FILE" class="ch.qos.logback.core.FileAppender">
         <File>/home/oxyl/eclipse-workspace/NewroFactoryMaven/logs/logs.log</File>
@@ -15,7 +15,7 @@
 
     <!-- Configuration des niveaux de log pour chaque appender -->
     <root level="INFO">
-        <appender-ref ref="FILE" />
+        <appender-ref ref="FILE"/>
     </root>
 
 </configuration>
