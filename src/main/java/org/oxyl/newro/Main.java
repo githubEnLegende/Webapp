@@ -1,22 +1,20 @@
 package org.oxyl.newro;
 
-import org.oxyl.model.Stagiaire;
+import org.oxyl.config.SpringApplicationContext;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-
-import java.util.ArrayList;
-import java.util.List;
-
-//import static org.oxyl.newro.Display.*;
 
 
 public class Main {
 
-    private static Logger logger = LoggerFactory.getLogger(Main.class);
+    private static final Logger logger = LoggerFactory.getLogger(Main.class);
+
 
     public static void main(String[] args) {
         logger.info("Starting Newro...");
-//        feur();
+        Display display = SpringApplicationContext.getContext().getBean(Display.class);
+
+        display.feur();
     }
 
 //	private static void e(){

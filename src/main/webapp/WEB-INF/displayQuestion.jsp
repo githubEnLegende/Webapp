@@ -9,16 +9,16 @@
     <title>Newro Factory</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <!-- Bootstrap -->
-    <link href="static/css/bootstrap.min.css" rel="stylesheet" media="screen">
-    <link href="static/css/font-awesome.css" rel="stylesheet" media="screen">
-    <link href="static/css/main.css" rel="stylesheet" media="screen">
+    <link href="${pageContext.request.contextPath}/static/css/bootstrap.min.css" rel="stylesheet" media="screen">
+    <link href="${pageContext.request.contextPath}/static/css/font-awesome.css" rel="stylesheet" media="screen">
+    <link href="${pageContext.request.contextPath}/static/css/main.css" rel="stylesheet" media="screen">
 </head>
 <body>
 <header class="navbar navbar-inverse navbar-fixed-top">
     <div class="container">
-        <a class="navbar-brand" href="dashboard"> Newro Factory </a>
-        <a class="navbar-brand" href="question"> Questions </a>
-        <a class="navbar-brand" href="chapitre"> Chapitres </a>
+        <a class="navbar-brand" href="/newro-factory/dashboard"> Newro Factory </a>
+        <a class="navbar-brand" href="/newro-factory/question"> Questions </a>
+        <a class="navbar-brand" href="/newro-factory/chapitre"> Chapitres </a>
     </div>
 </header>
 <section id="main">

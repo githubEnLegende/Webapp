@@ -1,12 +1,15 @@
 package org.oxyl.persistence;
 
+import org.hibernate.HibernateException;
+import org.hibernate.Session;
+import org.hibernate.query.Query;
 import org.oxyl.mapper.MapperChapitre;
 import org.oxyl.model.Chapitre;
+import org.oxyl.persistence.entities.ChapterEntity;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.dao.DataAccessException;
-import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;
+import org.springframework.transaction.annotation.Transactional;
 
 
 import java.util.List;
@@ -16,22 +19,22 @@ import java.util.Optional;
 public class ChapterDAO {
 
     private static final Logger logger = LoggerFactory.getLogger(ChapterDAO.class);
-    private MapperChapitre mapperChapitre;
-    private final JdbcTemplate jdbcTemplate;
+    private final Session session;
+    private final MapperChapitre mapperChapitre;
 
 
-    public ChapterDAO(MapperChapitre mapperChapitre, JdbcTemplate jdbcTemplate) {
+    public ChapterDAO(Session session, MapperChapitre mapperChapitre) {
         this.mapperChapitre = mapperChapitre;
-        this.jdbcTemplate = jdbcTemplate;
+        this.session = session;
     }
 
-    public Optional<List<Chapitre>> getAllChapter() {
-        String sql = "SELECT id, name, parent_path FROM chapter";
+    @Transactional
+    public Optional<List<Chapitre>> getAllChapter(){
         try {
-            List<Chapitre> chapitres = jdbcTemplate.query(sql, mapperChapitre);
-            return Optional.of(chapitres);
-        } catch (DataAccessException e) {
-            logger.error("Erreur lors de la récupération des stagiaires.", e);
+            Query<ChapterEntity> query = session.createQuery("from ChapterEntity", ChapterEntity.class);
+            return Optional.of(query.list().stream().map(mapperChapitre::toModel).toList());
+        } catch (HibernateException e) {
+            logger.error("Erreur lors de la récupération de tous les chapitres", e);
             return Optional.empty();
         }
     }

@@ -156,7 +156,8 @@ public class InternController {
             intern = new Stagiaire.StagiaireBuilder(id,
                     firstName,
                     lastName,
-                    mapperDate.stringtoLocalDate(arrival)).promotion(promotionObj).build();
+                    mapperDate.stringtoLocalDate(arrival))
+                    .promotion(promotionObj).build();
         }
         internService.updateIntern(intern);
         return "redirect:/dashboard";

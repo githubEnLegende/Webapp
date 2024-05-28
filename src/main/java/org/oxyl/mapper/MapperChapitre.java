@@ -1,6 +1,7 @@
 package org.oxyl.mapper;
 
 import org.oxyl.model.Chapitre;
+import org.oxyl.persistence.entities.ChapterEntity;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.jdbc.core.RowMapper;
@@ -32,6 +33,14 @@ public class MapperChapitre implements RowMapper<Chapitre> {
     public Chapitre mapRow(ResultSet rs, int rowNum) throws SQLException{
         Optional<Chapitre> chapitre = rsToChapitre(rs);
         return chapitre.orElse(null);
+    }
+
+    public Chapitre toModel(ChapterEntity chapterEntity) {
+        return new Chapitre.ChapitreBuilder(
+                chapterEntity.getId(),
+                chapterEntity.getName(),
+                chapterEntity.getParentPath()
+        ).build();
     }
 
 }

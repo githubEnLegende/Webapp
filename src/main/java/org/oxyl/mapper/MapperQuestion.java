@@ -1,6 +1,8 @@
 package org.oxyl.mapper;
 
+import org.oxyl.model.Chapitre;
 import org.oxyl.model.Question;
+import org.oxyl.persistence.entities.QuestionEntity;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.jdbc.core.RowMapper;
@@ -32,6 +34,15 @@ public class MapperQuestion implements RowMapper<Question> {
     public Question mapRow(ResultSet rs, int rowNum) throws SQLException {
         Optional<Question> question = rsToQuestion(rs);
         return question.orElse(null);
+    }
+
+    public Question toModel(QuestionEntity questionEntity) {
+        return new Question.QuestionBuilder(
+                questionEntity.getId(),
+                questionEntity.getTitle(),
+                questionEntity.getStatement(),
+                questionEntity.getChapterId()
+        ).build();
     }
 
 }
