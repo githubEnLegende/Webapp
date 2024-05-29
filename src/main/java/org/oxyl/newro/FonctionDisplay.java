@@ -38,8 +38,8 @@ public class FonctionDisplay {
     public void DisplayAfficherPageStagiaire(Scanner sc) {
         Page<Stagiaire> pageStagiaire = new Page<>();
         boolean boucle = true;
-        int pageNumber = 1;
-        int totalPages = utilitairesDAO.getTotalPages("intern", pageStagiaire.getNbRow());
+        long pageNumber = 1;
+        long totalPages = 0;
 
         while (boucle) {
             System.out.println("Page " + pageNumber + " sur " + totalPages + ":");
@@ -74,49 +74,49 @@ public class FonctionDisplay {
         }
     }
 
-    public void DisplayAfficherPagePromotion(Scanner sc) {
-
-
-        Page<Promotion> pagePromo = new Page<>();
-        boolean boucle = true;
-        int pageNumber = 1;
-        int totalPages = utilitairesDAO.getTotalPages("promotion", pagePromo.getNbRow());
-
-        while (boucle) {
-            System.out.println("Page " + pageNumber + " sur " + totalPages + ":");
-            promotionDAO.afficherPagePromotion(pagePromo);
-            System.out.println("1: Page suivante, 2: Page précédente, 3: Choisissez la page, 0: Quitter");
-            System.out.println("Choix :");
-
-            String choice = sc.next();
-
-            if (choice.equals("1") && pageNumber < totalPages) {
-                // Aller à la page suivante, si ce n'est pas la dernière page
-                pageNumber++;
-            } else if (choice.equals("2") && pageNumber > 1) {
-                // Aller à la page précédente, si ce n'est pas la première page
-                pageNumber--;
-            } else if (choice.equals("3")) {
-                try {
-                    System.out.println("Entrez un nombre :");
-                    pageNumber = sc.nextInt();
-                } catch (NumberFormatException e) {
-                    System.out.println("not a valid number");
-                    break;
-                }
-                if (pageNumber > totalPages) {
-                    pageNumber = totalPages;
-                } else if (pageNumber < 1) {
-                    pageNumber = 1;
-                }
-            } else if (choice.equals("0")) {
-                // Quitter la boucle
-                boucle = false;
-            } else {
-                System.out.println("Choix invalide !");
-            }
-        }
-    }
+//    public void DisplayAfficherPagePromotion(Scanner sc) {
+//
+//
+//        Page<Promotion> pagePromo = new Page<>();
+//        boolean boucle = true;
+//        long pageNumber = 1;
+//        long totalPages = utilitairesDAO.getTotalPages("promotion", pagePromo.getNbRow());
+//
+//        while (boucle) {
+//            System.out.println("Page " + pageNumber + " sur " + totalPages + ":");
+//            //promotionDAO.afficherPagePromotion(pagePromo);
+//            System.out.println("1: Page suivante, 2: Page précédente, 3: Choisissez la page, 0: Quitter");
+//            System.out.println("Choix :");
+//
+//            String choice = sc.next();
+//
+//            if (choice.equals("1") && pageNumber < totalPages) {
+//                // Aller à la page suivante, si ce n'est pas la dernière page
+//                pageNumber++;
+//            } else if (choice.equals("2") && pageNumber > 1) {
+//                // Aller à la page précédente, si ce n'est pas la première page
+//                pageNumber--;
+//            } else if (choice.equals("3")) {
+//                try {
+//                    System.out.println("Entrez un nombre :");
+//                    pageNumber = sc.nextInt();
+//                } catch (NumberFormatException e) {
+//                    System.out.println("not a valid number");
+//                    break;
+//                }
+//                if (pageNumber > totalPages) {
+//                    pageNumber = totalPages;
+//                } else if (pageNumber < 1) {
+//                    pageNumber = 1;
+//                }
+//            } else if (choice.equals("0")) {
+//                // Quitter la boucle
+//                boucle = false;
+//            } else {
+//                System.out.println("Choix invalide !");
+//            }
+//        }
+//    }
 
     public void DisplayAfficherStagiaire(Scanner sc) {
         System.out.print("Entrez l'ID d'un stagiaire :");
@@ -144,7 +144,7 @@ public class FonctionDisplay {
     public void DisplayAjouterStagiaire(Scanner sc) {
         try {
             System.out.println("Entrez son prénom, nom, date d'arrivée et l'id de sa promotion :");
-            Stagiaire random = new Stagiaire.StagiaireBuilder(utilitairesDAO.getMaxID() + 1, sc.next(), sc.next(), LocalDate.parse(sc.next(), DateTimeFormatter.ofPattern("dd-MM-yyyy"))).build();
+            Stagiaire random = new Stagiaire.StagiaireBuilder(stagiaireDAO.getMaxID() + 1, sc.next(), sc.next(), LocalDate.parse(sc.next(), DateTimeFormatter.ofPattern("dd-MM-yyyy"))).build();
 
             stagiaireDAO.insertIntern(random);
         } catch (InputMismatchException e) {

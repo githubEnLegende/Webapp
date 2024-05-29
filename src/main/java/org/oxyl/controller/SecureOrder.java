@@ -3,10 +3,10 @@ package org.oxyl.controller;
 public enum SecureOrder {
 
     ID("id"),
-    FIRST_NAME("first_name"),
+    FIRST_NAME("firstName"),
     ARRIVAL("arrival"),
-    FORMATION_OVER("formation_over"),
-    PROMOTION_ID("promotion_id");
+    FORMATION_OVER("formationOver"),
+    PROMOTION_ID("promotion");
 
     private final String name;
 

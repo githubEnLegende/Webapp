@@ -78,7 +78,7 @@
                             </span>
                 </th>
                 <th>
-                    <a href="dashboard?page=${requestScope.page}&size=${size}&order=first_name&search=${search}">
+                    <a href="dashboard?page=${requestScope.page}&size=${size}&order=firstName&search=${search}">
                         <spring:message code="DASHBOARD.TABLE.HEADER.stagiaire"/>
                     </a>
                 </th>
@@ -89,13 +89,13 @@
                 </th>
                 <!-- Table header for Discontinued Date -->
                 <th>
-                    <a href="dashboard?page=${requestScope.page}&size=${size}&order=formation_over&search=${search}">
+                    <a href="dashboard?page=${requestScope.page}&size=${size}&order=formationOver&search=${search}">
                         <spring:message code="DASHBOARD.TABLE.HEADER.fin_formation"/>
                     </a>
                 </th>
                 <!-- Table header for Company -->
                 <th>
-                    <a href="dashboard?page=${requestScope.page}&size=${size}&order=promotion_id&search=${search}">
+                    <a href="dashboard?page=${requestScope.page}&size=${size}&order=promotion&search=${search}">
                         <spring:message code="DASHBOARD.TABLE.HEADER.promotion"/>
                     </a>
                 </th>
@@ -109,8 +109,7 @@
                     <td class="editMode">
                         <input type="checkbox" name="cb" class="cb" value="${stagiaire.id}">
                     </td>
-                    <td><a href="${stagiaire.id}"
-                           onclick="">${stagiaire.firstName} ${stagiaire.lastName}</a></td>
+                    <td><a href="${stagiaire.id}" onclick="">${stagiaire.firstName} ${stagiaire.lastName}</a></td>
                     <td>${stagiaire.arrival}</td>
                     <td>${stagiaire.formationOver}</td>
                     <td>${stagiaire.promotion.name}</td>

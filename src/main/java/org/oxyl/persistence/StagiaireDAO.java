@@ -1,13 +1,18 @@
 package org.oxyl.persistence;
 
+import org.hibernate.HibernateException;
 import org.oxyl.mapper.MapperStagiaire;
 import org.oxyl.model.Page;
 import org.oxyl.model.Stagiaire;
+import org.oxyl.persistence.entities.InternEntity;
 import org.oxyl.persistence.repository.StagiaireRepository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.dao.DataAccessException;
 import org.springframework.dao.EmptyResultDataAccessException;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
@@ -16,6 +21,7 @@ import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 
 @Repository
@@ -35,121 +41,107 @@ public class StagiaireDAO {
     public long countStagiaire() {
         try {
             return stagiaireRepository.count();
-        } catch (Exception e) {
+        } catch (HibernateException e) {
             logger.error("Erreur lors de la récupération du nombre total de stagiaires", e);
             return 0;
         }
     }
 
     public Optional<List<Stagiaire>> getAllStagiaires() {
-        String sql = "SELECT s.id, s.first_name, s.last_name, s.arrival, s.formation_over, p.id AS promotion_id, p.name AS promotion_name FROM stagiaire s JOIN promotion p ON s.promotion_id = p.id";
-        List<Stagiaire> stagiaires = new ArrayList<>();
         try {
-            stagiaires = jdbcTemplate.query(sql, mapperStagiaire);
-        } catch (DataAccessException e) {
+            List<InternEntity> internEntities = stagiaireRepository.findAll();
+            List<Stagiaire> stagiaires = internEntities.stream()
+                    .map(mapperStagiaire::toModel)
+                    .collect(Collectors.toList());
+            return Optional.of(stagiaires);
+        } catch (HibernateException e) {
             logger.error("Erreur lors de la récupération de tous les stagiaires", e);
+            return Optional.empty();
         }
-        return Optional.of(stagiaires);
     }
 
+    @Transactional
     public void getPageStagiaire(Page<Stagiaire> page) {
-
-        String sql = "SELECT intern.id, first_name, last_name, arrival, formation_over, promotion_id, promotion.name " +
-                "FROM intern LEFT JOIN promotion ON intern.promotion_id = promotion.id";
-
-        StringBuilder query = new StringBuilder(sql);
-        query.append(" ORDER BY ").append(page.getOrder()).append(" LIMIT ? OFFSET ?;");
-
+        Pageable pageable = PageRequest.of((int) (page.getPageNumber() - 1), (int) page.getNbRow(), Sort.by(Sort.Direction.ASC, page.getOrder()));
         try {
-            List<Stagiaire> stagiaires = jdbcTemplate.query(query.toString(), mapperStagiaire, page.getNbRow(), (page.getPageNumber() - 1) * page.getNbRow());
+            List<Stagiaire> stagiaires = stagiaireRepository.findAll(pageable)
+                    .getContent().stream().map(mapperStagiaire::toModel).toList();
             page.setContent(stagiaires);
-        } catch (DataAccessException e) {
+        } catch (HibernateException e) {
             logger.error("Erreur lors de l'affichage de la page des stagiaires.", e);
         }
 
     }
 
-    @Transactional
-    public long getPageStagiaire(String name, Page<Stagiaire> page) {
-
-        String sql = "SELECT intern.id, first_name, last_name, arrival, formation_over, promotion_id, promotion.name " +
-                "FROM intern LEFT JOIN promotion ON intern.promotion_id = promotion.id WHERE first_name LIKE ? OR last_name LIKE ?";
-        String countSql = "SELECT COUNT(*) FROM intern WHERE first_name LIKE ? OR last_name LIKE ?";
-        StringBuilder query = new StringBuilder(sql);
-        query.append(" ORDER BY ").append(page.getOrder()).append(" LIMIT ? OFFSET ?;");
-        name = "%" + name + "%";
-
-        int count = 0;
+@Transactional
+public long getPageStagiaire(String name, Page<Stagiaire> page) {
+        Pageable pageable = PageRequest.of((int) (page.getPageNumber() - 1), (int) page.getNbRow(), Sort.by(Sort.Direction.ASC, page.getOrder()));
         try {
-            List<Stagiaire> stagiaires = jdbcTemplate.query(query.toString(), mapperStagiaire, name, name, page.getNbRow(), (page.getPageNumber() - 1) * page.getNbRow());
+            List<Stagiaire> stagiaires = stagiaireRepository.findAllByFirstNameOrLastNameContainsIgnoreCaseWithPromotion(name, pageable)
+                    .getContent().stream().map(mapperStagiaire::toModel).toList();
             page.setContent(stagiaires);
-
-            count = jdbcTemplate.queryForObject(countSql, Integer.class, name, name);
-        } catch (DataAccessException e) {
-            logger.error("Problème lors de la connexion pour l'affichage sur search", e);
+            return stagiaireRepository.countByFirstNameOrLastNameContainsIgnoreCase(name);
+        } catch (HibernateException e) {
+            logger.error("Erreur lors de la récupération de la page des stagiaires avec le nom spécifié", e);
+            return 0;
         }
-        return count;
     }
 
+    @Transactional
     public Optional<Stagiaire> detailStagiaire(long id) {
-
-        String sql = "SELECT intern.id, first_name, last_name, arrival, formation_over, promotion_id, promotion.name " +
-                "FROM intern LEFT JOIN promotion ON intern.promotion_id = promotion.id WHERE intern.id = ?";
-
         try {
-            Stagiaire stagiaire = jdbcTemplate.queryForObject(sql, mapperStagiaire, id);
-            return Optional.of(stagiaire);
-        } catch (EmptyResultDataAccessException e) {
-            System.out.println("Aucun résultat trouvé.");
-            return Optional.empty();
-        } catch (DataAccessException e) {
-            logger.error("Erreur requête SQL pour le détail stagiaire");
+            Optional<InternEntity> internEntity = stagiaireRepository.findById(id);
+            return internEntity.map(mapperStagiaire::toModel);
+        } catch (HibernateException e) {
+            logger.error("Erreur lors de la récupération du détail du stagiaire", e);
             return Optional.empty();
         }
     }
 
     public void insertIntern(Stagiaire intern) {
-        String sql = "INSERT INTO intern (first_name, last_name, arrival, formation_over, promotion_id)"
-                + " VALUES (?, ?, ?, ?, ?)";
-
-        try {
-            jdbcTemplate.update(sql, intern.getFirstName(),
-                    intern.getLastName(),
-                    intern.getArrival() != null ? Timestamp.valueOf(intern.getArrival().atStartOfDay()) : null,
-                    intern.getFormationOver() != null ? Timestamp.valueOf(intern.getFormationOver().atStartOfDay()) : null,
-                    intern.getPromotion().getId());
-
-            System.out.println("Stagiaire inséré avec succès !");
-        } catch (DataAccessException e) {
-            logger.error("erreur requête sql lors de l'insertion d'un stagiaire");
+        try{
+            InternEntity internEntity = mapperStagiaire.toEntity(intern);
+            stagiaireRepository.save(internEntity);
+            System.out.println("Stagiaire inséré avec succès");
+        }catch(HibernateException e){
+            logger.error("Probleme lors de l'insertion d'un stagiaire", e);
         }
     }
 
     public void deleteIntern(long id) {
-
-        String sql = "DELETE FROM intern WHERE id = ?";
-
         try {
-            int rowsAffected = jdbcTemplate.update(sql, id);
-            if (rowsAffected > 0) {
-                System.out.println("Stagiaire supprimé avec succès !");
-            } else {
-                System.out.println("Aucun stagiaire trouvé avec l'ID spécifié.");
-            }
-        } catch (DataAccessException e) {
-            logger.error("erreur SQL lors de la supression d'un stagiaire", e);
+            stagiaireRepository.deleteById(id);
+            System.out.println("Stagiaire supprimé avec succès !");
+        } catch (HibernateException e) {
+            logger.error("Erreur lors de la suppression d'un stagiaire", e);
         }
     }
 
     public void updateIntern(Stagiaire intern) {
-        String sql = "UPDATE intern SET first_name = ?, last_name = ?, promotion_id = ?, arrival = ?, formation_over = ? WHERE id = ?";
-
         try {
-            jdbcTemplate.update(sql, intern.getFirstName(), intern.getLastName(),
-                    intern.getPromotion().getId(), intern.getArrival(),
-                    intern.getFormationOver(), intern.getId());
-        } catch (DataAccessException e) {
+            InternEntity internEntity = mapperStagiaire.toEntity(intern);
+            stagiaireRepository.save(internEntity);
+        } catch (HibernateException e) {
             logger.error("Erreur SQL lors de la mise à jour d'un stagiaire", e);
+        }
+    }
+
+    public long getMaxID() {
+        try {
+            return stagiaireRepository.findMaxId();
+        } catch (Exception e) {
+            logger.error("Erreur lors de la récupération du max ID", e);
+            return 0;
+        }
+    }
+
+    public long getTotalPages(long rowsPerPage) {
+        try {
+            long totalRows = stagiaireRepository.count();
+            return (int) Math.ceil((double) totalRows / rowsPerPage);
+        } catch (HibernateException e) {
+            logger.error("Erreur lors de la récupération du nombre total de pages", e);
+            return 0;
         }
     }
 

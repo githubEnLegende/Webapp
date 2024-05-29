@@ -3,6 +3,7 @@ package org.oxyl.mapper;
 import org.oxyl.model.Promotion;
 import org.oxyl.model.Stagiaire;
 import org.oxyl.persistence.entities.InternEntity;
+import org.oxyl.persistence.entities.PromotionEntity;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.jdbc.core.RowMapper;
@@ -49,7 +50,11 @@ public class MapperStagiaire implements RowMapper<Stagiaire> {
     }
 
     public Stagiaire toModel(InternEntity internEntity) {
-        Promotion promo = promotionMapper.toModel(internEntity.getPromotion());
+        Promotion promo = new Promotion.PromotionBuilder(
+                internEntity.getPromotion().getId(),
+                internEntity.getPromotion().getName()
+        ).build();
+
         return new Stagiaire.StagiaireBuilder(
                 internEntity.getId(),
                 internEntity.getFirstName(),
@@ -57,5 +62,16 @@ public class MapperStagiaire implements RowMapper<Stagiaire> {
                 internEntity.getArrival()
         ).promotion(promo).
                 formationOver(internEntity.getFormationOver()).build();
+    }
+
+    public InternEntity toEntity(Stagiaire stagiaire) {
+        return new InternEntity(
+                stagiaire.getId(),
+                stagiaire.getFirstName(),
+                stagiaire.getLastName(),
+                stagiaire.getArrival(),
+                stagiaire.getFormationOver(),
+                new PromotionEntity(stagiaire.getPromotion().getId(), stagiaire.getPromotion().getName())
+        );
     }
 }

@@ -64,7 +64,7 @@ public class InternController {
 
         } else {
             internService.getPageStagiaire(page);
-            totalPages = utilitairesService.getTotalPages("intern", page.getNbRow());
+            totalPages = internService.getTotalPages(page.getNbRow());
         }
 
         model.addAttribute("size", page.getNbRow());
@@ -108,12 +108,12 @@ public class InternController {
         Stagiaire intern;
         if (!finFormation.isEmpty()) {
             LocalDate finFormationDate = mapperDate.stringtoLocalDate(finFormation);
-            intern = new Stagiaire.StagiaireBuilder(utilitairesService.getMaxID() + 1,
+            intern = new Stagiaire.StagiaireBuilder(internService.getMaxID() + 1,
                     firstName, lastName, LocalDate.parse(arrival))
                     .formationOver(finFormationDate)
                     .promotion(promotion).build();
         } else {
-            intern = new Stagiaire.StagiaireBuilder(utilitairesService.getMaxID() + 1,
+            intern = new Stagiaire.StagiaireBuilder(internService.getMaxID() + 1,
                     firstName, lastName, LocalDate.parse(arrival)).promotion(promotion).build();
         }
         internService.insertIntern(intern);
@@ -147,7 +147,6 @@ public class InternController {
 
         String[] promotion = promo.replace("[", "").replace("]", "").split(",");
         Promotion promotionObj = new Promotion.PromotionBuilder(Long.parseLong(promotion[0]), promotion[1]).build();
-        System.out.println(id);
         Stagiaire intern;
         if (!finFormation.isEmpty()) {
             intern = new Stagiaire.StagiaireBuilder(id,

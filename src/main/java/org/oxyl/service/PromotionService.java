@@ -20,7 +20,7 @@ public class PromotionService {
         return promotionDAO.getAllPromotion();
     }
 
-    public void afficherPagePromotion(Page<Promotion> page) {
-        promotionDAO.afficherPagePromotion(page);
-    }
+//    public void afficherPagePromotion(Page<Promotion> page) {
+//        promotionDAO.afficherPagePromotion(page);
+//    }
 }

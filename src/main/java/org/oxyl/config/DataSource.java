@@ -40,11 +40,6 @@ public class DataSource {
         return new JdbcTemplate(dataSource);
     }
 
-//    @Bean
-//    public DataSourceTransactionManager transactionManager(HikariDataSource dataSource) {
-//        return new DataSourceTransactionManager(dataSource);
-//    }
-
     @Bean
     public EntityManagerFactory entityManagerFactory() {
         HibernateJpaVendorAdapter vendorAdapter = new HibernateJpaVendorAdapter();

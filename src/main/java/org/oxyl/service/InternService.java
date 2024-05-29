@@ -49,4 +49,12 @@ public class InternService {
         stagiaireDAO.updateIntern(intern);
     }
 
+    public long getMaxID() {
+        return stagiaireDAO.getMaxID();
+    }
+
+    public long getTotalPages(long rowsPerPage) {
+        return stagiaireDAO.getTotalPages(rowsPerPage);
+    }
+
 }

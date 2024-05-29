@@ -6,7 +6,6 @@ import org.oxyl.model.Promotion;
 import org.oxyl.persistence.repository.PromotionRepository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.dao.DataAccessException;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;
 
@@ -17,12 +16,12 @@ public class PromotionDAO {
 
     private static final Logger logger = LoggerFactory.getLogger(PromotionDAO.class);
     private final MapperPromotion mapperPromotion;
-    private final JdbcTemplate jdbcTemplate;
+//    private final JdbcTemplate jdbcTemplate;
     private final PromotionRepository promotionRepository;
 
-    public PromotionDAO(MapperPromotion mapperPromotion, JdbcTemplate jdbcTemplate, PromotionRepository promotionRepository) {
+    public PromotionDAO(MapperPromotion mapperPromotion/*, JdbcTemplate jdbcTemplate*/, PromotionRepository promotionRepository) {
         this.mapperPromotion = mapperPromotion;
-        this.jdbcTemplate = jdbcTemplate;
+//        this.jdbcTemplate = jdbcTemplate;
         this.promotionRepository = promotionRepository;
     }
 
@@ -43,15 +42,15 @@ public class PromotionDAO {
         return promotionRepository.findAll().stream().map(mapperPromotion::toModel).toList();
     }
 
-    public void afficherPagePromotion(Page<Promotion> page) {
-        String sql = "SELECT id, name FROM promotion LIMIT ? OFFSET ?";
-        try {
-            page.setContent(jdbcTemplate.query(sql, mapperPromotion));
-            page.display();
-            page.emptyContent();
-
-        } catch (DataAccessException e) {
-            logger.error("Erreur lors de l'affichage de la page de promotion", e);
-        }
-    }
+//    public void afficherPagePromotion(Page<Promotion> page) {
+//        String sql = "SELECT id, name FROM promotion LIMIT ? OFFSET ?";
+//        try {
+//            page.setContent(jdbcTemplate.query(sql, mapperPromotion));
+//            page.display();
+//            page.emptyContent();
+//
+//        } catch (DataAccessException e) {
+//            logger.error("Erreur lors de l'affichage de la page de promotion", e);
+//        }
+//    }
 }

@@ -48,7 +48,7 @@ public class Display {
                     break;
 
                 case "2":
-                    fonctionDisplay.DisplayAfficherPagePromotion(sc);
+//                    fonctionDisplay.DisplayAfficherPagePromotion(sc);
                     break;
 
                 case "3":

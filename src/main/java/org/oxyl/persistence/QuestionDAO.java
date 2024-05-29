@@ -16,6 +16,7 @@ import java.util.List;
 import java.util.Optional;
 
 @Repository
+@Transactional
 public class QuestionDAO {
 
     private static final Logger logger = LoggerFactory.getLogger(QuestionDAO.class);
@@ -36,18 +37,13 @@ public class QuestionDAO {
         return Optional.empty();
     }
 
-    @Transactional
     public void deleteQuestion(int id) {
-        try {
-            QuestionEntity questionEntity = session.get(QuestionEntity.class, id);
-            if (questionEntity != null) {
-                session.remove(questionEntity);
-                logger.info("Question with ID: {} deleted successfully", id);
-            } else {
-                logger.info("No question found with ID: {}", id);
-            }
-        } catch (HibernateException e) {
-            logger.error("Error occurred while deleting question", e);
+        QuestionEntity questionEntity = session.get(QuestionEntity.class, id);
+        if (questionEntity != null) {
+            session.remove(questionEntity);
+            logger.info("Question with ID: {} deleted successfully", id);
+        } else {
+            logger.info("No question found with ID: {}", id);
         }
     }
 

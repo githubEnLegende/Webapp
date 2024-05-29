@@ -9,25 +9,25 @@ public class PromotionEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private int id;
+    private long id;
 
-    @Column(name = "name", unique = true)
+    @Column(name = "name")
     @NotNull
     private String name;
 
     public PromotionEntity() {
     }
 
-    public PromotionEntity(String name, int id) {
+    public PromotionEntity(long id, String name) {
         this.name = name;
         this.id = id;
     }
 
-    public int getId() {
+    public long getId() {
         return id;
     }
 
-    public void setId(int id) {
+    public void setId(long id) {
         this.id = id;
     }
 

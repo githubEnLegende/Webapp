@@ -11,7 +11,7 @@ import java.time.LocalDate;
 public class InternEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private int id;
+    private long id;
 
     @Column(name = "first_name", nullable = false)
     @Length(min = 2, max = 50)
@@ -30,7 +30,7 @@ public class InternEntity {
     @Column(name = "formation_over", nullable = false)
     private LocalDate formationOver;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne
     @JoinColumn(name = "promotion_id", nullable = false)
     @NotNull
     private PromotionEntity promotion;
@@ -39,7 +39,7 @@ public class InternEntity {
 
     }
 
-    public InternEntity(int id, String firstName, String lastName, LocalDate arrival, LocalDate formationOver, PromotionEntity promotion) {
+    public InternEntity(long id, String firstName, String lastName, LocalDate arrival, LocalDate formationOver, PromotionEntity promotion) {
         this.id = id;
         this.firstName = firstName;
         this.lastName = lastName;
@@ -48,11 +48,11 @@ public class InternEntity {
         this.promotion = promotion;
     }
 
-    public int getId() {
+    public long getId() {
         return id;
     }
 
-    public void setId(int id) {
+    public void setId(long id) {
         this.id = id;
     }
 

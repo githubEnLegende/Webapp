@@ -12,14 +12,6 @@ public class UtilitairesService {
         this.utilitairesDAO = utilitairesDAO;
     }
 
-    public long getMaxID() {
-        return utilitairesDAO.getMaxID();
-    }
-
-    public long getTotalPages(String table, long rowsPerPage) {
-        return utilitairesDAO.getTotalPages(table, rowsPerPage);
-    }
-
     public long getTotalPages(long count, long rowsPerPage) {
         return utilitairesDAO.getTotalPages(count, rowsPerPage);
     }
