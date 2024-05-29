@@ -8,8 +8,6 @@ import org.oxyl.persistence.entities.InternEntity;
 import org.oxyl.persistence.repository.StagiaireRepository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.dao.DataAccessException;
-import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
@@ -17,8 +15,6 @@ import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.sql.Timestamp;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -73,8 +69,8 @@ public class StagiaireDAO {
 
     }
 
-@Transactional
-public long getPageStagiaire(String name, Page<Stagiaire> page) {
+    @Transactional
+    public long getPageStagiaire(String name, Page<Stagiaire> page) {
         Pageable pageable = PageRequest.of((int) (page.getPageNumber() - 1), (int) page.getNbRow(), Sort.by(Sort.Direction.ASC, page.getOrder()));
         try {
             List<Stagiaire> stagiaires = stagiaireRepository.findAllByFirstNameOrLastNameContainsIgnoreCaseWithPromotion(name, pageable)
@@ -99,11 +95,11 @@ public long getPageStagiaire(String name, Page<Stagiaire> page) {
     }
 
     public void insertIntern(Stagiaire intern) {
-        try{
+        try {
             InternEntity internEntity = mapperStagiaire.toEntity(intern);
             stagiaireRepository.save(internEntity);
             System.out.println("Stagiaire inséré avec succès");
-        }catch(HibernateException e){
+        } catch (HibernateException e) {
             logger.error("Probleme lors de l'insertion d'un stagiaire", e);
         }
     }

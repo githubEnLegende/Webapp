@@ -1,12 +1,10 @@
 package org.oxyl.persistence;
 
 import org.oxyl.mapper.MapperPromotion;
-import org.oxyl.model.Page;
 import org.oxyl.model.Promotion;
 import org.oxyl.persistence.repository.PromotionRepository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
@@ -16,7 +14,7 @@ public class PromotionDAO {
 
     private static final Logger logger = LoggerFactory.getLogger(PromotionDAO.class);
     private final MapperPromotion mapperPromotion;
-//    private final JdbcTemplate jdbcTemplate;
+    //    private final JdbcTemplate jdbcTemplate;
     private final PromotionRepository promotionRepository;
 
     public PromotionDAO(MapperPromotion mapperPromotion/*, JdbcTemplate jdbcTemplate*/, PromotionRepository promotionRepository) {

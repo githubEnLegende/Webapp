@@ -12,6 +12,45 @@
         <maven.compiler.source>22</maven.compiler.source>
         <maven.compiler.target>22</maven.compiler.target>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+
+        <mysql-connector-j.version>8.3.0</mysql-connector-j.version>
+
+<!--        Test-->
+
+        <mockito-core.version>5.11.0</mockito-core.version>
+        <junit.version>4.13.2</junit.version>
+        <h2.version>2.2.224</h2.version>
+        <junit-jupiter.version>RELEASE</junit-jupiter.version>
+
+<!--        Log-->
+
+        <slf4j-api.version>2.0.13</slf4j-api.version>
+        <logback-classic.version>1.5.6</logback-classic.version>
+
+<!--        Servlet-->
+
+        <tomcat-embed-core.version>10.1.19</tomcat-embed-core.version>
+        <jakarta.servlet-api.version>6.0.0</jakarta.servlet-api.version>
+        <jakarta.servlet.jsp.jstl-api.version>3.0.0</jakarta.servlet.jsp.jstl-api.version>
+        <jakarta.servlet.jsp.jstl.version>3.0.1</jakarta.servlet.jsp.jstl.version>
+
+<!--        HikariCP-->
+
+        <tomcat-jdbc.version>10.1.23</tomcat-jdbc.version>
+        <HikariCP.version>5.1.0</HikariCP.version>
+
+<!--        Spring et jdbc-->
+
+        <spring-context.version>6.1.6</spring-context.version>
+        <spring-jdbc.version>6.1.7</spring-jdbc.version>
+        <spring-webmvc.version>6.1.7</spring-webmvc.version>
+
+<!--        Hibernate et Spring Data JPA-->
+
+        <hibernate-core.version>6.5.2.Final</hibernate-core.version>
+        <spring-data-jpa.version>3.3.0</spring-data-jpa.version>
+        <hibernate-validator.version>8.0.1.Final</hibernate-validator.version>
+
     </properties>
 
     <dependencies>
@@ -19,14 +58,14 @@
         <dependency>
             <groupId>com.mysql</groupId>
             <artifactId>mysql-connector-j</artifactId>
-            <version>8.3.0</version>
+            <version>${mysql-connector-j.version}</version>
         </dependency>
 
         <!-- https://mvnrepository.com/artifact/org.mockito/mockito-core -->
         <dependency>
             <groupId>org.mockito</groupId>
             <artifactId>mockito-core</artifactId>
-            <version>5.11.0</version>
+            <version>${mockito-core.version}</version>
             <scope>test</scope>
         </dependency>
 
@@ -34,103 +73,103 @@
         <dependency>
             <groupId>junit</groupId>
             <artifactId>junit</artifactId>
-            <version>4.13.2</version>
+            <version>${junit.version}</version>
             <scope>test</scope>
         </dependency>
 
         <dependency>
             <groupId>com.h2database</groupId>
             <artifactId>h2</artifactId>
-            <version>2.2.224</version>
+            <version>${h2.version}</version>
         </dependency>
         <dependency>
             <groupId>org.junit.jupiter</groupId>
             <artifactId>junit-jupiter</artifactId>
-            <version>RELEASE</version>
+            <version>${junit-jupiter.version}</version>
             <scope>test</scope>
         </dependency>
 
         <dependency>
             <groupId>org.slf4j</groupId>
             <artifactId>slf4j-api</artifactId>
-            <version>2.0.13</version> <!-- Assurez-vous d'utiliser la dernière version -->
+            <version>${slf4j-api.version}</version> <!-- Assurez-vous d'utiliser la dernière version -->
         </dependency>
         <dependency>
             <groupId>ch.qos.logback</groupId>
             <artifactId>logback-classic</artifactId>
-            <version>1.5.6</version> <!-- Assurez-vous d'utiliser la dernière version -->
+            <version>${logback-classic.version}</version> <!-- Assurez-vous d'utiliser la dernière version -->
         </dependency>
 
         <dependency>
             <groupId>org.apache.tomcat.embed</groupId>
             <artifactId>tomcat-embed-core</artifactId>
-            <version>10.1.19</version>
+            <version>${tomcat-embed-core.version}</version>
         </dependency>
         <dependency>
             <groupId>jakarta.servlet</groupId>
             <artifactId>jakarta.servlet-api</artifactId>
-            <version>6.0.0</version>
+            <version>${jakarta.servlet-api.version}</version>
             <scope>provided</scope>
         </dependency>
         <dependency>
             <groupId>jakarta.servlet.jsp.jstl</groupId>
             <artifactId>jakarta.servlet.jsp.jstl-api</artifactId>
-            <version>3.0.0</version>
+            <version>${jakarta.servlet.jsp.jstl-api.version}</version>
         </dependency>
         <dependency>
             <groupId>org.glassfish.web</groupId>
             <artifactId>jakarta.servlet.jsp.jstl</artifactId>
-            <version>3.0.1</version>
+            <version>${jakarta.servlet.jsp.jstl.version}</version>
         </dependency>
 
         <!-- https://mvnrepository.com/artifact/org.apache.tomcat/tomcat-jdbc -->
         <dependency>
             <groupId>org.apache.tomcat</groupId>
             <artifactId>tomcat-jdbc</artifactId>
-            <version>10.1.23</version>
+            <version>${tomcat-jdbc.version}</version>
         </dependency>
 
         <dependency>
             <groupId>com.zaxxer</groupId>
             <artifactId>HikariCP</artifactId>
-            <version>5.1.0</version>
+            <version>${HikariCP.version}</version>
         </dependency>
 
         <dependency>
             <groupId>org.springframework</groupId>
             <artifactId>spring-context</artifactId>
-            <version>6.1.6</version>
+            <version>${spring-context.version}</version>
         </dependency>
 
         <dependency>
             <groupId>org.springframework</groupId>
             <artifactId>spring-jdbc</artifactId>
-            <version>6.1.7</version>
+            <version>${spring-jdbc.version}</version>
         </dependency>
 
         <dependency>
             <groupId>org.springframework</groupId>
             <artifactId>spring-webmvc</artifactId>
-            <version>6.1.7</version>
+            <version>${spring-webmvc.version}</version>
         </dependency>
 
         <!-- https://mvnrepository.com/artifact/org.hibernate.orm/hibernate-core -->
         <dependency>
             <groupId>org.hibernate.orm</groupId>
             <artifactId>hibernate-core</artifactId>
-            <version>6.5.2.Final</version>
+            <version>${hibernate-core.version}</version>
         </dependency>
 
         <dependency>
             <groupId>org.springframework.data</groupId>
             <artifactId>spring-data-jpa</artifactId>
-            <version>3.3.0</version>
+            <version>${spring-data-jpa.version}</version>
         </dependency>
 
         <dependency>
             <groupId>org.hibernate.validator</groupId>
             <artifactId>hibernate-validator</artifactId>
-            <version>8.0.1.Final</version>
+            <version>${hibernate-validator.version}</version>
         </dependency>
 
     </dependencies>
