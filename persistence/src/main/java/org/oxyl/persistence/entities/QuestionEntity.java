@@ -16,7 +16,7 @@ public class QuestionEntity {
     @NotNull
     private String title;
 
-    @Column(name = "statement")
+    @Column(name = "statement", length = 10000)
     @NotNull
     private String statement;
 
@@ -24,7 +24,7 @@ public class QuestionEntity {
     @NotNull
     private int chapterId;
 
-    @OneToMany(mappedBy = "question", fetch = FetchType.LAZY)
+    @OneToMany(mappedBy = "question")
     private List<AnswerEntity> answers;
 
     public QuestionEntity() {

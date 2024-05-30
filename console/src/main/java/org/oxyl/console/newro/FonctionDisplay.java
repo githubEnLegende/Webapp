@@ -140,7 +140,12 @@ public class FonctionDisplay {
     public void DisplayAjouterStagiaire(Scanner sc) {
         try {
             System.out.println("Entrez son prénom, nom, date d'arrivée et l'id de sa promotion :");
-            Stagiaire random = new Stagiaire.StagiaireBuilder(stagiaireDAO.getMaxID() + 1, sc.next(), sc.next(), LocalDate.parse(sc.next(), DateTimeFormatter.ofPattern("dd-MM-yyyy"))).build();
+            Stagiaire random = new Stagiaire.StagiaireBuilder()
+                    .id(stagiaireDAO.getMaxID()+1)
+                    .firstName(sc.next())
+                    .lastName(sc.next())
+                    .arrival(LocalDate.parse(sc.next(), DateTimeFormatter.ofPattern("dd-MM-yyyy")))
+                    .build();
 
             stagiaireDAO.insertIntern(random);
         } catch (InputMismatchException e) {

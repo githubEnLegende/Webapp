@@ -68,7 +68,7 @@
                             <select class="form-control" name="promotionId" id="promotionId">
                                 <option value="0"><spring:message code="ADD.promotionInput"/></option>
                                 <c:forEach items="${requestScope.listPromo}" var="promotion">
-                                    <option value="${promotion.id}">${promotion.name}</option>
+                                    <option value="${[promotion.id, promotion.name]}">${promotion.name}</option>
                                 </c:forEach>
                             </select>
                         </div>

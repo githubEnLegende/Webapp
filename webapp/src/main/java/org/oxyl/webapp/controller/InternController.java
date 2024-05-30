@@ -1,5 +1,6 @@
 package org.oxyl.webapp.controller;
 
+import org.oxyl.webapp.dto.StagiaireDTO;
 import org.oxyl.webapp.mapper.MapperDate;
 import org.oxyl.core.model.Page;
 import org.oxyl.core.model.Promotion;
@@ -10,7 +11,6 @@ import org.oxyl.service.service.UtilitairesService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Controller;
-import org.springframework.transaction.annotation.Transactional;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -77,7 +77,6 @@ public class InternController {
         return "dashboard";
     }
 
-    @Transactional
     @PostMapping("/dashboard")
     public String delete(@RequestParam(value = "selection") String selection) {
         if (!selection.isEmpty()) {
@@ -88,7 +87,6 @@ public class InternController {
         }
         return "redirect:/dashboard";
     }
-
 
     @GetMapping("/addStagiaire")
     public String getPromo(Model model) {
@@ -102,20 +100,12 @@ public class InternController {
                                @RequestParam(value = "firstName") String firstName,
                                @RequestParam(value = "arrival") String arrival,
                                @RequestParam(required = false, name = "finFormation") String finFormation,
-                               @RequestParam(value = "promotionId") String promotionId) {
+                               @RequestParam(value = "promotionId") String promo) {
 
-        Promotion promotion = new Promotion.PromotionBuilder(Long.parseLong(promotionId), promotionId).build();
-        Stagiaire intern;
-        if (!finFormation.isEmpty()) {
-            LocalDate finFormationDate = mapperDate.stringtoLocalDate(finFormation);
-            intern = new Stagiaire.StagiaireBuilder(internService.getMaxID() + 1,
-                    firstName, lastName, LocalDate.parse(arrival))
-                    .formationOver(finFormationDate)
-                    .promotion(promotion).build();
-        } else {
-            intern = new Stagiaire.StagiaireBuilder(internService.getMaxID() + 1,
-                    firstName, lastName, LocalDate.parse(arrival)).promotion(promotion).build();
-        }
+        String[] promotion = promo.replace("[", "").replace("]", "").split(",");
+        Promotion promotionObj = new Promotion.PromotionBuilder(Long.parseLong(promotion[0]), promotion[1]).build();
+        StagiaireDTO intern = new StagiaireDTO(lastName, firstName, arrival, finFormation, promotion[0], promotion[1]);
+        System.out.println(intern);
         internService.insertIntern(intern);
         return "redirect:/dashboard";
     }
@@ -149,17 +139,22 @@ public class InternController {
         Promotion promotionObj = new Promotion.PromotionBuilder(Long.parseLong(promotion[0]), promotion[1]).build();
         Stagiaire intern;
         if (!finFormation.isEmpty()) {
-            intern = new Stagiaire.StagiaireBuilder(id,
-                    firstName,
-                    lastName,
-                    mapperDate.stringtoLocalDate(arrival)).formationOver(mapperDate.stringtoLocalDate(finFormation))
-                    .promotion(promotionObj).build();
+            intern = new Stagiaire.StagiaireBuilder()
+                    .id(id)
+                    .firstName(firstName)
+                    .lastName(lastName)
+                    .arrival(mapperDate.stringtoLocalDate(arrival))
+                    .formationOver(mapperDate.stringtoLocalDate(finFormation))
+                    .promotion(promotionObj)
+                    .build();
         } else {
-            intern = new Stagiaire.StagiaireBuilder(id,
-                    firstName,
-                    lastName,
-                    mapperDate.stringtoLocalDate(arrival))
-                    .promotion(promotionObj).build();
+            intern = new Stagiaire.StagiaireBuilder()
+                    .id(id)
+                    .firstName(firstName)
+                    .lastName(lastName)
+                    .arrival(mapperDate.stringtoLocalDate(arrival))
+                    .promotion(promotionObj)
+                    .build();
         }
         internService.updateIntern(intern);
         return "redirect:/dashboard";

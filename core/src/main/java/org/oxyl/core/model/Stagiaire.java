@@ -89,11 +89,11 @@ public class Stagiaire {
         private LocalDate formationOver;
         private Promotion promotion;
 
-        public StagiaireBuilder(long id, String firstName, String lastName, LocalDate arrival) {
+        public StagiaireBuilder() {}
+
+        public StagiaireBuilder id(long id) {
             this.id = id;
-            this.firstName = firstName;
-            this.lastName = lastName;
-            this.arrival = arrival;
+            return this;
         }
 
         public StagiaireBuilder firstName(String firstName) {

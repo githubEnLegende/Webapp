@@ -13,25 +13,25 @@ public class InternEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
 
-    @Column(name = "first_name", nullable = false)
+    @Column(name = "first_name")
     @Length(min = 2, max = 50)
     @NotNull
     private String firstName;
 
-    @Column(name = "last_name", nullable = false, length = 50)
+    @Column(name = "last_name", length = 50)
     @Length(min = 2, max = 50)
     @NotNull
     private String lastName;
 
-    @Column(name = "arrival", nullable = false)
+    @Column(name = "arrival")
     @NotNull
     private LocalDate arrival;
 
-    @Column(name = "formation_over", nullable = false)
+    @Column(name = "formation_over")
     private LocalDate formationOver;
 
     @ManyToOne
-    @JoinColumn(name = "promotion_id", nullable = false)
+    @JoinColumn(name = "promotion_id")
     @NotNull
     private PromotionEntity promotion;
 
@@ -39,8 +39,7 @@ public class InternEntity {
 
     }
 
-    public InternEntity(long id, String firstName, String lastName, LocalDate arrival, LocalDate formationOver, PromotionEntity promotion) {
-        this.id = id;
+    public InternEntity(String firstName, String lastName, LocalDate arrival, LocalDate formationOver, PromotionEntity promotion) {
         this.firstName = firstName;
         this.lastName = lastName;
         this.arrival = arrival;

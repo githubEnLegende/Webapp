@@ -15,18 +15,17 @@ public class StagiaireEntityMapper {
                 internEntity.getPromotion().getName()
         ).build();
 
-        return new Stagiaire.StagiaireBuilder(
-                internEntity.getId(),
-                internEntity.getFirstName(),
-                internEntity.getLastName(),
-                internEntity.getArrival()
-        ).promotion(promo).
-                formationOver(internEntity.getFormationOver()).build();
+        return new Stagiaire.StagiaireBuilder()
+                .firstName(internEntity.getFirstName())
+                .lastName(internEntity.getLastName())
+                .arrival(internEntity.getArrival())
+                .promotion(promo)
+                .formationOver(internEntity.getFormationOver())
+                .build();
     }
 
     public InternEntity toEntity(Stagiaire stagiaire) {
         return new InternEntity(
-                stagiaire.getId(),
                 stagiaire.getFirstName(),
                 stagiaire.getLastName(),
                 stagiaire.getArrival(),
