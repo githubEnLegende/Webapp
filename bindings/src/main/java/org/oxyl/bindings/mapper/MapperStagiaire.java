@@ -1,12 +1,14 @@
-package org.oxyl.webapp.mapper;
+package org.oxyl.bindings.mapper;
 
 import org.oxyl.core.model.Promotion;
 import org.oxyl.core.model.Stagiaire;
-import org.oxyl.webapp.dto.StagiaireDTO;
+import org.oxyl.bindings.dto.stagiairedto.StagiaireDTOEditAdd;
+import org.oxyl.bindings.dto.stagiairedto.StagiaireDTOPage;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.jdbc.core.RowMapper;
 import org.springframework.stereotype.Component;
+
+import java.util.List;
 
 
 @Component
@@ -41,7 +43,7 @@ public class MapperStagiaire {
 //        }
 //    }
 
-    public Stagiaire dtoToModel(StagiaireDTO stagiaire) {
+    public Stagiaire dtoToModel(StagiaireDTOEditAdd stagiaire) {
         Promotion promotion = new Promotion.PromotionBuilder(
                 Integer.parseInt(stagiaire.promotionId()), stagiaire.promotionName())
                 .build();
@@ -52,6 +54,40 @@ public class MapperStagiaire {
                 .formationOver(mapperDate.stringtoLocalDate(stagiaire.finFormation()))
                 .promotion(promotion)
                 .build();
+    }
+
+    public StagiaireDTOEditAdd modelToDtoEditAdd(Stagiaire stagiaire) {
+        return new StagiaireDTOEditAdd(
+                stagiaire.getFirstName(),
+                stagiaire.getLastName(),
+                mapperDate.localDateToString(stagiaire.getArrival()),
+                mapperDate.localDateToString(stagiaire.getFormationOver()),
+                Long.toString(stagiaire.getPromotion().getId()),
+                stagiaire.getPromotion().getName());
+    }
+    
+    public StagiaireDTOPage modelToDtoPage(Stagiaire stagiaire) {
+        return new StagiaireDTOPage(
+                stagiaire.getId(),
+                stagiaire.getLastName(),
+                stagiaire.getFirstName(),
+                mapperDate.localDateToString(stagiaire.getArrival()),
+                mapperDate.localDateToString(stagiaire.getFormationOver()),
+                stagiaire.getPromotion().getName()
+        );
+    }
+
+    public Stagiaire dtoPagetoModel(StagiaireDTOPage stagiaireDTOPage){
+        return new Stagiaire.StagiaireBuilder()
+                .id(stagiaireDTOPage.id())
+                .firstName(stagiaireDTOPage.prenom())
+                .lastName(stagiaireDTOPage.nom())
+                .arrival(mapperDate.stringtoLocalDate(stagiaireDTOPage.arrival()))
+                .formationOver(mapperDate.stringtoLocalDate(stagiaireDTOPage.finFormation())).build();
+    }
+    
+    public List<StagiaireDTOPage> listModelToListDtoPage(List<Stagiaire> stagiaires) {
+        return stagiaires.stream().map(this::modelToDtoPage).toList();
     }
 
 //    @Override

@@ -1,10 +1,14 @@
 package org.oxyl.service.service;
 
+import org.oxyl.bindings.dto.stagiairedto.StagiaireDTOEditAdd;
+import org.oxyl.bindings.dto.stagiairedto.StagiaireDTOPage;
+import org.oxyl.bindings.mapper.MapperStagiaire;
 import org.oxyl.core.model.Page;
 import org.oxyl.core.model.Stagiaire;
 import org.oxyl.persistence.StagiaireDAO;
 import org.springframework.stereotype.Service;
 
+import javax.swing.text.html.Option;
 import java.util.List;
 import java.util.Optional;
 
@@ -12,9 +16,11 @@ import java.util.Optional;
 public class InternService {
 
     private final StagiaireDAO stagiaireDAO;
+    private final MapperStagiaire mapperStagiaire;
 
-    public InternService(StagiaireDAO stagiaireDAO) {
+    public InternService(StagiaireDAO stagiaireDAO, MapperStagiaire mapperStagiaire) {
         this.stagiaireDAO = stagiaireDAO;
+        this.mapperStagiaire = mapperStagiaire;
     }
 
     public long countStagiaire() {
@@ -33,8 +39,10 @@ public class InternService {
         return stagiaireDAO.getPageStagiaire(name, page);
     }
 
-    public Optional<Stagiaire> detailStagiaire(long id) {
-        return stagiaireDAO.detailStagiaire(id);
+    public StagiaireDTOEditAdd detailStagiaire(long id) {
+        Optional<Stagiaire> stagiaire =  stagiaireDAO.detailStagiaire(id);
+        return stagiaire.map(mapperStagiaire::modelToDtoEditAdd).orElse(null);
+
     }
 
     public void insertIntern(Stagiaire intern) {

@@ -1,4 +1,4 @@
-package org.oxyl.webapp.mapper;
+package org.oxyl.bindings.mapper;
 
 import org.oxyl.core.model.Reponse;
 import org.slf4j.Logger;

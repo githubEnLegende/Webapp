@@ -11,6 +11,12 @@ public class Page<T> {
     private List<T> content = new ArrayList<>();
 
 
+    public Page(long nbRow, String order, long pageNumber) {
+        this.nbRow = nbRow;
+        this.order = order;
+        this.pageNumber = pageNumber;
+    }
+
     public Page() {
     }
 
@@ -30,7 +36,7 @@ public class Page<T> {
         this.nbRow = nbRow;
     }
 
-    public List<T> getStagiaires() {
+    public List<T> getContent() {
         return content;
     }
 

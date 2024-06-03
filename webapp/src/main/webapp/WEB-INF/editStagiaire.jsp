@@ -43,7 +43,7 @@
                             </c:if>
                             <label for="lastName"><spring:message code="EDIT.nom"/></label>
                             <input type="text" class="form-control" name="lastName" id="lastName"
-                                   placeholder="Nom du stagiaire" value="${requestScope.stagiaire.lastName}" required>
+                                   placeholder="Nom du stagiaire" value="${requestScope.stagiaire.nom()}" required>
 
                         </div>
                         <div class="form-group">
@@ -52,7 +52,7 @@
                             </c:if>
                             <label for="firstName"><spring:message code="EDIT.prenom"/></label>
                             <input type="text" class="form-control" name="firstName" id="firstName"
-                                   placeholder="Prénom du stagiaire" value="${requestScope.stagiaire.firstName}"
+                                   placeholder="Prénom du stagiaire" value="${requestScope.stagiaire.prenom()}"
                                    required>
                         </div>
                         <div class="form-group">
@@ -61,13 +61,13 @@
                             </c:if>
                             <label for="arrival"><spring:message code="EDIT.arrive"/></label>
                             <input type="date" class="form-control" name="arrival" id="arrival"
-                                   placeholder="Date d'arrivée" value="${requestScope.stagiaire.arrival}" required>
+                                   placeholder="Date d'arrivée" value="${requestScope.stagiaire.arrival()}" required>
                         </div>
                         <div class="form-group">
                             <label for="finFormation"><spring:message code="EDIT.finFormation"/></label>
                             <input type="date" class="form-control" name="finFormation" id="finFormation"
                                    placeholder="Date de fin de formation"
-                                   value="${requestScope.stagiaire.formationOver}">
+                                   value="${requestScope.stagiaire.finFormation()}">
                         </div>
                         <div class="form-group">
                             <c:if test="${not empty validator && not empty validator[(3).intValue()]}">
@@ -75,7 +75,7 @@
                             </c:if>
                             <label for="promotion"><spring:message code="EDIT.promotion"/></label>
                             <select class="form-control" name="promotion" id="promotion">
-                                <option value="${[requestScope.stagiaire.promotion.id, requestScope.stagiaire.promotion.name]}">${requestScope.stagiaire.promotion.name} </option>
+                                <option value="${[requestScope.stagiaire.promotionId(), requestScope.stagiaire.promotionName()]}">${requestScope.stagiaire.promotionName()} </option>
                                 <c:forEach items="${requestScope.listPromo}" var="promotion">
                                     <option value="${[promotion.id, promotion.name]}">${promotion.name}</option>
                                 </c:forEach>

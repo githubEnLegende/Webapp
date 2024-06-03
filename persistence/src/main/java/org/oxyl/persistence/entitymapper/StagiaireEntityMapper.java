@@ -16,6 +16,7 @@ public class StagiaireEntityMapper {
         ).build();
 
         return new Stagiaire.StagiaireBuilder()
+                .id(internEntity.getId())
                 .firstName(internEntity.getFirstName())
                 .lastName(internEntity.getLastName())
                 .arrival(internEntity.getArrival())

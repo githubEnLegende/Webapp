@@ -107,12 +107,12 @@
             <c:forEach var="stagiaire" items="${requestScope.stagiaires}">
                 <tr>
                     <td class="editMode">
-                        <input type="checkbox" name="cb" class="cb" value="${stagiaire.id}">
+                        <input type="checkbox" name="cb" class="cb" value="${stagiaire.id()}">
                     </td>
-                    <td><a href="${stagiaire.id}" onclick="">${stagiaire.firstName} ${stagiaire.lastName}</a></td>
-                    <td>${stagiaire.arrival}</td>
-                    <td>${stagiaire.formationOver}</td>
-                    <td>${stagiaire.promotion.name}</td>
+                    <td><a href="${stagiaire.id()}" onclick="">${stagiaire.prenom()} ${stagiaire.nom()}</a></td>
+                    <td>${stagiaire.arrival()}</td>
+                    <td>${stagiaire.finFormation()}</td>
+                    <td>${stagiaire.promotionName()}</td>
                 </tr>
             </c:forEach>
             </tbody>

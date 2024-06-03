@@ -1,4 +1,4 @@
-package org.oxyl.webapp.mapper;
+package org.oxyl.bindings.mapper;
 
 import org.springframework.stereotype.Component;
 
@@ -19,5 +19,12 @@ public class MapperDate {
         }
 
         return localDate;
+    }
+
+    public String localDateToString(LocalDate localDate) {
+        if(localDate != null) {
+            return localDate.toString();
+        }
+        return null;
     }
 }

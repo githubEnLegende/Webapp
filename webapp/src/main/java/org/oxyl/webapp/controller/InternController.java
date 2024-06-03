@@ -1,13 +1,14 @@
 package org.oxyl.webapp.controller;
 
-import org.oxyl.webapp.dto.StagiaireDTO;
-import org.oxyl.webapp.mapper.MapperDate;
+import org.oxyl.bindings.dto.stagiairedto.StagiaireDTOEditAdd;
+import org.oxyl.bindings.dto.stagiairedto.StagiaireDTOPage;
 import org.oxyl.core.model.Page;
 import org.oxyl.core.model.Promotion;
 import org.oxyl.core.model.Stagiaire;
 import org.oxyl.service.service.InternService;
 import org.oxyl.service.service.PromotionService;
 import org.oxyl.service.service.UtilitairesService;
+import org.oxyl.bindings.mapper.MapperStagiaire;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Controller;
@@ -17,7 +18,6 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
-import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
 
@@ -26,17 +26,17 @@ public class InternController {
 
     private static final Logger logger = LoggerFactory.getLogger(InternController.class);
 
-    private final MapperDate mapperDate;
     private final PromotionService promotionService;
     private final InternService internService;
     private final UtilitairesService utilitairesService;
+    private final MapperStagiaire mapperStagiaire;
 
     public InternController(InternService internService, UtilitairesService utilitairesService,
-                            PromotionService promotionService, MapperDate mapperDate) {
+                            PromotionService promotionService, MapperStagiaire mapperStagiaire) {
         this.internService = internService;
         this.utilitairesService = utilitairesService;
         this.promotionService = promotionService;
-        this.mapperDate = mapperDate;
+        this.mapperStagiaire = mapperStagiaire;
     }
 
     @GetMapping("/dashboard")
@@ -66,12 +66,13 @@ public class InternController {
             internService.getPageStagiaire(page);
             totalPages = internService.getTotalPages(page.getNbRow());
         }
-
+        
+        
         model.addAttribute("size", page.getNbRow());
         model.addAttribute("page", page.getPageNumber());
         model.addAttribute("order", page.getOrder());
         model.addAttribute("totalPages", totalPages);
-        model.addAttribute("stagiaires", page.getStagiaires());
+        model.addAttribute("stagiaires", mapperStagiaire.listModelToListDtoPage(page.getContent()));
         model.addAttribute("search", search);
         model.addAttribute("lang", lang);
         return "dashboard";
@@ -103,19 +104,17 @@ public class InternController {
                                @RequestParam(value = "promotionId") String promo) {
 
         String[] promotion = promo.replace("[", "").replace("]", "").split(",");
-        Promotion promotionObj = new Promotion.PromotionBuilder(Long.parseLong(promotion[0]), promotion[1]).build();
-        StagiaireDTO intern = new StagiaireDTO(lastName, firstName, arrival, finFormation, promotion[0], promotion[1]);
+        StagiaireDTOEditAdd intern = new StagiaireDTOEditAdd(lastName, firstName, arrival, finFormation, promotion[0], promotion[1]);
         System.out.println(intern);
-        internService.insertIntern(intern);
+        internService.insertIntern(mapperStagiaire.dtoToModel(intern));
         return "redirect:/dashboard";
     }
 
     @GetMapping("/{id}")
     public String setEdit(Model model, @PathVariable(value = "id") long id) {
 
-        Optional<Stagiaire> optStagiaire = internService.detailStagiaire(id);
-        if (optStagiaire.isPresent()) {
-            Stagiaire stagiaire = optStagiaire.get();
+        StagiaireDTOEditAdd stagiaire = internService.detailStagiaire(id);
+        if (stagiaire!=null) {
             model.addAttribute("stagiaire", stagiaire);
         } else {
             return "redirect:/404";
@@ -136,27 +135,8 @@ public class InternController {
                                 @RequestParam(value = "promotion") String promo) {
 
         String[] promotion = promo.replace("[", "").replace("]", "").split(",");
-        Promotion promotionObj = new Promotion.PromotionBuilder(Long.parseLong(promotion[0]), promotion[1]).build();
-        Stagiaire intern;
-        if (!finFormation.isEmpty()) {
-            intern = new Stagiaire.StagiaireBuilder()
-                    .id(id)
-                    .firstName(firstName)
-                    .lastName(lastName)
-                    .arrival(mapperDate.stringtoLocalDate(arrival))
-                    .formationOver(mapperDate.stringtoLocalDate(finFormation))
-                    .promotion(promotionObj)
-                    .build();
-        } else {
-            intern = new Stagiaire.StagiaireBuilder()
-                    .id(id)
-                    .firstName(firstName)
-                    .lastName(lastName)
-                    .arrival(mapperDate.stringtoLocalDate(arrival))
-                    .promotion(promotionObj)
-                    .build();
-        }
-        internService.updateIntern(intern);
+        StagiaireDTOEditAdd intern = new StagiaireDTOEditAdd(firstName, lastName, arrival, finFormation, promotion[0], promotion[1]);
+        internService.updateIntern(mapperStagiaire.dtoToModel(intern));
         return "redirect:/dashboard";
     }
 
