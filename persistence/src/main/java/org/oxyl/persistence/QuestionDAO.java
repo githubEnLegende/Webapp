@@ -2,9 +2,9 @@ package org.oxyl.persistence;
 
 import org.hibernate.Session;
 import org.hibernate.query.Query;
-import org.oxyl.persistence.entitymapper.QuestionEntityMapper;
 import org.oxyl.core.model.Question;
 import org.oxyl.persistence.entities.QuestionEntity;
+import org.oxyl.persistence.entitymapper.QuestionEntityMapper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Repository;

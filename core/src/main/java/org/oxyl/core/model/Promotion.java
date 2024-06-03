@@ -27,7 +27,7 @@ public class Promotion {
     }
 
     public String toString() {
-        return "PromotionID : " + id + " " + name;
+        return "PromotionID : " + id + " Promotion Name : " + name;
     }
 
     public static class PromotionBuilder {

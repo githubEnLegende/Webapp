@@ -89,7 +89,8 @@ public class Stagiaire {
         private LocalDate formationOver;
         private Promotion promotion;
 
-        public StagiaireBuilder() {}
+        public StagiaireBuilder() {
+        }
 
         public StagiaireBuilder id(long id) {
             this.id = id;

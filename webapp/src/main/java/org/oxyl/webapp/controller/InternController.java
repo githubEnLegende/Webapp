@@ -1,14 +1,13 @@
 package org.oxyl.webapp.controller;
 
 import org.oxyl.bindings.dto.stagiairedto.StagiaireDTOEditAdd;
-import org.oxyl.bindings.dto.stagiairedto.StagiaireDTOPage;
+import org.oxyl.bindings.mapper.MapperStagiaire;
 import org.oxyl.core.model.Page;
 import org.oxyl.core.model.Promotion;
 import org.oxyl.core.model.Stagiaire;
 import org.oxyl.service.service.InternService;
 import org.oxyl.service.service.PromotionService;
 import org.oxyl.service.service.UtilitairesService;
-import org.oxyl.bindings.mapper.MapperStagiaire;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Controller;
@@ -19,7 +18,6 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import java.util.List;
-import java.util.Optional;
 
 @Controller
 public class InternController {
@@ -66,8 +64,8 @@ public class InternController {
             internService.getPageStagiaire(page);
             totalPages = internService.getTotalPages(page.getNbRow());
         }
-        
-        
+
+
         model.addAttribute("size", page.getNbRow());
         model.addAttribute("page", page.getPageNumber());
         model.addAttribute("order", page.getOrder());
@@ -113,9 +111,9 @@ public class InternController {
     @GetMapping("/{id}")
     public String setEdit(Model model, @PathVariable(value = "id") long id) {
 
-        StagiaireDTOEditAdd stagiaire = internService.detailStagiaire(id);
-        if (stagiaire!=null) {
-            model.addAttribute("stagiaire", stagiaire);
+        Stagiaire stagiaire = internService.detailStagiaire(id);
+        if (stagiaire != null) {
+            model.addAttribute("stagiaire", mapperStagiaire.modelToDtoEditAdd(stagiaire));
         } else {
             return "redirect:/404";
         }

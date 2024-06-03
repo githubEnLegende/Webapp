@@ -1,10 +1,10 @@
 package org.oxyl.persistence;
 
 import org.hibernate.HibernateException;
-import org.oxyl.persistence.entities.InternEntity;
-import org.oxyl.persistence.entitymapper.StagiaireEntityMapper;
 import org.oxyl.core.model.Page;
 import org.oxyl.core.model.Stagiaire;
+import org.oxyl.persistence.entities.InternEntity;
+import org.oxyl.persistence.entitymapper.StagiaireEntityMapper;
 import org.oxyl.persistence.repository.StagiaireRepository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

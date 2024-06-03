@@ -141,7 +141,7 @@ public class FonctionDisplay {
         try {
             System.out.println("Entrez son prénom, nom, date d'arrivée et l'id de sa promotion :");
             Stagiaire random = new Stagiaire.StagiaireBuilder()
-                    .id(stagiaireDAO.getMaxID()+1)
+                    .id(stagiaireDAO.getMaxID() + 1)
                     .firstName(sc.next())
                     .lastName(sc.next())
                     .arrival(LocalDate.parse(sc.next(), DateTimeFormatter.ofPattern("dd-MM-yyyy")))

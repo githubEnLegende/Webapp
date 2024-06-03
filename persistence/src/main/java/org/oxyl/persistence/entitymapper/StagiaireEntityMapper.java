@@ -1,7 +1,7 @@
 package org.oxyl.persistence.entitymapper;
-import org.oxyl.core.model.Stagiaire;
-import org.oxyl.core.model.Promotion;
 
+import org.oxyl.core.model.Promotion;
+import org.oxyl.core.model.Stagiaire;
 import org.oxyl.persistence.entities.InternEntity;
 import org.oxyl.persistence.entities.PromotionEntity;
 import org.springframework.stereotype.Component;

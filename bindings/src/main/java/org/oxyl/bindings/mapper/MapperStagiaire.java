@@ -1,9 +1,9 @@
 package org.oxyl.bindings.mapper;
 
-import org.oxyl.core.model.Promotion;
-import org.oxyl.core.model.Stagiaire;
 import org.oxyl.bindings.dto.stagiairedto.StagiaireDTOEditAdd;
 import org.oxyl.bindings.dto.stagiairedto.StagiaireDTOPage;
+import org.oxyl.core.model.Promotion;
+import org.oxyl.core.model.Stagiaire;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
@@ -65,7 +65,7 @@ public class MapperStagiaire {
                 Long.toString(stagiaire.getPromotion().getId()),
                 stagiaire.getPromotion().getName());
     }
-    
+
     public StagiaireDTOPage modelToDtoPage(Stagiaire stagiaire) {
         return new StagiaireDTOPage(
                 stagiaire.getId(),
@@ -77,7 +77,7 @@ public class MapperStagiaire {
         );
     }
 
-    public Stagiaire dtoPagetoModel(StagiaireDTOPage stagiaireDTOPage){
+    public Stagiaire dtoPagetoModel(StagiaireDTOPage stagiaireDTOPage) {
         return new Stagiaire.StagiaireBuilder()
                 .id(stagiaireDTOPage.id())
                 .firstName(stagiaireDTOPage.prenom())
@@ -85,7 +85,7 @@ public class MapperStagiaire {
                 .arrival(mapperDate.stringtoLocalDate(stagiaireDTOPage.arrival()))
                 .formationOver(mapperDate.stringtoLocalDate(stagiaireDTOPage.finFormation())).build();
     }
-    
+
     public List<StagiaireDTOPage> listModelToListDtoPage(List<Stagiaire> stagiaires) {
         return stagiaires.stream().map(this::modelToDtoPage).toList();
     }

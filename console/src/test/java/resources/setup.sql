@@ -4,18 +4,20 @@ DROP SCHEMA IF EXISTS `newro-factory-db` CASCADE;
 CREATE SCHEMA IF NOT EXISTS `newro-factory-db`;
 SET SCHEMA `newro-factory-db`;
 
-CREATE USER IF NOT EXISTS "testnewro" PASSWORD 'Test123!';
-GRANT ALL PRIVILEGES ON SCHEMA `newro-factory-db` TO "testnewro";
+CREATE
+USER IF NOT EXISTS "testnewro" PASSWORD 'Test123!';
+GRANT ALL PRIVILEGES ON SCHEMA
+`newro-factory-db` TO "testnewro";
 
 CREATE TABLE `newro-factory-db`.promotion
 (
-    id   IDENTITY NOT NULL PRIMARY KEY,
+    id IDENTITY NOT NULL PRIMARY KEY,
     name VARCHAR(255)
 );
 
 CREATE TABLE `newro-factory-db`.intern
 (
-    id             IDENTITY  NOT NULL PRIMARY KEY,
+    id IDENTITY NOT NULL PRIMARY KEY,
     first_name     VARCHAR(255),
     last_name      VARCHAR(255),
     arrival        TIMESTAMP NULL,

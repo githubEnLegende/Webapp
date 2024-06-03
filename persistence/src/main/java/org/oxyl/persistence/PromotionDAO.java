@@ -1,7 +1,7 @@
 package org.oxyl.persistence;
 
-import org.oxyl.persistence.entitymapper.PromotionMapperEntity;
 import org.oxyl.core.model.Promotion;
+import org.oxyl.persistence.entitymapper.PromotionMapperEntity;
 import org.oxyl.persistence.repository.PromotionRepository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

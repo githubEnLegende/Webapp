@@ -19,50 +19,50 @@
     </modules>
 
     <properties>
-<!--        Maven-->
+        <!--        Maven-->
         <maven.compiler.source>22</maven.compiler.source>
         <maven.compiler.target>22</maven.compiler.target>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 
-<!--        Ce projet-->
+        <!--        Ce projet-->
 
         <version>1.0-SNAPSHOT</version>
 
-<!--        MySQL-->
+        <!--        MySQL-->
 
         <mysql-connector-j.version>8.3.0</mysql-connector-j.version>
 
-<!--        Test-->
+        <!--        Test-->
 
         <mockito-core.version>5.11.0</mockito-core.version>
         <junit.version>4.13.2</junit.version>
         <h2.version>2.2.224</h2.version>
         <junit-jupiter.version>RELEASE</junit-jupiter.version>
 
-<!--        Log-->
+        <!--        Log-->
 
         <slf4j-api.version>2.0.13</slf4j-api.version>
         <logback-classic.version>1.5.6</logback-classic.version>
 
-<!--        Servlet-->
+        <!--        Servlet-->
 
         <tomcat-embed-core.version>10.1.19</tomcat-embed-core.version>
         <jakarta.servlet-api.version>6.0.0</jakarta.servlet-api.version>
         <jakarta.servlet.jsp.jstl-api.version>3.0.0</jakarta.servlet.jsp.jstl-api.version>
         <jakarta.servlet.jsp.jstl.version>3.0.1</jakarta.servlet.jsp.jstl.version>
 
-<!--        HikariCP-->
+        <!--        HikariCP-->
 
         <tomcat-jdbc.version>10.1.23</tomcat-jdbc.version>
         <HikariCP.version>5.1.0</HikariCP.version>
 
-<!--        Spring et jdbc-->
+        <!--        Spring et jdbc-->
 
         <spring-context.version>6.1.6</spring-context.version>
         <spring-jdbc.version>6.1.7</spring-jdbc.version>
         <spring-webmvc.version>6.1.7</spring-webmvc.version>
 
-<!--        Hibernate et Spring Data JPA-->
+        <!--        Hibernate et Spring Data JPA-->
 
         <hibernate-core.version>6.5.2.Final</hibernate-core.version>
         <spring-data-jpa.version>3.3.0</spring-data-jpa.version>

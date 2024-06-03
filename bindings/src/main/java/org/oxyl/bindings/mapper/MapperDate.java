@@ -22,7 +22,7 @@ public class MapperDate {
     }
 
     public String localDateToString(LocalDate localDate) {
-        if(localDate != null) {
+        if (localDate != null) {
             return localDate.toString();
         }
         return null;
