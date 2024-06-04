@@ -24,26 +24,6 @@ public class MapperStagiaire {
         this.mapperDate = mapperDate;
     }
 
-//    public Optional<Stagiaire> rsToStagiaire(ResultSet rs) {
-//        try {
-//
-//            Promotion promotion = new Promotion.PromotionBuilder(rs.getInt("promotion_id"), rs.getString("name")).build();
-//
-//            return Optional.of(new Stagiaire.StagiaireBuilder(rs.getInt("id"),
-//                    rs.getString("first_name"),
-//                    rs.getString("last_name"),
-//                    rs.getTimestamp("arrival")
-//                            == null ? null : rs.getTimestamp("arrival").toLocalDateTime().toLocalDate())
-//                    .formationOver(rs.getTimestamp("formation_over")
-//                            == null ? null : rs.getTimestamp("formation_over").toLocalDateTime().toLocalDate())
-//                    .promotion(promotion)
-//                    .build());
-//        } catch (SQLException e) {
-//            logger.error("Erreur Base de donnée", e);
-//            return Optional.empty();
-//        }
-//    }
-
     public Stagiaire dtoAddToModel(StagiaireDTOAdd stagiaire) {
         Promotion promotion = new Promotion.PromotionBuilder(
                 Integer.parseInt(stagiaire.promotionId()), stagiaire.promotionName())
@@ -104,10 +84,4 @@ public class MapperStagiaire {
     public List<StagiaireDTOPage> listModelToListDtoPage(List<Stagiaire> stagiaires) {
         return stagiaires.stream().map(this::modelToDtoPage).toList();
     }
-
-//    @Override
-//    public Stagiaire mapRow(ResultSet rs, int rowNum) throws SQLException {
-//        Optional<Stagiaire> stagiaire = rsToStagiaire(rs);
-//        return stagiaire.orElse(null);
-//    }
 }

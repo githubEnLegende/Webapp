@@ -23,7 +23,7 @@ public class AnswerEntity {
     @NotNull
     private int validAnswer;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "question_id")
     private QuestionEntity question;
 
@@ -68,14 +68,6 @@ public class AnswerEntity {
     public void setValidAnswer(int validAnswer) {
         this.validAnswer = validAnswer;
     }
-
-//    public int getQuestionId() {
-//        return questionId;
-//    }
-//
-//    public void setQuestionId(int questionId) {
-//        this.questionId = questionId;
-//    }
 
     public QuestionEntity getQuestion() {
         return question;

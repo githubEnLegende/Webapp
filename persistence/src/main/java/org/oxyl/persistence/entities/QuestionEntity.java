@@ -1,7 +1,7 @@
 package org.oxyl.persistence.entities;
 
+
 import jakarta.persistence.*;
-import jakarta.validation.constraints.NotNull;
 
 import java.util.List;
 
@@ -21,7 +21,7 @@ public class QuestionEntity {
     @Column(name = "chapter_id")
     private int chapterId;
 
-    @OneToMany(mappedBy = "question")
+    @OneToMany(mappedBy = "question", fetch = FetchType.LAZY)
     private List<AnswerEntity> answers;
 
     public QuestionEntity() {

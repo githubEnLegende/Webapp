@@ -1,7 +1,6 @@
 package org.oxyl.persistence.entities;
 
 import jakarta.persistence.*;
-import jakarta.validation.constraints.NotNull;
 
 @Entity
 @Table(name = "promotion")

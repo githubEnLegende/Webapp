@@ -52,28 +52,6 @@ public class QuestionDAO {
         return query.list().stream().map(mapperQuestion::toModel).toList();
     }
 
-    //    public List<String> getQuestionAnswer(int id) {
-//        String sql = "SELECT question.id, title, statement, chapter_id, answer.text "
-//                + "FROM question LEFT JOIN answer ON answer.question_id = question.id WHERE question.id = ?";
-//
-//        List<String> result = new ArrayList<>();
-//        try {
-//            var rows = jdbcTemplate.queryForList(sql, id);
-//
-//            for (Map<String, Object> row : rows) {
-//                if (result.isEmpty()) {
-//                    result.add(row.get("title").toString());
-//                    result.add(row.get("statement").toString());
-//                    result.add(row.get("chapter_id").toString());
-//                }
-//                result.add(row.get("text").toString());
-//            }
-//            return result;
-//        } catch (DataAccessException e) {
-//            logger.error("Erreur lors de la récupération de la question et des réponses", e);
-//            return null;
-//        }
-//    }
     @Transactional
     public List<String> getQuestionAnswer(long id) {
         String hql = "SELECT q FROM QuestionEntity q LEFT JOIN FETCH q.answers WHERE q.id = :id";
