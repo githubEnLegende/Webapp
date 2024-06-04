@@ -47,9 +47,9 @@ public class QuestionDAO {
     }
 
 
-    public Optional<List<Question>> getAllQuestion() {
+    public List<Question> getAllQuestion() {
         Query<QuestionEntity> query = session.createQuery("from QuestionEntity", QuestionEntity.class);
-        return Optional.of(query.list().stream().map(mapperQuestion::toModel).toList());
+        return query.list().stream().map(mapperQuestion::toModel).toList();
     }
 
     //    public List<String> getQuestionAnswer(int id) {
@@ -76,17 +76,21 @@ public class QuestionDAO {
 //    }
     @Transactional
     public List<String> getQuestionAnswer(long id) {
-        String hql = "SELECT q.title, q.statement, q.chapterId, a.text FROM QuestionEntity q LEFT JOIN q.answers a WHERE q.id = :id";
-        List<Object[]> result = session.createQuery(hql).setParameter("id", id).getResultList();
+        String hql = "SELECT q FROM QuestionEntity q LEFT JOIN FETCH q.answers WHERE q.id = :id";
+        Query<QuestionEntity> query = session.createQuery(hql, QuestionEntity.class);
+        query.setParameter("id", id);
+
+        QuestionEntity questionEntity = query.uniqueResult();
         List<String> response = new ArrayList<>();
-        for (Object[] row : result) {
-            if (response.isEmpty()) {
-                response.add(row[0].toString());
-                response.add(row[1].toString());
-                response.add(row[2].toString());
-            }
-            response.add(row[3].toString());
+
+        if (questionEntity != null) {
+            response.add(questionEntity.getTitle());
+            response.add(questionEntity.getStatement());
+            response.add(String.valueOf(questionEntity.getChapterId()));
+
+            questionEntity.getAnswers().forEach(answer -> response.add(answer.getText()));
         }
+
         return response;
     }
 }

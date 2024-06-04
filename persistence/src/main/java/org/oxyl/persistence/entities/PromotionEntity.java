@@ -12,7 +12,6 @@ public class PromotionEntity {
     private long id;
 
     @Column(name = "name")
-    @NotNull
     private String name;
 
     public PromotionEntity() {

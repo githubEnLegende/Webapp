@@ -1,6 +1,7 @@
 package org.oxyl.bindings.mapper;
 
-import org.oxyl.bindings.dto.stagiairedto.StagiaireDTOEditAdd;
+import org.oxyl.bindings.dto.stagiairedto.StagiaireDTOAdd;
+import org.oxyl.bindings.dto.stagiairedto.StagiaireDTOEdit;
 import org.oxyl.bindings.dto.stagiairedto.StagiaireDTOPage;
 import org.oxyl.core.model.Promotion;
 import org.oxyl.core.model.Stagiaire;
@@ -43,7 +44,7 @@ public class MapperStagiaire {
 //        }
 //    }
 
-    public Stagiaire dtoToModel(StagiaireDTOEditAdd stagiaire) {
+    public Stagiaire dtoAddToModel(StagiaireDTOAdd stagiaire) {
         Promotion promotion = new Promotion.PromotionBuilder(
                 Integer.parseInt(stagiaire.promotionId()), stagiaire.promotionName())
                 .build();
@@ -56,8 +57,22 @@ public class MapperStagiaire {
                 .build();
     }
 
-    public StagiaireDTOEditAdd modelToDtoEditAdd(Stagiaire stagiaire) {
-        return new StagiaireDTOEditAdd(
+    public Stagiaire dtoEditToModel(StagiaireDTOEdit stagiaire) {
+        Promotion promotion = new Promotion.PromotionBuilder(
+                Integer.parseInt(stagiaire.promotionId()), stagiaire.promotionName())
+                .build();
+        return new Stagiaire.StagiaireBuilder()
+                .id(stagiaire.id())
+                .firstName(stagiaire.prenom())
+                .lastName(stagiaire.nom())
+                .arrival(mapperDate.stringtoLocalDate(stagiaire.arrival()))
+                .formationOver(mapperDate.stringtoLocalDate(stagiaire.finFormation()))
+                .promotion(promotion)
+                .build();
+    }
+
+    public StagiaireDTOAdd modelToDtoAdd(Stagiaire stagiaire) {
+        return new StagiaireDTOAdd(
                 stagiaire.getFirstName(),
                 stagiaire.getLastName(),
                 mapperDate.localDateToString(stagiaire.getArrival()),

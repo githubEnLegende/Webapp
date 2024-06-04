@@ -68,6 +68,10 @@
         <spring-data-jpa.version>3.3.0</spring-data-jpa.version>
         <hibernate-validator.version>8.0.1.Final</hibernate-validator.version>
 
+<!--        Spring Security-->
+        <springSecurityVersion>6.3.0</springSecurityVersion>
+
+
     </properties>
 
     <dependencyManagement>
@@ -188,6 +192,29 @@
                 <artifactId>hibernate-validator</artifactId>
                 <version>${hibernate-validator.version}</version>
             </dependency>
+
+            <!-- Spring security -->
+            <!-- https://mvnrepository.com/artifact/org.springframework.security/spring-security-core -->
+            <dependency>
+                <groupId>org.springframework.security</groupId>
+                <artifactId>spring-security-core</artifactId>
+                <version>${springSecurityVersion}</version>
+            </dependency>
+
+            <!-- https://mvnrepository.com/artifact/org.springframework.security/spring-security-web -->
+            <dependency>
+                <groupId>org.springframework.security</groupId>
+                <artifactId>spring-security-web</artifactId>
+                <version>${springSecurityVersion}</version>
+            </dependency>
+
+            <!-- https://mvnrepository.com/artifact/org.springframework.security/spring-security-config -->
+            <dependency>
+                <groupId>org.springframework.security</groupId>
+                <artifactId>spring-security-config</artifactId>
+                <version>${springSecurityVersion}</version>
+            </dependency>
+
 
         </dependencies>
     </dependencyManagement>

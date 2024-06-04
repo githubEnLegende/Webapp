@@ -40,16 +40,16 @@ public class StagiaireDAO {
         }
     }
 
-    public Optional<List<Stagiaire>> getAllStagiaires() {
+    public List<Stagiaire> getAllStagiaires() {
         try {
             List<InternEntity> internEntities = stagiaireRepository.findAll();
             List<Stagiaire> stagiaires = internEntities.stream()
                     .map(mapperStagiaire::toModel)
                     .collect(Collectors.toList());
-            return Optional.of(stagiaires);
+            return stagiaires;
         } catch (HibernateException e) {
             logger.error("Erreur lors de la récupération de tous les stagiaires", e);
-            return Optional.empty();
+            return null;
         }
     }
 
@@ -83,7 +83,7 @@ public class StagiaireDAO {
     @Transactional
     public Optional<Stagiaire> detailStagiaire(long id) {
         try {
-            Optional<InternEntity> internEntity = stagiaireRepository.findById(id);
+            Optional<InternEntity> internEntity = stagiaireRepository.findByIdWithPromotion(id);
             return internEntity.map(mapperStagiaire::toModel);
         } catch (HibernateException e) {
             logger.error("Erreur lors de la récupération du détail du stagiaire", e);
@@ -112,7 +112,7 @@ public class StagiaireDAO {
 
     public void updateIntern(Stagiaire intern) {
         try {
-            InternEntity internEntity = mapperStagiaire.toEntity(intern);
+            InternEntity internEntity = mapperStagiaire.toEntityWithId(intern);
             stagiaireRepository.save(internEntity);
         } catch (HibernateException e) {
             logger.error("Erreur SQL lors de la mise à jour d'un stagiaire", e);

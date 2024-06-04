@@ -1,6 +1,6 @@
 package org.oxyl.webapp.validator;
 
-import org.oxyl.bindings.dto.stagiairedto.StagiaireDTOEditAdd;
+import org.oxyl.bindings.dto.stagiairedto.StagiaireDTOAdd;
 import org.springframework.stereotype.Component;
 
 import java.time.LocalDate;
@@ -14,7 +14,7 @@ public class ValidatorStagiaire {
     private ValidatorStagiaire() {
     }
 
-    public Map<Integer, String> stagiaireValidator(StagiaireDTOEditAdd stagiaire) {
+    public Map<Integer, String> stagiaireValidator(StagiaireDTOAdd stagiaire) {
         // 0 Erreur Nom, 1 Erreur Prénom, 2 Erreur dates, 3 Erreur Promotion
 
         Map<Integer, String> stagiaireValidator = new HashMap<>();

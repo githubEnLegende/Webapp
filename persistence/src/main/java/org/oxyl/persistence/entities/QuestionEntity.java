@@ -13,15 +13,12 @@ public class QuestionEntity {
     private int id;
 
     @Column(name = "title")
-    @NotNull
     private String title;
 
     @Column(name = "statement", length = 10000)
-    @NotNull
     private String statement;
 
     @Column(name = "chapter_id")
-    @NotNull
     private int chapterId;
 
     @OneToMany(mappedBy = "question")

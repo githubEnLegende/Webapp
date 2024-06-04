@@ -8,6 +8,8 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
+import java.util.Optional;
+
 @Repository
 public interface StagiaireRepository extends JpaRepository<InternEntity, Long> {
     @Query("SELECT i FROM InternEntity i JOIN FETCH i.promotion WHERE i.firstName LIKE %:name% OR i.lastName LIKE %:name%")
@@ -21,4 +23,7 @@ public interface StagiaireRepository extends JpaRepository<InternEntity, Long> {
 
     @Query("SELECT MAX(i.id) FROM InternEntity i")
     long findMaxId();
+
+    @Query("SELECT i FROM InternEntity i JOIN FETCH i.promotion WHERE i.id = :id")
+    Optional<InternEntity> findByIdWithPromotion(@Param("id") long id);
 }

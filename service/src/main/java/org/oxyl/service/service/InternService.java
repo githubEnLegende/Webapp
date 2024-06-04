@@ -1,7 +1,5 @@
 package org.oxyl.service.service;
 
-import org.oxyl.bindings.dto.stagiairedto.StagiaireDTOEditAdd;
-import org.oxyl.bindings.mapper.MapperStagiaire;
 import org.oxyl.core.model.Page;
 import org.oxyl.core.model.Stagiaire;
 import org.oxyl.persistence.StagiaireDAO;
@@ -14,18 +12,16 @@ import java.util.Optional;
 public class InternService {
 
     private final StagiaireDAO stagiaireDAO;
-    private final MapperStagiaire mapperStagiaire;
 
-    public InternService(StagiaireDAO stagiaireDAO, MapperStagiaire mapperStagiaire) {
+    public InternService(StagiaireDAO stagiaireDAO) {
         this.stagiaireDAO = stagiaireDAO;
-        this.mapperStagiaire = mapperStagiaire;
     }
 
     public long countStagiaire() {
         return stagiaireDAO.countStagiaire();
     }
 
-    public Optional<List<Stagiaire>> getAllStagiaire() {
+    public List<Stagiaire> getAllStagiaire() {
         return stagiaireDAO.getAllStagiaires();
     }
 

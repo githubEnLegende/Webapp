@@ -1,6 +1,7 @@
 package org.oxyl.webapp.controller;
 
-import org.oxyl.bindings.dto.stagiairedto.StagiaireDTOEditAdd;
+import org.oxyl.bindings.dto.stagiairedto.StagiaireDTOAdd;
+import org.oxyl.bindings.dto.stagiairedto.StagiaireDTOEdit;
 import org.oxyl.bindings.mapper.MapperStagiaire;
 import org.oxyl.core.model.Page;
 import org.oxyl.core.model.Promotion;
@@ -37,7 +38,7 @@ public class InternController {
         this.mapperStagiaire = mapperStagiaire;
     }
 
-    @GetMapping("/dashboard")
+    @GetMapping({"/dashboard", "/"})
     public String GetInternsPage(Model model,
                                  @RequestParam(value = "page", defaultValue = "1") long pageParam,
                                  @RequestParam(value = "size", defaultValue = "50") long pageTaille,
@@ -76,7 +77,7 @@ public class InternController {
         return "dashboard";
     }
 
-    @PostMapping("/dashboard")
+    @PostMapping({"/dashboard", "/"})
     public String delete(@RequestParam(value = "selection") String selection) {
         if (!selection.isEmpty()) {
             String[] idsToDelete = selection.split(",");
@@ -102,9 +103,9 @@ public class InternController {
                                @RequestParam(value = "promotionId") String promo) {
 
         String[] promotion = promo.replace("[", "").replace("]", "").split(",");
-        StagiaireDTOEditAdd intern = new StagiaireDTOEditAdd(lastName, firstName, arrival, finFormation, promotion[0], promotion[1]);
+        StagiaireDTOAdd intern = new StagiaireDTOAdd(lastName, firstName, arrival, finFormation, promotion[0], promotion[1]);
         System.out.println(intern);
-        internService.insertIntern(mapperStagiaire.dtoToModel(intern));
+        internService.insertIntern(mapperStagiaire.dtoAddToModel(intern));
         return "redirect:/dashboard";
     }
 
@@ -113,7 +114,7 @@ public class InternController {
 
         Stagiaire stagiaire = internService.detailStagiaire(id);
         if (stagiaire != null) {
-            model.addAttribute("stagiaire", mapperStagiaire.modelToDtoEditAdd(stagiaire));
+            model.addAttribute("stagiaire", mapperStagiaire.modelToDtoAdd(stagiaire));
         } else {
             return "redirect:/404";
         }
@@ -133,8 +134,8 @@ public class InternController {
                                 @RequestParam(value = "promotion") String promo) {
 
         String[] promotion = promo.replace("[", "").replace("]", "").split(",");
-        StagiaireDTOEditAdd intern = new StagiaireDTOEditAdd(firstName, lastName, arrival, finFormation, promotion[0], promotion[1]);
-        internService.updateIntern(mapperStagiaire.dtoToModel(intern));
+        StagiaireDTOEdit intern = new StagiaireDTOEdit(id, firstName, lastName, arrival, finFormation, promotion[0], promotion[1]);
+        internService.updateIntern(mapperStagiaire.dtoEditToModel(intern));
         return "redirect:/dashboard";
     }
 

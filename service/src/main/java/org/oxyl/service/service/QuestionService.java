@@ -24,7 +24,7 @@ public class QuestionService {
         questionDAO.deleteQuestion(id);
     }
 
-    public Optional<List<Question>> getAllQuestion() {
+    public List<Question> getAllQuestion() {
         return questionDAO.getAllQuestion();
     }
 

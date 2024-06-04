@@ -4,7 +4,9 @@ import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Pattern;
 
-public record StagiaireDTOEditAdd(
+public record StagiaireDTOEdit(
+        @NotNull
+        long id,
 
         @NotEmpty(message = "Le nom est obligatoire")
         @Pattern(regexp = "^[a-zA-ZÀ-ÿ\\s'-]+$", message = "le nom contient des caractères non autorisés")

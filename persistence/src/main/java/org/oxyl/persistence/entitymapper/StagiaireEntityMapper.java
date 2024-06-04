@@ -34,4 +34,15 @@ public class StagiaireEntityMapper {
                 new PromotionEntity(stagiaire.getPromotion().getId(), stagiaire.getPromotion().getName())
         );
     }
+
+    public InternEntity toEntityWithId(Stagiaire stagiaire) {
+        return new InternEntity(
+                stagiaire.getId(),
+                stagiaire.getFirstName(),
+                stagiaire.getLastName(),
+                stagiaire.getArrival(),
+                stagiaire.getFormationOver(),
+                new PromotionEntity(stagiaire.getPromotion().getId(), stagiaire.getPromotion().getName())
+        );
+    }
 }

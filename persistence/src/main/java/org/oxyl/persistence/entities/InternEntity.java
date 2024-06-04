@@ -1,8 +1,6 @@
 package org.oxyl.persistence.entities;
 
 import jakarta.persistence.*;
-import jakarta.validation.constraints.NotNull;
-import org.hibernate.validator.constraints.Length;
 
 import java.time.LocalDate;
 
@@ -13,26 +11,20 @@ public class InternEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
 
-    @Column(name = "first_name")
-    @Length(min = 2, max = 50)
-    @NotNull
+    @Column(name = "first_name", length = 50, nullable = false)
     private String firstName;
 
-    @Column(name = "last_name", length = 50)
-    @Length(min = 2, max = 50)
-    @NotNull
+    @Column(name = "last_name", length = 50, nullable = false)
     private String lastName;
 
-    @Column(name = "arrival")
-    @NotNull
+    @Column(name = "arrival", nullable = false)
     private LocalDate arrival;
 
     @Column(name = "formation_over")
     private LocalDate formationOver;
 
-    @ManyToOne
-    @JoinColumn(name = "promotion_id")
-    @NotNull
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "promotion_id", nullable = false)
     private PromotionEntity promotion;
 
     public InternEntity() {
@@ -40,6 +32,15 @@ public class InternEntity {
     }
 
     public InternEntity(String firstName, String lastName, LocalDate arrival, LocalDate formationOver, PromotionEntity promotion) {
+        this.firstName = firstName;
+        this.lastName = lastName;
+        this.arrival = arrival;
+        this.formationOver = formationOver;
+        this.promotion = promotion;
+    }
+
+    public InternEntity(long id, String firstName, String lastName, LocalDate arrival, LocalDate formationOver, PromotionEntity promotion) {
+        this.id = id;
         this.firstName = firstName;
         this.lastName = lastName;
         this.arrival = arrival;

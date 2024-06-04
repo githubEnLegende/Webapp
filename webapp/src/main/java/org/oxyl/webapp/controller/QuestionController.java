@@ -28,10 +28,7 @@ public class QuestionController {
     @GetMapping
     public String questions(Model model, @RequestParam(value = "lang", required = false) String lang) {
         logger.info("Entrée dans le Get Chapitre");
-        var optQuestions = questionService.getAllQuestion();
-        List<Question> questions;
-        questions = optQuestions.orElseGet(ArrayList::new);
-
+        List<Question> questions = questionService.getAllQuestion();
         model.addAttribute("questions", questions);
         model.addAttribute("lang", lang);
         return "question";
