@@ -18,7 +18,7 @@ import java.util.List;
 public class ChapitreController {
 
     private final static Logger logger = LoggerFactory.getLogger(ChapitreController.class);
-    private ChapterService chapterService;
+    private final ChapterService chapterService;
 
     public ChapitreController(ChapterService chapterService) {
         this.chapterService = chapterService;

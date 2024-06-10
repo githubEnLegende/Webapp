@@ -18,7 +18,7 @@ import java.util.List;
 public class QuestionController {
 
     private final static Logger logger = LoggerFactory.getLogger(QuestionController.class);
-    private QuestionService questionService;
+    private final QuestionService questionService;
 
     public QuestionController(QuestionService questionService) {
         this.questionService = questionService;
