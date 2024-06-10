@@ -12,7 +12,6 @@ import org.oxyl.service.service.UtilitairesService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.ResponseEntity;
-import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -38,10 +37,10 @@ public class InternRestController {
 
     @GetMapping(produces = "application/json")
     public ResponseEntity<Page<Stagiaire>> GetInternsPage(@RequestParam(value = "page", defaultValue = "1") long pageParam,
-                                         @RequestParam(value = "size", defaultValue = "50") long pageTaille,
-                                         @RequestParam(value = "search", required = false) String search,
-                                         @RequestParam(value = "order", required = false) String order,
-                                         @RequestParam(value = "lang", required = false) String lang) {
+                                                          @RequestParam(value = "size", defaultValue = "50") long pageTaille,
+                                                          @RequestParam(value = "search", required = false) String search,
+                                                          @RequestParam(value = "order", required = false) String order,
+                                                          @RequestParam(value = "lang", required = false) String lang) {
         logger.info("Entrée dans le feur");
 
         Page<Stagiaire> page = new Page<>();
@@ -51,9 +50,11 @@ public class InternRestController {
 
         if (search != null && !search.isEmpty()) {
             long countSize = internService.getPageStagiaire(search, page);
+            page.setTotalPages(utilitairesService.getTotalPages(countSize, page.getNbRow()));
 
         } else {
             internService.getPageStagiaire(page);
+            page.setTotalPages(internService.getTotalPages(page.getNbRow()));
         }
         return ResponseEntity.ok(page);
     }
@@ -71,7 +72,7 @@ public class InternRestController {
 
     @PostMapping(value = "/add", consumes = "application/json")
     public ResponseEntity<Stagiaire> addStagiaire(@RequestBody StagiaireDTOAdd stagiaireDTOAdd) {
-        try{
+        try {
             Stagiaire stagiaire = mapperStagiaire.dtoAddToModel(stagiaireDTOAdd);
             internService.insertIntern(stagiaire);
             return ResponseEntity.ok(stagiaire);
@@ -82,12 +83,12 @@ public class InternRestController {
 
     @PutMapping(value = "/{id}", consumes = "application/json")
     public ResponseEntity<Stagiaire> editStagiaire(@PathVariable(value = "id") long id,
-                                                   @RequestBody StagiaireDTOEdit stagiaireDTOEdit){
+                                                   @RequestBody StagiaireDTOEdit stagiaireDTOEdit) {
         try {
             Stagiaire stagiaire = mapperStagiaire.dtoEditToModel(stagiaireDTOEdit);
             internService.updateIntern(stagiaire);
             return ResponseEntity.ok(stagiaire);
-        }catch (Exception e){
+        } catch (Exception e) {
             return ResponseEntity.status(500).body(null);
         }
 

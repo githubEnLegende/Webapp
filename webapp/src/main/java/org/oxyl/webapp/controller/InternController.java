@@ -55,22 +55,21 @@ public class InternController {
         long countStagiaire = internService.countStagiaire();
         model.addAttribute("countStagiaire", countStagiaire);
 
-        long totalPages = 0;
         if (search != null && !search.isEmpty()) {
             long countSize = internService.getPageStagiaire(search, page);
             model.addAttribute("countStagiaire", countSize);
-            totalPages = utilitairesService.getTotalPages(countSize, page.getNbRow());
+            page.setTotalPages(utilitairesService.getTotalPages(countSize, page.getNbRow()));
 
         } else {
             internService.getPageStagiaire(page);
-            totalPages = internService.getTotalPages(page.getNbRow());
+            page.setTotalPages(internService.getTotalPages(page.getNbRow()));
         }
 
 
         model.addAttribute("size", page.getNbRow());
         model.addAttribute("page", page.getPageNumber());
         model.addAttribute("order", page.getOrder());
-        model.addAttribute("totalPages", totalPages);
+        model.addAttribute("totalPages", page.getTotalPages());
         model.addAttribute("stagiaires", mapperStagiaire.listModelToListDtoPage(page.getContent()));
         model.addAttribute("search", search);
         model.addAttribute("lang", lang);

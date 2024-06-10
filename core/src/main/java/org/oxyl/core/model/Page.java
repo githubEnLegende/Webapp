@@ -8,9 +8,18 @@ public class Page<T> {
     private long nbRow = 50;
     private String order = "id";
     private long pageNumber = 1;
+    private long totalPages = 0;
     private List<T> content = new ArrayList<>();
 
     public Page() {
+    }
+
+    public long getTotalPages() {
+        return totalPages;
+    }
+
+    public void setTotalPages(long totalPages) {
+        this.totalPages = totalPages;
     }
 
     public long getNbRow() {
