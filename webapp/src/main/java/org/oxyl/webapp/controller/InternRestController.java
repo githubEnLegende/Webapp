@@ -1,5 +1,6 @@
 package org.oxyl.webapp.controller;
 
+import jakarta.validation.Valid;
 import org.oxyl.bindings.dto.stagiairedto.StagiaireDTOAdd;
 import org.oxyl.bindings.dto.stagiairedto.StagiaireDTOEdit;
 import org.oxyl.bindings.mapper.MapperStagiaire;
@@ -36,7 +37,7 @@ public class InternRestController {
     }
 
     @GetMapping(produces = "application/json")
-    public ResponseEntity<Page<Stagiaire>> GetInternsPage(@RequestParam(value = "page", defaultValue = "1") long pageParam,
+    public Page<Stagiaire> GetInternsPage(@RequestParam(value = "page", defaultValue = "1") long pageParam,
                                                           @RequestParam(value = "size", defaultValue = "50") long pageTaille,
                                                           @RequestParam(value = "search", required = false) String search,
                                                           @RequestParam(value = "order", required = false) String order,
@@ -56,7 +57,7 @@ public class InternRestController {
             internService.getPageStagiaire(page);
             page.setTotalPages(internService.getTotalPages(page.getNbRow()));
         }
-        return ResponseEntity.ok(page);
+        return page;
     }
 
     @GetMapping(value = {"/{id}"}, produces = "application/json")
@@ -71,8 +72,9 @@ public class InternRestController {
     }
 
     @PostMapping(value = "/add", consumes = "application/json")
-    public ResponseEntity<Stagiaire> addStagiaire(@RequestBody StagiaireDTOAdd stagiaireDTOAdd) {
+    public ResponseEntity<Stagiaire> addStagiaire(@Valid @RequestBody StagiaireDTOAdd stagiaireDTOAdd) {
         try {
+            System.out.println(stagiaireDTOAdd);
             Stagiaire stagiaire = mapperStagiaire.dtoAddToModel(stagiaireDTOAdd);
             internService.insertIntern(stagiaire);
             return ResponseEntity.ok(stagiaire);

@@ -24,7 +24,7 @@ public class QuestionService {
         questionDAO.getQuestionById(questionId);
     }
 
-    public void deleteQuestion(int id) {
+    public void deleteQuestion(long id) {
         logger.info("Delete question by id: {}", id);
         questionDAO.deleteQuestion(id);
     }

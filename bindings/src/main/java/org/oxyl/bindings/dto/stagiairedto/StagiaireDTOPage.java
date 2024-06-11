@@ -9,8 +9,8 @@ public record StagiaireDTOPage(
         long id,
 
 
-        @NotEmpty(message = "Le nom est obligatoire")
-        @Pattern(regexp = "^[a-zA-ZÀ-ÿ\\s'-]+$", message = "le nom contient des caractères non autorisés")
+        @NotEmpty(message = "Le lastName est obligatoire")
+        @Pattern(regexp = "^[a-zA-ZÀ-ÿ\\s'-]+$", message = "le lastName contient des caractères non autorisés")
         String nom,
 
         @NotEmpty(message = "Le prénom est obligatoire")

@@ -102,7 +102,7 @@
         }
 
         // Validate formation over date if present
-        var formationOver = document.getElementById("finFormation").value;
+        var formationOver = document.getElementById("formationOver").value;
         var arrival = document.getElementById("arrival").value;
         if (formationOver && formationOver < arrival) {
             alert("Formation Over Date must be after Arrival Date.");

@@ -29,10 +29,10 @@ public class MapperStagiaire {
                 Integer.parseInt(stagiaire.promotionId()), stagiaire.promotionName())
                 .build();
         return new Stagiaire.StagiaireBuilder()
-                .firstName(stagiaire.prenom())
-                .lastName(stagiaire.nom())
+                .firstName(stagiaire.firstName())
+                .lastName(stagiaire.lastName())
                 .arrival(mapperDate.stringtoLocalDate(stagiaire.arrival()))
-                .formationOver(mapperDate.stringtoLocalDate(stagiaire.finFormation()))
+                .formationOver(mapperDate.stringtoLocalDate(stagiaire.formationOver()))
                 .promotion(promotion)
                 .build();
     }
@@ -43,10 +43,10 @@ public class MapperStagiaire {
                 .build();
         return new Stagiaire.StagiaireBuilder()
                 .id(stagiaire.id())
-                .firstName(stagiaire.prenom())
-                .lastName(stagiaire.nom())
+                .firstName(stagiaire.firstName())
+                .lastName(stagiaire.lastName())
                 .arrival(mapperDate.stringtoLocalDate(stagiaire.arrival()))
-                .formationOver(mapperDate.stringtoLocalDate(stagiaire.finFormation()))
+                .formationOver(mapperDate.stringtoLocalDate(stagiaire.formationOver()))
                 .promotion(promotion)
                 .build();
     }

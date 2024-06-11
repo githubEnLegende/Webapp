@@ -43,7 +43,7 @@
                             </c:if>
                             <label for="lastName"><spring:message code="EDIT.nom"/></label>
                             <input type="text" class="form-control" name="lastName" id="lastName"
-                                   placeholder="Nom du stagiaire" value="${requestScope.stagiaire.nom()}" required>
+                                   placeholder="Nom du stagiaire" value="${requestScope.stagiaire.lastName()}" required>
 
                         </div>
                         <div class="form-group">
@@ -52,7 +52,7 @@
                             </c:if>
                             <label for="firstName"><spring:message code="EDIT.prenom"/></label>
                             <input type="text" class="form-control" name="firstName" id="firstName"
-                                   placeholder="Prénom du stagiaire" value="${requestScope.stagiaire.prenom()}"
+                                   placeholder="Prénom du stagiaire" value="${requestScope.stagiaire.firstName()}"
                                    required>
                         </div>
                         <div class="form-group">
@@ -67,7 +67,7 @@
                             <label for="finFormation"><spring:message code="EDIT.finFormation"/></label>
                             <input type="date" class="form-control" name="finFormation" id="finFormation"
                                    placeholder="Date de fin de formation"
-                                   value="${requestScope.stagiaire.finFormation()}">
+                                   value="${requestScope.stagiaire.formationOver()}">
                         </div>
                         <div class="form-group">
                             <c:if test="${not empty validator && not empty validator[(3).intValue()]}">
@@ -111,7 +111,7 @@
         }
 
         // Validate formation over date if present
-        var formationOver = document.getElementById("finFormation").value;
+        var formationOver = document.getElementById("formationOver").value;
         var arrival = document.getElementById("arrival").value;
         if (formationOver && formationOver < arrival) {
             alert("Formation Over Date must be after Arrival Date.");

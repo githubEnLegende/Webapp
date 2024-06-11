@@ -1,8 +1,10 @@
 package org.oxyl.persistence;
 
 import org.hibernate.Session;
+import org.hibernate.Transaction;
 import org.hibernate.query.Query;
 import org.oxyl.core.model.Question;
+import org.oxyl.persistence.entities.AnswerEntity;
 import org.oxyl.persistence.entities.QuestionEntity;
 import org.oxyl.persistence.entitymapper.QuestionEntityMapper;
 import org.slf4j.Logger;
@@ -36,14 +38,25 @@ public class QuestionDAO {
         return Optional.empty();
     }
 
-    public void deleteQuestion(int id) {
-        QuestionEntity questionEntity = session.get(QuestionEntity.class, id);
-        if (questionEntity != null) {
-            session.remove(questionEntity);
-            logger.info("Question with ID: {} deleted successfully", id);
-        } else {
-            logger.info("No question found with ID: {}", id);
+    @Transactional
+    public void deleteQuestion(long id) {
+
+        try{
+            Transaction transaction = session.beginTransaction();
+            Query<AnswerEntity> queryAnswer = session.createQuery("delete from AnswerEntity where question.id = :id", null);
+            Query<QuestionEntity> queryQuestion = session.createQuery("delete from QuestionEntity where id = :id", null);
+
+            int res = queryAnswer.setParameter("id", id).executeUpdate() + queryQuestion.setParameter("id", id).executeUpdate();
+            if (res > 0) {
+                logger.info("Question with ID: {} deleted successfully", id);
+            } else {
+                logger.info("No question found with ID: {}", id);
+            }
+            transaction.commit();
+        }catch (Exception e) {
+            logger.error("Error while deleting question with ID: {}", id, e);
         }
+
     }
 
 

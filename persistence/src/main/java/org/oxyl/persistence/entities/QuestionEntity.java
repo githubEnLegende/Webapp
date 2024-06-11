@@ -21,7 +21,7 @@ public class QuestionEntity {
     @Column(name = "chapter_id")
     private int chapterId;
 
-    @OneToMany(mappedBy = "question", fetch = FetchType.LAZY)
+    @OneToMany(mappedBy = "question")
     private List<AnswerEntity> answers;
 
     public QuestionEntity() {

@@ -35,7 +35,7 @@ public class MapperPromotion implements RowMapper<Promotion> {
         // La première partie est entre crochets, donc nous devons supprimer les crochets
         String id = parts[0].replace("[", "");
 
-        // La deuxième partie est le nom de la promotion, donc nous pouvons l'utiliser telle quelle
+        // La deuxième partie est le lastName de la promotion, donc nous pouvons l'utiliser telle quelle
         String promotionName = parts[1].replace("]", "").trim();
         ;
 

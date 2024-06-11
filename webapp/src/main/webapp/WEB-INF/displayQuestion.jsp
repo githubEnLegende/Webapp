@@ -64,8 +64,8 @@
                 <%--                                <input type="date" class="form-control" name="arrival" id="arrival" placeholder="Date d'arrivée" value="${requestScope.stagiaire.arrival}" required>--%>
                 <%--                            </div>--%>
                 <%--                            <div class="form-group">--%>
-                <%--                                <label for="finFormation">Date de fin de formation</label>--%>
-                <%--                                <input type="date" class="form-control" name="finFormation" id="finFormation" placeholder="Date de fin de formation" value="${requestScope.stagiaire.formationOver}">--%>
+                <%--                                <label for="formationOver">Date de fin de formation</label>--%>
+                <%--                                <input type="date" class="form-control" name="formationOver" id="formationOver" placeholder="Date de fin de formation" value="${requestScope.stagiaire.formationOver}">--%>
                 <%--                            </div>--%>
                 <%--                            <div class="form-group">--%>
                 <%--                                <c:if test="${not empty validator && not empty validator[(3).intValue()]}">--%>
