@@ -34,9 +34,9 @@ public class QuestionRestController {
 
     @DeleteMapping(value = "/{id}")
     public void deleteQuestionById(@PathVariable("id") long id) {
-        try{
+        try {
             questionService.deleteQuestion(id);
-        }catch (Exception e) {
+        } catch (Exception e) {
             System.out.println("aaa");
         }
 

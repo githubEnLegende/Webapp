@@ -41,7 +41,7 @@ public class QuestionDAO {
     @Transactional
     public void deleteQuestion(long id) {
 
-        try{
+        try {
             Transaction transaction = session.beginTransaction();
             Query<AnswerEntity> queryAnswer = session.createQuery("delete from AnswerEntity where question.id = :id", null);
             Query<QuestionEntity> queryQuestion = session.createQuery("delete from QuestionEntity where id = :id", null);
@@ -53,7 +53,7 @@ public class QuestionDAO {
                 logger.info("No question found with ID: {}", id);
             }
             transaction.commit();
-        }catch (Exception e) {
+        } catch (Exception e) {
             logger.error("Error while deleting question with ID: {}", id, e);
         }
 

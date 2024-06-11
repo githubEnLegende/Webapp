@@ -38,10 +38,10 @@ public class InternRestController {
 
     @GetMapping(produces = "application/json")
     public Page<Stagiaire> GetInternsPage(@RequestParam(value = "page", defaultValue = "1") long pageParam,
-                                                          @RequestParam(value = "size", defaultValue = "50") long pageTaille,
-                                                          @RequestParam(value = "search", required = false) String search,
-                                                          @RequestParam(value = "order", required = false) String order,
-                                                          @RequestParam(value = "lang", required = false) String lang) {
+                                          @RequestParam(value = "size", defaultValue = "50") long pageTaille,
+                                          @RequestParam(value = "search", required = false) String search,
+                                          @RequestParam(value = "order", required = false) String order,
+                                          @RequestParam(value = "lang", required = false) String lang) {
         logger.info("Entrée dans le feur");
 
         Page<Stagiaire> page = new Page<>();
