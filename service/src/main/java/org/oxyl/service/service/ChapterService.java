@@ -19,7 +19,7 @@ public class ChapterService {
         this.chapterDAO = chapterDAO;
     }
 
-    public Optional<List<Chapitre>> getAllChapter() {
+    public List<Chapitre> getAllChapter() {
         logger.info("getAllChapter");
         return chapterDAO.getAllChapter();
     }

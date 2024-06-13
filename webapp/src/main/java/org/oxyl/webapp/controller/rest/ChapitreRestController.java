@@ -1,7 +1,8 @@
-package org.oxyl.webapp.controller;
+package org.oxyl.webapp.controller.rest;
 
 import org.oxyl.core.model.Chapitre;
 import org.oxyl.service.service.ChapterService;
+import org.oxyl.webapp.controller.ChapitreController;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.ResponseEntity;
@@ -26,9 +27,13 @@ public class ChapitreRestController {
     @GetMapping(produces = "application/json")
     public ResponseEntity<List<Chapitre>> getChapitres() {
 
-        var optChapitre = chapterService.getAllChapter();
-        List<Chapitre> chapitres = optChapitre.orElseGet(ArrayList::new);
-        return ResponseEntity.ok(chapitres);
+        List<Chapitre> chapitres = chapterService.getAllChapter();
+        if (chapitres != null) {
+            return ResponseEntity.ok(chapitres);
+        } else {
+            return ResponseEntity.notFound().build();
+        }
+
     }
 
 }

@@ -28,13 +28,22 @@ public class ChapterDAO {
     }
 
     @Transactional
-    public Optional<List<Chapitre>> getAllChapter() {
+    public List<Chapitre> getAllChapter() {
         try {
             Query<ChapterEntity> query = session.createQuery("from ChapterEntity", ChapterEntity.class);
-            return Optional.of(query.list().stream().map(mapperChapitre::toModel).toList());
+
+            List<Chapitre> chapitreList = query.list().stream().map(mapperChapitre::toModel).toList();
+            if (!chapitreList.isEmpty()) {
+                return chapitreList;
+            } else {
+                return null;
+            }
+
+
+
         } catch (HibernateException e) {
             logger.error("Erreur lors de la récupération de tous les chapitres", e);
-            return Optional.empty();
+            return null;
         }
     }
 }

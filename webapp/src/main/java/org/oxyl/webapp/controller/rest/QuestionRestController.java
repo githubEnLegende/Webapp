@@ -1,7 +1,8 @@
-package org.oxyl.webapp.controller;
+package org.oxyl.webapp.controller.rest;
 
 import org.oxyl.core.model.Question;
 import org.oxyl.service.service.QuestionService;
+import org.oxyl.webapp.controller.QuestionController;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.ResponseEntity;

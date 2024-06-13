@@ -1,4 +1,4 @@
-package org.oxyl.webapp.controller;
+package org.oxyl.webapp.controller.rest;
 
 import jakarta.validation.Valid;
 import org.oxyl.bindings.dto.stagiairedto.StagiaireDTOAdd;
@@ -10,10 +10,10 @@ import org.oxyl.core.model.Stagiaire;
 import org.oxyl.service.service.InternService;
 import org.oxyl.service.service.PromotionService;
 import org.oxyl.service.service.UtilitairesService;
+import org.oxyl.webapp.controller.SecureOrder;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.ResponseEntity;
-import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -39,10 +39,10 @@ public class InternRestController {
 
     @GetMapping(produces = "application/json")
     public ResponseEntity<Page<Stagiaire>> GetInternsPage(@RequestParam(value = "page", defaultValue = "1") long pageParam,
-                                          @RequestParam(value = "size", defaultValue = "50") long pageTaille,
-                                          @RequestParam(value = "search", required = false) String search,
-                                          @RequestParam(value = "order", required = false) String order,
-                                          @RequestParam(value = "lang", required = false) String lang) {
+                                                          @RequestParam(value = "size", defaultValue = "50") long pageTaille,
+                                                          @RequestParam(value = "search", required = false) String search,
+                                                          @RequestParam(value = "order", required = false) String order,
+                                                          @RequestParam(value = "lang", required = false) String lang) {
         logger.info("Entrée dans le feur");
 
         Page<Stagiaire> page = new Page<>();
@@ -66,8 +66,8 @@ public class InternRestController {
         Stagiaire stagiaire = internService.detailStagiaire(id);
         if (stagiaire == null) {
             return ResponseEntity.notFound().build();
-        }else {
-            return ResponseEntity.ok(internService.detailStagiaire(id));
+        } else {
+            return ResponseEntity.ok(stagiaire);
         }
     }
 
