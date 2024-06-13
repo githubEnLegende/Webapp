@@ -13,6 +13,7 @@ import org.oxyl.service.service.UtilitairesService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.ResponseEntity;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -37,7 +38,7 @@ public class InternRestController {
     }
 
     @GetMapping(produces = "application/json")
-    public Page<Stagiaire> GetInternsPage(@RequestParam(value = "page", defaultValue = "1") long pageParam,
+    public ResponseEntity<Page<Stagiaire>> GetInternsPage(@RequestParam(value = "page", defaultValue = "1") long pageParam,
                                           @RequestParam(value = "size", defaultValue = "50") long pageTaille,
                                           @RequestParam(value = "search", required = false) String search,
                                           @RequestParam(value = "order", required = false) String order,
@@ -57,12 +58,17 @@ public class InternRestController {
             internService.getPageStagiaire(page);
             page.setTotalPages(internService.getTotalPages(page.getNbRow()));
         }
-        return page;
+        return ResponseEntity.ok(page);
     }
 
     @GetMapping(value = {"/{id}"}, produces = "application/json")
     public ResponseEntity<Stagiaire> getInternID(@PathVariable(value = "id") long id) {
-        return ResponseEntity.ok(internService.detailStagiaire(id));
+        Stagiaire stagiaire = internService.detailStagiaire(id);
+        if (stagiaire == null) {
+            return ResponseEntity.notFound().build();
+        }else {
+            return ResponseEntity.ok(internService.detailStagiaire(id));
+        }
     }
 
     @GetMapping(value = "/promotions", produces = "application/json")
@@ -71,29 +77,23 @@ public class InternRestController {
         return ResponseEntity.ok(listPromo);
     }
 
-    @PostMapping(value = "/add", consumes = "application/json")
+    @PostMapping(consumes = "application/json")
     public ResponseEntity<Stagiaire> addStagiaire(@Valid @RequestBody StagiaireDTOAdd stagiaireDTOAdd) {
-        try {
-            System.out.println(stagiaireDTOAdd);
-            Stagiaire stagiaire = mapperStagiaire.dtoAddToModel(stagiaireDTOAdd);
-            internService.insertIntern(stagiaire);
-            return ResponseEntity.ok(stagiaire);
-        } catch (Exception e) {
-            return ResponseEntity.status(500).body(null);
-        }
+
+        System.out.println(stagiaireDTOAdd);
+        Stagiaire stagiaire = mapperStagiaire.dtoAddToModel(stagiaireDTOAdd);
+        internService.insertIntern(stagiaire);
+        return ResponseEntity.status(201).body(stagiaire);
+
     }
 
     @PutMapping(value = "/{id}", consumes = "application/json")
     public ResponseEntity<Stagiaire> editStagiaire(@PathVariable(value = "id") long id,
-                                                   @RequestBody StagiaireDTOEdit stagiaireDTOEdit) {
-        try {
-            Stagiaire stagiaire = mapperStagiaire.dtoEditToModel(stagiaireDTOEdit);
-            internService.updateIntern(stagiaire);
-            return ResponseEntity.ok(stagiaire);
-        } catch (Exception e) {
-            return ResponseEntity.status(500).body(null);
-        }
+                                                   @Valid @RequestBody StagiaireDTOEdit stagiaireDTOEdit) {
 
+        Stagiaire stagiaire = mapperStagiaire.dtoEditToModel(stagiaireDTOEdit);
+        internService.updateIntern(stagiaire);
+        return ResponseEntity.ok(stagiaire);
     }
 
     @DeleteMapping("/{id}")

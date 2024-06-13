@@ -33,11 +33,13 @@ public class QuestionRestController {
     }
 
     @DeleteMapping(value = "/{id}")
-    public void deleteQuestionById(@PathVariable("id") long id) {
+    public ResponseEntity<String> deleteQuestionById(@PathVariable("id") long id) {
         try {
             questionService.deleteQuestion(id);
+            return ResponseEntity.noContent().build();
         } catch (Exception e) {
             System.out.println("aaa");
+            return ResponseEntity.internalServerError().body("Erreur lors de la supression d'une question");
         }
 
     }
