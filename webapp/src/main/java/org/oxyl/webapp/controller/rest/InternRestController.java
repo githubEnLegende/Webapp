@@ -79,7 +79,6 @@ public class InternRestController {
 
     @PostMapping(consumes = "application/json")
     public ResponseEntity<Stagiaire> addStagiaire(@Valid @RequestBody StagiaireDTOAdd stagiaireDTOAdd) {
-
         System.out.println(stagiaireDTOAdd);
         Stagiaire stagiaire = mapperStagiaire.dtoAddToModel(stagiaireDTOAdd);
         internService.insertIntern(stagiaire);
@@ -87,10 +86,8 @@ public class InternRestController {
 
     }
 
-    @PutMapping(value = "/{id}", consumes = "application/json")
-    public ResponseEntity<Stagiaire> editStagiaire(@PathVariable(value = "id") long id,
-                                                   @Valid @RequestBody StagiaireDTOEdit stagiaireDTOEdit) {
-
+    @PutMapping(consumes = "application/json")
+    public ResponseEntity<Stagiaire> editStagiaire(@Valid @RequestBody StagiaireDTOEdit stagiaireDTOEdit) {
         Stagiaire stagiaire = mapperStagiaire.dtoEditToModel(stagiaireDTOEdit);
         internService.updateIntern(stagiaire);
         return ResponseEntity.ok(stagiaire);

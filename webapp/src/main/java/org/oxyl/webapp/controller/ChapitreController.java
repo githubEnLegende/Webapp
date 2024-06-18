@@ -28,9 +28,7 @@ public class ChapitreController {
     public String displayChapter(Model model, @RequestParam(value = "lang", required = false) String lang) {
         logger.info("Entrez dans le Display Chapitre");
 
-        var optChapitre = chapterService.getAllChapter();
-        List<Chapitre> chapitres;
-        chapitres = optChapitre.orElseGet(ArrayList::new);
+        List<Chapitre> chapitres = chapterService.getAllChapter();
 
         model.addAttribute("chapitres", chapitres);
         model.addAttribute("lang", lang);
