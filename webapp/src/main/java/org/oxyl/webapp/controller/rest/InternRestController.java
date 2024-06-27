@@ -19,7 +19,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@RequestMapping("/api/stagiaires")
+@RequestMapping("/api/v1/stagiaires")
 public class InternRestController {
 
     private static final Logger logger = LoggerFactory.getLogger(InternRestController.class);

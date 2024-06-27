@@ -32,18 +32,24 @@ public class ChapterDAO {
         try {
             Query<ChapterEntity> query = session.createQuery("from ChapterEntity", ChapterEntity.class);
 
-            List<Chapitre> chapitreList = query.list().stream().map(mapperChapitre::toModel).toList();
-            if (!chapitreList.isEmpty()) {
-                return chapitreList;
-            } else {
-                return null;
-            }
+            return query.list().stream().map(mapperChapitre::toModel).toList();
 
 
 
         } catch (HibernateException e) {
             logger.error("Erreur lors de la récupération de tous les chapitres", e);
             return null;
+        }
+    }
+
+    @Transactional
+    public List<Chapitre> getRootChapter() {
+        try {
+            Query<ChapterEntity> query = session.createQuery("from ChapterEntity where parentPath LIKE '/'", ChapterEntity.class);
+            return query.list().stream().map(mapperChapitre::toModel).toList();
+        } catch (HibernateException e) {
+            logger.error("Erreur lors de la récupération de tous les chapitres", e);
+            throw new IllegalStateException(e);
         }
     }
 }

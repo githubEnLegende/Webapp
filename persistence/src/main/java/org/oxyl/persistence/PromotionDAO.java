@@ -14,41 +14,14 @@ public class PromotionDAO {
 
     private static final Logger logger = LoggerFactory.getLogger(PromotionDAO.class);
     private final PromotionMapperEntity mapperPromotion;
-    //    private final JdbcTemplate jdbcTemplate;
     private final PromotionRepository promotionRepository;
 
     public PromotionDAO(PromotionMapperEntity mapperPromotion/*, JdbcTemplate jdbcTemplate*/, PromotionRepository promotionRepository) {
         this.mapperPromotion = mapperPromotion;
-//        this.jdbcTemplate = jdbcTemplate;
         this.promotionRepository = promotionRepository;
     }
-
-//    public List<Promotion> getAllPromotion() {
-//
-//        List<Promotion> listPromo = new ArrayList<>();
-//        String sql = "SELECT id, name FROM promotion";
-//        try {
-//            listPromo = jdbcTemplate.query(sql, mapperPromotion);
-//            return listPromo;
-//        } catch (DataAccessException e) {
-//            logger.error("Erreur lors de la récupération des promotions", e);
-//            return listPromo;
-//        }
-//    }
 
     public List<Promotion> getAllPromotion() {
         return promotionRepository.findAll().stream().map(mapperPromotion::toModel).toList();
     }
-
-//    public void afficherPagePromotion(Page<Promotion> page) {
-//        String sql = "SELECT id, name FROM promotion LIMIT ? OFFSET ?";
-//        try {
-//            page.setContent(jdbcTemplate.query(sql, mapperPromotion));
-//            page.display();
-//            page.emptyContent();
-//
-//        } catch (DataAccessException e) {
-//            logger.error("Erreur lors de l'affichage de la page de promotion", e);
-//        }
-//    }
 }

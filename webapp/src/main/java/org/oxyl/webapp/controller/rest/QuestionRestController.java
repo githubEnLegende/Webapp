@@ -11,7 +11,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@RequestMapping("/api/questions")
+@RequestMapping("/api/v1/questions")
 public class QuestionRestController {
     private final static Logger logger = LoggerFactory.getLogger(QuestionController.class);
     private final QuestionService questionService;
@@ -39,7 +39,6 @@ public class QuestionRestController {
             questionService.deleteQuestion(id);
             return ResponseEntity.noContent().build();
         } catch (Exception e) {
-            System.out.println("aaa");
             return ResponseEntity.internalServerError().body("Erreur lors de la supression d'une question");
         }
 

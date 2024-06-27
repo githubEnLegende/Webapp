@@ -1,5 +1,6 @@
 package org.oxyl.bindings.mapper;
 
+import org.oxyl.bindings.dto.ChapterDTO;
 import org.oxyl.core.model.Chapitre;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -29,9 +30,16 @@ public class MapperChapitre implements RowMapper<Chapitre> {
         }
     }
 
-    public Chapitre mapRow(ResultSet rs, int rowNum) throws SQLException {
+    public Chapitre mapRow(ResultSet rs, int rowNum) {
         Optional<Chapitre> chapitre = rsToChapitre(rs);
         return chapitre.orElse(null);
     }
 
+    public ChapterDTO convertToChapterDTO(Chapitre chapter) {
+        return new ChapterDTO(
+                chapter.getId() + "",
+                chapter.getName(),
+                chapter.getParent()
+        );
+    }
 }

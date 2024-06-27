@@ -4,6 +4,7 @@ import org.oxyl.core.model.Chapitre;
 import org.oxyl.persistence.ChapterDAO;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -25,4 +26,8 @@ public class ChapterService {
     }
 
 
+    public List<Chapitre> getRootChapter() {
+        return chapterDAO.getRootChapter();
+
+    }
 }
