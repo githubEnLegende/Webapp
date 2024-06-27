@@ -30,6 +30,7 @@ public class SecurityConfig {
                 .logout(Customizer.withDefaults())
                 .authorizeHttpRequests(authorize -> authorize
                         .requestMatchers("/login").permitAll()
+                        .requestMatchers("/api/v1/login").permitAll()
                         .anyRequest().authenticated()
                 );
         return http.build();
