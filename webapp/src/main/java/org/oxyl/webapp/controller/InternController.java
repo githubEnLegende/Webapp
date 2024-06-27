@@ -111,9 +111,9 @@ public class InternController {
     @GetMapping("/{id}")
     public String setEdit(Model model, @PathVariable(value = "id") long id) {
 
-        Stagiaire stagiaire = internService.detailStagiaire(id);
-        if (stagiaire != null) {
-            model.addAttribute("stagiaire", mapperStagiaire.modelToDtoAdd(stagiaire));
+        var stagiaire = internService.detailStagiaire(id);
+        if (stagiaire.isPresent()) {
+            model.addAttribute("stagiaire", mapperStagiaire.modelToDtoAdd(stagiaire.get()));
         } else {
             return "redirect:/404";
         }

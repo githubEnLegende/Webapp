@@ -1,5 +1,6 @@
 package org.oxyl.bindings.mapper;
 
+import org.oxyl.bindings.dto.questiondto.QuestionPageDTO;
 import org.oxyl.core.model.Question;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -11,29 +12,20 @@ import java.sql.SQLException;
 import java.util.Optional;
 
 @Component
-public class MapperQuestion implements RowMapper<Question> {
+public class MapperQuestion {
 
     private final static Logger logger = LoggerFactory.getLogger(MapperChapitre.class);
 
     public MapperQuestion() {
     }
 
-    public Optional<Question> rsToQuestion(ResultSet rs) {
-        try {
-            return Optional.of(new Question.QuestionBuilder(rs.getInt("id"),
-                    rs.getString("title"),
-                    rs.getString("statement"),
-                    rs.getInt("chapter_id")).build());
-        } catch (SQLException e) {
-            logger.error("Erreur lors du passage de rs à Chapitre", e);
-            return Optional.empty();
-        }
-    }
-
-    @Override
-    public Question mapRow(ResultSet rs, int rowNum) throws SQLException {
-        Optional<Question> question = rsToQuestion(rs);
-        return question.orElse(null);
+    public QuestionPageDTO convertToQuestionPageDTO(Question question) {
+        return new QuestionPageDTO(
+                question.getId(),
+                question.getTitle(),
+                question.getStatement(),
+                question.getChapitre().getName()
+        );
     }
 
 }

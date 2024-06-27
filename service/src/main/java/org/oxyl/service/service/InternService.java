@@ -8,6 +8,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class InternService {
@@ -39,9 +40,9 @@ public class InternService {
         return stagiaireDAO.getPageStagiaire(name, page);
     }
 
-    public Stagiaire detailStagiaire(long id) {
+    public Optional<Stagiaire> detailStagiaire(long id) {
         logger.info("detailStagiaire");
-        return stagiaireDAO.detailStagiaire(id).orElse(null);
+        return stagiaireDAO.detailStagiaire(id);
 
     }
 

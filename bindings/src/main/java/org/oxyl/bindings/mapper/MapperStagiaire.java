@@ -61,6 +61,17 @@ public class MapperStagiaire {
                 stagiaire.getPromotion().getName());
     }
 
+    public StagiaireDTOEdit modelToDtoEdit(Stagiaire stagiaire) {
+        return new StagiaireDTOEdit(
+                stagiaire.getId(),
+                stagiaire.getFirstName(),
+                stagiaire.getLastName(),
+                mapperDate.localDateToString(stagiaire.getArrival()),
+                mapperDate.localDateToString(stagiaire.getFormationOver()),
+                Long.toString(stagiaire.getPromotion().getId()),
+                stagiaire.getPromotion().getName());
+    }
+
     public StagiaireDTOPage modelToDtoPage(Stagiaire stagiaire) {
         return new StagiaireDTOPage(
                 stagiaire.getId(),
@@ -70,15 +81,6 @@ public class MapperStagiaire {
                 mapperDate.localDateToString(stagiaire.getFormationOver()),
                 stagiaire.getPromotion().getName()
         );
-    }
-
-    public Stagiaire dtoPagetoModel(StagiaireDTOPage stagiaireDTOPage) {
-        return new Stagiaire.StagiaireBuilder()
-                .id(stagiaireDTOPage.id())
-                .firstName(stagiaireDTOPage.prenom())
-                .lastName(stagiaireDTOPage.nom())
-                .arrival(mapperDate.stringtoLocalDate(stagiaireDTOPage.arrival()))
-                .formationOver(mapperDate.stringtoLocalDate(stagiaireDTOPage.finFormation())).build();
     }
 
     public List<StagiaireDTOPage> listModelToListDtoPage(List<Stagiaire> stagiaires) {

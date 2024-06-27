@@ -77,7 +77,7 @@ public class QuestionDAO {
         if (questionEntity != null) {
             response.add(questionEntity.getTitle());
             response.add(questionEntity.getStatement());
-            response.add(String.valueOf(questionEntity.getChapterId()));
+            response.add(String.valueOf(questionEntity.getChapter()));
 
             questionEntity.getAnswers().forEach(answer -> response.add(answer.getText()));
         }

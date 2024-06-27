@@ -2,6 +2,7 @@ package org.oxyl.core.model;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.function.Function;
 
 
 public class Page<T> {
@@ -12,6 +13,20 @@ public class Page<T> {
     private List<T> content = new ArrayList<>();
 
     public Page() {
+    }
+
+    public Page(
+            long nbRow,
+            String order,
+            long pageNumber,
+            long totalPages,
+            List<T> content
+    ) {
+        this.nbRow = nbRow;
+        this.order = order;
+        this.pageNumber = pageNumber;
+        this.totalPages = totalPages;
+        this.content = content;
     }
 
     public long getTotalPages() {
@@ -66,5 +81,17 @@ public class Page<T> {
         for (T line : content) {
             System.out.println(line.toString());
         }
+    }
+
+    public <U> Page<U> map(Function<T, U> function) {
+        return new Page<U>(
+                nbRow,
+                order,
+                pageNumber,
+                totalPages,
+                content.stream().map(
+                        function
+                ).toList()
+        );
     }
 }
