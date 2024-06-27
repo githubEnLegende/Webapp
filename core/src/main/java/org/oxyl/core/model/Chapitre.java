@@ -37,6 +37,15 @@ public class Chapitre {
         this.parent = parent;
     }
 
+    @Override
+    public String toString() {
+        return "\nChapitre{" +
+                "id=" + id +
+                ", name='" + name + '\'' +
+                ", parent='" + parent + '\'' +
+                '}';
+    }
+
     public static class ChapitreBuilder {
         private long id;
         private String name;
@@ -66,8 +75,6 @@ public class Chapitre {
         public Chapitre build() {
             return new Chapitre(this);
         }
-
-
     }
 
 
