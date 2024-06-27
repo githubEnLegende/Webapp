@@ -1,5 +1,7 @@
 package org.oxyl.webapp.controller.rest;
 
+import org.oxyl.bindings.dto.questiondto.QuestionPageDTO;
+import org.oxyl.bindings.mapper.MapperQuestion;
 import org.oxyl.core.model.Question;
 import org.oxyl.service.service.QuestionService;
 import org.oxyl.webapp.controller.QuestionController;
@@ -15,16 +17,21 @@ import java.util.List;
 public class QuestionRestController {
     private final static Logger logger = LoggerFactory.getLogger(QuestionController.class);
     private final QuestionService questionService;
+    private final MapperQuestion mapperQuestion;
 
-    public QuestionRestController(QuestionService questionService) {
+    public QuestionRestController(QuestionService questionService, MapperQuestion mapperQuestion) {
         this.questionService = questionService;
+        this.mapperQuestion = mapperQuestion;
     }
 
     @GetMapping(produces = "application/json")
-    public ResponseEntity<List<Question>> getAllQuestions() {
+    public ResponseEntity<List<QuestionPageDTO>> getAllQuestions() {
         logger.info("Entrée dans Question");
         List<Question> questions = questionService.getAllQuestion();
-        return ResponseEntity.ok(questions);
+        return ResponseEntity.ok(questions.stream()
+                .map(mapperQuestion::convertToQuestionPageDTO)
+                .toList()
+        );
     }
 
     @GetMapping(value = "/{id}", produces = "application/json")

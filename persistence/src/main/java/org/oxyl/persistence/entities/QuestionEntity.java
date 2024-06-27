@@ -2,6 +2,7 @@ package org.oxyl.persistence.entities;
 
 
 import jakarta.persistence.*;
+import org.oxyl.core.model.Chapitre;
 
 import java.util.List;
 
@@ -18,20 +19,21 @@ public class QuestionEntity {
     @Column(name = "statement", length = 10000)
     private String statement;
 
-    @Column(name = "chapter_id")
-    private int chapterId;
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "chapter_id", nullable = false)
+    private ChapterEntity chapter;
 
-    @OneToMany(mappedBy = "question")
+    @OneToMany(mappedBy = "question", fetch = FetchType.LAZY)
     private List<AnswerEntity> answers;
 
     public QuestionEntity() {
     }
 
-    public QuestionEntity(int id, String title, String statement, int chapterId) {
+    public QuestionEntity(int id, String title, String statement, ChapterEntity chapitre) {
         this.id = id;
         this.title = title;
         this.statement = statement;
-        this.chapterId = chapterId;
+        this.chapter = chapitre;
     }
 
     public int getId() {
@@ -42,12 +44,12 @@ public class QuestionEntity {
         this.id = id;
     }
 
-    public int getChapterId() {
-        return chapterId;
+    public ChapterEntity getChapter() {
+        return chapter;
     }
 
-    public void setChapterId(int chapterId) {
-        this.chapterId = chapterId;
+    public void setChapterId(ChapterEntity chapter) {
+        this.chapter = chapter;
     }
 
     public String getStatement() {

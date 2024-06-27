@@ -5,20 +5,13 @@ public class Question {
     private long id;
     private String title;
     private String statement;
-    private long chapitreId;
+    private Chapitre chapitre;
 
     public Question(QuestionBuilder builder) {
         this.id = builder.id;
         this.title = builder.title;
         this.statement = builder.statement;
-        this.chapitreId = builder.chapitreId;
-    }
-
-    public Question() {
-        this.id = 0;
-        this.title = null;
-        this.statement = null;
-        this.chapitreId = 0;
+        this.chapitre = builder.chapitre;
     }
 
     public long getId() {
@@ -45,12 +38,12 @@ public class Question {
         this.statement = statement;
     }
 
-    public long getChapitreId() {
-        return chapitreId;
+    public Chapitre getChapitre() {
+        return chapitre;
     }
 
-    public void setChapitreId(long i) {
-        this.chapitreId = i;
+    public void setChapitre(Chapitre chapitre) {
+        this.chapitre = chapitre;
     }
 
     public String toString() {
@@ -58,7 +51,7 @@ public class Question {
                 "id=" + id +
                 ", title='" + title + '\'' +
                 ", statement='" + statement + '\'' +
-                ", chapterId=" + chapitreId +
+                ", chapter=" + chapitre +
                 "}\n";
     }
 
@@ -66,13 +59,13 @@ public class Question {
         private long id;
         private String title;
         private String statement;
-        private long chapitreId;
+        private Chapitre chapitre;
 
-        public QuestionBuilder(long id, String title, String statement, long chapitreId) {
+        public QuestionBuilder(long id, String title, String statement, Chapitre chapitre) {
             this.id = id;
             this.title = title;
             this.statement = statement;
-            this.chapitreId = chapitreId;
+            this.chapitre = chapitre;
         }
 
         public QuestionBuilder id(long id) {
@@ -90,8 +83,8 @@ public class Question {
             return this;
         }
 
-        public QuestionBuilder chapitreId(long chapitreId) {
-            this.chapitreId = chapitreId;
+        public QuestionBuilder chapitreId(Chapitre chapitre) {
+            this.chapitre = chapitre;
             return this;
         }
 
