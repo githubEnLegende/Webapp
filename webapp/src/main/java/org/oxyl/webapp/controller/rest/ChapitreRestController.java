@@ -17,7 +17,7 @@ import org.springframework.web.bind.annotation.RestController;
 import java.util.List;
 
 @RestController
-@RequestMapping("/api/v1/chapitres")
+@RequestMapping("/api/v1/chapters")
 public class ChapitreRestController {
 
     private final static Logger logger = LoggerFactory.getLogger(ChapitreController.class);

@@ -16,7 +16,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
-@RequestMapping("/api/v1/stagiaires")
+@RequestMapping("/api/v1/interns")
 public class InternRestController {
 
     private static final Logger logger = LoggerFactory.getLogger(InternRestController.class);

@@ -98,7 +98,7 @@ public class InternController {
     public String addStagiaire(@RequestParam(value = "lastName") String lastName,
                                @RequestParam(value = "firstName") String firstName,
                                @RequestParam(value = "arrival") String arrival,
-                               @RequestParam(required = false, name = "finFormation") String finFormation,
+                               @RequestParam(required = false, name = "formationOver") String finFormation,
                                @RequestParam(value = "promotionId") String promo) {
 
         String[] promotion = promo.replace("[", "").replace("]", "").split(",");
@@ -129,7 +129,7 @@ public class InternController {
                                 @RequestParam(value = "lastName") String lastName,
                                 @RequestParam(value = "firstName") String firstName,
                                 @RequestParam(value = "arrival") String arrival,
-                                @RequestParam(value = "finFormation", required = false) String finFormation,
+                                @RequestParam(value = "formationOver", required = false) String finFormation,
                                 @RequestParam(value = "promotion") String promo) {
 
         String[] promotion = promo.replace("[", "").replace("]", "").split(",");

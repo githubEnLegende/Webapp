@@ -24,7 +24,7 @@ public class MapperChapitre implements RowMapper<Chapitre> {
     public Optional<Chapitre> rsToChapitre(ResultSet rs) {
         try {
             return Optional.of(new Chapitre.ChapitreBuilder(rs.getInt("id"),
-                    rs.getString("name"),
+                    rs.getString("lastName"),
                     rs.getString("parent_path")).build());
         } catch (SQLException e) {
             logger.error("Erreur lors du passage de rs à Chapitre", e);
