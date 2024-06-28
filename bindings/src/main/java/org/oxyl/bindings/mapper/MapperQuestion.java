@@ -1,6 +1,7 @@
 package org.oxyl.bindings.mapper;
 
 import org.oxyl.bindings.dto.questiondto.QuestionPageDTO;
+import org.oxyl.bindings.dto.questiondto.QuestionQuizDTO;
 import org.oxyl.core.model.Question;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -15,8 +16,10 @@ import java.util.Optional;
 public class MapperQuestion {
 
     private final static Logger logger = LoggerFactory.getLogger(MapperChapitre.class);
+    private final MapperReponse mapperReponse;
 
-    public MapperQuestion() {
+    public MapperQuestion(MapperReponse mapperReponse) {
+        this.mapperReponse = mapperReponse;
     }
 
     public QuestionPageDTO convertToQuestionPageDTO(Question question) {
@@ -28,4 +31,14 @@ public class MapperQuestion {
         );
     }
 
+    public QuestionQuizDTO convertToQuestionQuizDTO(Question question) {
+        return new QuestionQuizDTO(
+                question.getTitle(),
+                question.getStatement(),
+                question.getAnswerList()
+                        .stream()
+                        .map(mapperReponse::convertToAnswerDTO)
+                        .toList()
+        );
+    }
 }

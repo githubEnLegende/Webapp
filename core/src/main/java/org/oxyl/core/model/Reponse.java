@@ -2,6 +2,7 @@ package org.oxyl.core.model;
 
 public class Reponse {
     private long id;
+    private String label;
     private String texte;
     private long valid;
     private long questionId;
@@ -10,6 +11,7 @@ public class Reponse {
     public Reponse(ReponseBuilder builder) {
         super();
         this.id = builder.id;
+        this.label = builder.label;
         this.texte = builder.texte;
         this.valid = builder.valid;
         this.questionId = builder.questionId;
@@ -48,6 +50,10 @@ public class Reponse {
         this.questionId = questionId;
     }
 
+    public String getLabel() {
+        return label;
+    }
+
     public String toString() {
         return "Reponse{" +
                 "id=" + id +
@@ -59,21 +65,22 @@ public class Reponse {
 
     public static class ReponseBuilder {
         private long id;
+        private String label;
         private String texte;
         private long valid;
         private long questionId;
 
 
-        public ReponseBuilder(long id, String texte, long valid, long questionId) {
-            super();
-            this.id = id;
-            this.texte = texte;
-            this.valid = valid;
-            this.questionId = questionId;
+        public ReponseBuilder() {
         }
 
         public ReponseBuilder id(long id) {
             this.id = id;
+            return this;
+        }
+
+        public ReponseBuilder label(String label) {
+            this.label = label;
             return this;
         }
 

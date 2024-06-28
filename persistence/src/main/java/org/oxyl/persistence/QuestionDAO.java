@@ -84,4 +84,21 @@ public class QuestionDAO {
 
         return response;
     }
+
+    public List<Question> getQuestionOfChapter(int chapterId, int number) {
+        String hql =
+                """
+                    SELECT q
+                    FROM QuestionEntity q
+                    LEFT JOIN FETCH q.answers
+                    WHERE q.chapter.id = :id
+                    ORDER BY RAND()
+                """;
+        Query<QuestionEntity> query = session.createQuery(hql, QuestionEntity.class);
+
+        query.setParameter("id", chapterId);
+        query.setMaxResults(number);
+
+        return query.list().stream().map(mapperQuestion::toModel).toList();
+    }
 }

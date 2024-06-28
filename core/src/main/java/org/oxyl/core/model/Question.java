@@ -1,16 +1,21 @@
 package org.oxyl.core.model;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class Question {
 
     private long id;
     private String title;
     private String statement;
+    private List<Reponse> answerList;
     private Chapitre chapitre;
 
     public Question(QuestionBuilder builder) {
         this.id = builder.id;
         this.title = builder.title;
         this.statement = builder.statement;
+        this.answerList = builder.answerList;
         this.chapitre = builder.chapitre;
     }
 
@@ -46,6 +51,10 @@ public class Question {
         this.chapitre = chapitre;
     }
 
+    public List<Reponse> getAnswerList() {
+        return answerList;
+    }
+
     public String toString() {
         return "Question{" +
                 "id=" + id +
@@ -60,12 +69,14 @@ public class Question {
         private String title;
         private String statement;
         private Chapitre chapitre;
+        private List<Reponse> answerList = new ArrayList<>();
 
-        public QuestionBuilder(long id, String title, String statement, Chapitre chapitre) {
+        public QuestionBuilder(long id, String title, String statement, Chapitre chapitre, List<Reponse> answerList) {
             this.id = id;
             this.title = title;
             this.statement = statement;
             this.chapitre = chapitre;
+            this.answerList = answerList;
         }
 
         public QuestionBuilder id(long id) {
@@ -87,6 +98,12 @@ public class Question {
             this.chapitre = chapitre;
             return this;
         }
+
+        public QuestionBuilder answers(List<Reponse> answers) {
+            this.answerList = answers;
+            return this;
+        }
+
 
         public Question build() {
             return new Question(this);

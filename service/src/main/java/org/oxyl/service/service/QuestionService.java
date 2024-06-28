@@ -1,9 +1,11 @@
 package org.oxyl.service.service;
 
+import org.oxyl.bindings.dto.questiondto.QuestionQuizDTO;
 import org.oxyl.core.model.Question;
 import org.oxyl.persistence.QuestionDAO;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -37,5 +39,11 @@ public class QuestionService {
     public List<String> getQuestionAnswer(long id) {
         logger.info("Get question answer by id: {}", id);
         return questionDAO.getQuestionAnswer(id);
+    }
+
+    public List<Question> getQuestionOfChapter(
+            int chapterId,
+            int number) {
+        return questionDAO.getQuestionOfChapter(chapterId, number);
     }
 }
