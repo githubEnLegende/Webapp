@@ -14,4 +14,14 @@ public class AnswerEntityMapper {
                 .valid(answerEntity.getValidAnswer())
                 .build();
     }
+
+    public AnswerEntity toEntity(Reponse reponse) {
+        return new AnswerEntity(
+                (int)reponse.getId(),
+                reponse.getLabel(),
+                reponse.getTexte(),
+                (int)reponse.getValid(),
+                (int) reponse.getQuestionId()
+        );
+    }
 }

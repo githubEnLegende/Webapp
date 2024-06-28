@@ -2,11 +2,13 @@ package org.oxyl.service.service;
 
 import org.oxyl.bindings.dto.questiondto.QuestionQuizDTO;
 import org.oxyl.core.model.Question;
+import org.oxyl.persistence.AnswerDAO;
 import org.oxyl.persistence.QuestionDAO;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
@@ -16,9 +18,11 @@ public class QuestionService {
     private static final Logger logger = LoggerFactory.getLogger(QuestionService.class);
 
     private final QuestionDAO questionDAO;
+    private final AnswerDAO answerDAO;
 
-    public QuestionService(QuestionDAO questionDAO) {
+    public QuestionService(QuestionDAO questionDAO, AnswerDAO answerDAO) {
         this.questionDAO = questionDAO;
+        this.answerDAO = answerDAO;
     }
 
     public void getQuestionById(int questionId) {
@@ -45,5 +49,14 @@ public class QuestionService {
             int chapterId,
             int number) {
         return questionDAO.getQuestionOfChapter(chapterId, number);
+    }
+
+    @Transactional
+    public void createQuestion(Question question) {
+        questionDAO.createQuestion(question);
+        question.getAnswerList().forEach(answer -> {
+            answer.setQuestionId(question.getId());
+            answerDAO.createAnswer(answer);
+        });
     }
 }

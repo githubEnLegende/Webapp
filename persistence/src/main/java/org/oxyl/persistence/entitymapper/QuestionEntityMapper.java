@@ -18,15 +18,24 @@ public class QuestionEntityMapper {
     }
 
     public Question toModel(QuestionEntity questionEntity) {
-        return new Question.QuestionBuilder(
-                questionEntity.getId(),
-                questionEntity.getTitle(),
-                questionEntity.getStatement(),
-                chapterEntityMapper.toModel(questionEntity.getChapter()),
-                questionEntity.getAnswers()
+        return new Question.QuestionBuilder()
+                .id(questionEntity.getId())
+                .title(questionEntity.getTitle())
+                .statement(questionEntity.getStatement())
+                .chapitre(chapterEntityMapper.toModel(questionEntity.getChapter()))
+                .answers(questionEntity.getAnswers()
                         .stream()
                         .map(answerEntityMapper::toModel)
                         .toList()
         ).build();
+    }
+
+    public QuestionEntity toEntity(Question question) {
+        return new QuestionEntity(
+            (int) question.getId(),
+            question.getTitle(),
+            question.getStatement(),
+                chapterEntityMapper.toEntity(question.getChapitre())
+        );
     }
 }

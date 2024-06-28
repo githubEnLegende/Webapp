@@ -30,11 +30,13 @@ public class AnswerEntity {
     public AnswerEntity() {
     }
 
-    public AnswerEntity(int id, String label, String text, int validAnswer) {
+    public AnswerEntity(int id, String label, String text, int validAnswer, int questionId) {
         this.id = id;
         this.label = label;
         this.text = text;
         this.validAnswer = validAnswer;
+        this.question = new QuestionEntity();
+        question.setId(questionId);
     }
 
     public int getId() {

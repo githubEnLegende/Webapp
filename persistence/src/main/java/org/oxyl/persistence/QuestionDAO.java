@@ -7,6 +7,7 @@ import org.oxyl.core.model.Question;
 import org.oxyl.persistence.entities.AnswerEntity;
 import org.oxyl.persistence.entities.QuestionEntity;
 import org.oxyl.persistence.entitymapper.QuestionEntityMapper;
+import org.oxyl.persistence.repository.QuestionRepository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Repository;
@@ -22,10 +23,12 @@ public class QuestionDAO {
 
     private static final Logger logger = LoggerFactory.getLogger(QuestionDAO.class);
 
+    private final QuestionRepository questionRepository;
     private final QuestionEntityMapper mapperQuestion;
     private final Session session;
 
-    public QuestionDAO(QuestionEntityMapper mapperQuestion, Session session) {
+    public QuestionDAO(QuestionRepository questionRepository, QuestionEntityMapper mapperQuestion, Session session) {
+        this.questionRepository = questionRepository;
         this.mapperQuestion = mapperQuestion;
         this.session = session;
     }
@@ -100,5 +103,11 @@ public class QuestionDAO {
         query.setMaxResults(number);
 
         return query.list().stream().map(mapperQuestion::toModel).toList();
+    }
+
+    public void createQuestion(Question question) {
+        var entity = mapperQuestion.toEntity(question);
+        questionRepository.save(entity);
+        question.setId(entity.getId());
     }
 }

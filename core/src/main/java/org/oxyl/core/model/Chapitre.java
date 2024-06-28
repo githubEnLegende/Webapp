@@ -57,6 +57,8 @@ public class Chapitre {
             this.parent = parent;
         }
 
+        public ChapitreBuilder(){}
+
         public ChapitreBuilder id(long id) {
             this.id = id;
             return this;

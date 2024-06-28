@@ -9,6 +9,7 @@ import org.springframework.stereotype.Component;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.List;
 import java.util.Optional;
 
 @Component
@@ -25,5 +26,13 @@ public class MapperReponse {
                 reponse.getTexte(),
                 reponse.getValid()
         );
+    }
+
+    public Reponse convertToModel(AnswerDTO answerDTO) {
+        return new Reponse.ReponseBuilder()
+                .label(answerDTO.label())
+                .texte(answerDTO.text())
+                .valid(answerDTO.validAnswer())
+                .build();
     }
 }

@@ -1,7 +1,9 @@
 package org.oxyl.bindings.mapper;
 
+import org.oxyl.bindings.dto.questiondto.QuestionAddDTO;
 import org.oxyl.bindings.dto.questiondto.QuestionPageDTO;
 import org.oxyl.bindings.dto.questiondto.QuestionQuizDTO;
+import org.oxyl.core.model.Chapitre;
 import org.oxyl.core.model.Question;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -40,5 +42,19 @@ public class MapperQuestion {
                         .map(mapperReponse::convertToAnswerDTO)
                         .toList()
         );
+    }
+
+    public Question convertToModel(QuestionAddDTO questionAddDTO) {
+        return new Question.QuestionBuilder()
+                .title(questionAddDTO.title())
+                .statement(questionAddDTO.statement())
+                .chapitre(new Chapitre.ChapitreBuilder()
+                        .id(questionAddDTO.chapterId())
+                        .build())
+                .answers(questionAddDTO.answers()
+                        .stream()
+                        .map(mapperReponse::convertToModel)
+                        .toList())
+                .build();
     }
 }

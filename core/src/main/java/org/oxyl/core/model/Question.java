@@ -71,12 +71,7 @@ public class Question {
         private Chapitre chapitre;
         private List<Reponse> answerList = new ArrayList<>();
 
-        public QuestionBuilder(long id, String title, String statement, Chapitre chapitre, List<Reponse> answerList) {
-            this.id = id;
-            this.title = title;
-            this.statement = statement;
-            this.chapitre = chapitre;
-            this.answerList = answerList;
+        public QuestionBuilder() {
         }
 
         public QuestionBuilder id(long id) {
@@ -94,7 +89,7 @@ public class Question {
             return this;
         }
 
-        public QuestionBuilder chapitreId(Chapitre chapitre) {
+        public QuestionBuilder chapitre(Chapitre chapitre) {
             this.chapitre = chapitre;
             return this;
         }

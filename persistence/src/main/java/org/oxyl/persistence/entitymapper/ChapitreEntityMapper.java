@@ -6,11 +6,20 @@ import org.springframework.stereotype.Component;
 
 @Component
 public class ChapitreEntityMapper {
+
     public Chapitre toModel(ChapterEntity chapterEntity) {
         return new Chapitre.ChapitreBuilder(
                 chapterEntity.getId(),
                 chapterEntity.getName(),
                 chapterEntity.getParentPath()
         ).build();
+    }
+
+    public ChapterEntity toEntity(Chapitre chapitre) {
+        return new ChapterEntity(
+                (int) chapitre.getId(),
+                chapitre.getName(),
+                chapitre.getParent()
+        );
     }
 }

@@ -1,5 +1,7 @@
 package org.oxyl.webapp.controller.rest;
 
+import jakarta.validation.Valid;
+import org.oxyl.bindings.dto.questiondto.QuestionAddDTO;
 import org.oxyl.bindings.dto.questiondto.QuestionPageDTO;
 import org.oxyl.bindings.mapper.MapperQuestion;
 import org.oxyl.core.model.Question;
@@ -49,5 +51,13 @@ public class QuestionRestController {
             return ResponseEntity.internalServerError().body("Erreur lors de la supression d'une question");
         }
 
+    }
+
+    @PostMapping
+    public ResponseEntity<Long> postQuestion(
+            @Valid @RequestBody QuestionAddDTO questionAddDTO
+    ) {
+        questionService.createQuestion(mapperQuestion.convertToModel(questionAddDTO));
+        return ResponseEntity.ok().build();
     }
 }
