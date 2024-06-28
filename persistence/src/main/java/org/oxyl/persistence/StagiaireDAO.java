@@ -60,6 +60,7 @@ public class StagiaireDAO {
             List<Stagiaire> stagiaires = stagiaireRepository.findAll(pageable)
                     .getContent().stream().map(mapperStagiaire::toModel).toList();
             page.setContent(stagiaires);
+            page.setCount(countStagiaire());
         } catch (HibernateException e) {
             logger.error("Erreur lors de l'affichage de la page des stagiaires.", e);
         }
@@ -67,16 +68,15 @@ public class StagiaireDAO {
     }
 
     @Transactional
-    public long getPageStagiaire(String name, Page<Stagiaire> page) {
+    public void getPageStagiaire(String name, Page<Stagiaire> page) {
         Pageable pageable = PageRequest.of((int) (page.getPageNumber() - 1), (int) page.getNbRow(), Sort.by(Sort.Direction.ASC, page.getOrder()));
         try {
             List<Stagiaire> stagiaires = stagiaireRepository.findAllByName(name, pageable)
                     .getContent().stream().map(mapperStagiaire::toModel).toList();
             page.setContent(stagiaires);
-            return stagiaireRepository.countByName(name);
+            page.setCount(stagiaireRepository.countByName(name));
         } catch (HibernateException e) {
             logger.error("Erreur lors de la récupération de la page des stagiaires avec le nom spécifié", e);
-            return 0;
         }
     }
 

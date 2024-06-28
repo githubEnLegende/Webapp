@@ -56,7 +56,8 @@ public class InternController {
         model.addAttribute("countStagiaire", countStagiaire);
 
         if (search != null && !search.isEmpty()) {
-            long countSize = internService.getPageStagiaire(search, page);
+            internService.getPageStagiaire(search, page);
+            var countSize = page.getCount();
             model.addAttribute("countStagiaire", countSize);
             page.setTotalPages(utilitairesService.getTotalPages(countSize, page.getNbRow()));
 

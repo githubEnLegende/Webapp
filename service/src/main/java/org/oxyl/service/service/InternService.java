@@ -35,9 +35,9 @@ public class InternService {
         stagiaireDAO.getPageStagiaire(page);
     }
 
-    public long getPageStagiaire(String name, Page<Stagiaire> page) {
+    public void getPageStagiaire(String name, Page<Stagiaire> page) {
         logger.info("getPageStagiaire search");
-        return stagiaireDAO.getPageStagiaire(name, page);
+        stagiaireDAO.getPageStagiaire(name, page);
     }
 
     public Optional<Stagiaire> detailStagiaire(long id) {

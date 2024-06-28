@@ -10,6 +10,7 @@ public class Page<T> {
     private String order = "id";
     private long pageNumber = 1;
     private long totalPages = 0;
+    private long count = 0;
     private List<T> content = new ArrayList<>();
 
     public Page() {
@@ -84,7 +85,7 @@ public class Page<T> {
     }
 
     public <U> Page<U> map(Function<T, U> function) {
-        return new Page<U>(
+        return new Page<>(
                 nbRow,
                 order,
                 pageNumber,
@@ -93,5 +94,13 @@ public class Page<T> {
                         function
                 ).toList()
         );
+    }
+
+    public void setCount(long count) {
+        this.count = count;
+    }
+
+    public long getCount() {
+        return count;
     }
 }

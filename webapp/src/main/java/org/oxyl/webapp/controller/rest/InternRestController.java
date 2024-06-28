@@ -46,7 +46,8 @@ public class InternRestController {
         page.setOrder(SecureOrder.inEnum(order));
 
         if (search != null && !search.isEmpty()) {
-            long countSize = internService.getPageStagiaire(search, page);
+            internService.getPageStagiaire(search, page);
+            var countSize = page.getCount();
             page.setTotalPages(utilitairesService.getTotalPages(countSize, page.getNbRow()));
 
         } else {
