@@ -50,7 +50,7 @@ public class ChapterService {
                     .filter(x -> (x.getParent() + x.getName() + "/").equals(chapitre.getParent()))
                     .findFirst()
                     .orElseThrow();
-            map.computeIfAbsent(key, _ -> new ArrayList<>());
+            map.computeIfAbsent(key, x -> new ArrayList<>());
             map.get(key).add(chapitre);
         });
         return map;
