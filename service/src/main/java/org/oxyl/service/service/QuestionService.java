@@ -1,7 +1,9 @@
 package org.oxyl.service.service;
 
+import org.oxyl.bindings.dto.questiondto.QuestionEditDTO;
 import org.oxyl.bindings.dto.questiondto.QuestionQuizDTO;
 import org.oxyl.core.model.Question;
+import org.oxyl.core.model.Reponse;
 import org.oxyl.persistence.AnswerDAO;
 import org.oxyl.persistence.QuestionDAO;
 import org.slf4j.Logger;
@@ -52,11 +54,22 @@ public class QuestionService {
     }
 
     @Transactional
-    public void createQuestion(Question question) {
-        questionDAO.createQuestion(question);
+    public long save(Question question) {
+        questionDAO.save(question);
         question.getAnswerList().forEach(answer -> {
             answer.setQuestionId(question.getId());
-            answerDAO.createAnswer(answer);
+            answerDAO.save(answer);
         });
+        return question.getId();
+    }
+
+    public boolean exist(int id) {
+        return questionDAO.getQuestionById(id).isPresent();
+    }
+
+    @Transactional
+    public long edit(Question question) {
+        answerDAO.deleteAnswerByQuestionId(question.getId());
+        return save(question);
     }
 }

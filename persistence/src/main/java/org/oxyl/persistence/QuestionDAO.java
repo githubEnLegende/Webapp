@@ -105,9 +105,10 @@ public class QuestionDAO {
         return query.list().stream().map(mapperQuestion::toModel).toList();
     }
 
-    public void createQuestion(Question question) {
+    public void save(Question question) {
         var entity = mapperQuestion.toEntity(question);
         questionRepository.save(entity);
         question.setId(entity.getId());
     }
+
 }

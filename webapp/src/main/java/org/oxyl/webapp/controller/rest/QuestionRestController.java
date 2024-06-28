@@ -2,13 +2,16 @@ package org.oxyl.webapp.controller.rest;
 
 import jakarta.validation.Valid;
 import org.oxyl.bindings.dto.questiondto.QuestionAddDTO;
+import org.oxyl.bindings.dto.questiondto.QuestionEditDTO;
 import org.oxyl.bindings.dto.questiondto.QuestionPageDTO;
 import org.oxyl.bindings.mapper.MapperQuestion;
 import org.oxyl.core.model.Question;
+import org.oxyl.service.service.ChapterService;
 import org.oxyl.service.service.QuestionService;
 import org.oxyl.webapp.controller.QuestionController;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.http.HttpStatusCode;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -19,10 +22,12 @@ import java.util.List;
 public class QuestionRestController {
     private final static Logger logger = LoggerFactory.getLogger(QuestionController.class);
     private final QuestionService questionService;
+    private final ChapterService chapterService;
     private final MapperQuestion mapperQuestion;
 
-    public QuestionRestController(QuestionService questionService, MapperQuestion mapperQuestion) {
+    public QuestionRestController(QuestionService questionService, ChapterService chapterService, MapperQuestion mapperQuestion) {
         this.questionService = questionService;
+        this.chapterService = chapterService;
         this.mapperQuestion = mapperQuestion;
     }
 
@@ -57,7 +62,21 @@ public class QuestionRestController {
     public ResponseEntity<Long> postQuestion(
             @Valid @RequestBody QuestionAddDTO questionAddDTO
     ) {
-        questionService.createQuestion(mapperQuestion.convertToModel(questionAddDTO));
-        return ResponseEntity.ok().build();
+        if(!chapterService.exist(questionAddDTO.chapterId())){
+            return ResponseEntity.notFound().build();
+        }
+        var id = questionService.save(mapperQuestion.convertToModel(questionAddDTO));
+        return ResponseEntity.ok(id);
+    }
+
+    @PutMapping
+    public ResponseEntity<Long> putQuestion(
+            @Valid @RequestBody QuestionEditDTO questionEditDTO
+    ) {
+        if(!questionService.exist(questionEditDTO.id()) || !chapterService.exist(questionEditDTO.chapterId())){
+            return ResponseEntity.notFound().build();
+        }
+        var id = questionService.edit(mapperQuestion.convertToModel(questionEditDTO));
+        return ResponseEntity.ok(id);
     }
 }

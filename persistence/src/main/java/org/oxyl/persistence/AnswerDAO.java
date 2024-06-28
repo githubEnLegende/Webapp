@@ -5,6 +5,8 @@ import org.oxyl.persistence.entitymapper.AnswerEntityMapper;
 import org.oxyl.persistence.repository.AnswerRepository;
 import org.springframework.stereotype.Component;
 
+import java.util.List;
+
 @Component
 public class AnswerDAO {
 
@@ -16,9 +18,17 @@ public class AnswerDAO {
         this.answerEntityMapper = answerEntityMapper;
     }
 
-    public void createAnswer(Reponse reponse) {
+    public void save(Reponse reponse) {
         answerRepository.save(
                 answerEntityMapper.toEntity(reponse)
         );
+    }
+
+    public void delete(Reponse reponse) {
+        answerRepository.delete(answerEntityMapper.toEntity(reponse));
+    }
+
+    public void deleteAnswerByQuestionId(long id) {
+        answerRepository.deleteByQuestionId(id);
     }
 }

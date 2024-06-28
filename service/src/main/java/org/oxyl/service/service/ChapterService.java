@@ -33,7 +33,9 @@ public class ChapterService {
 
     }
 
-    public record ChapterWithSubChapter(Chapitre chapter, ChapterWithSubChapter subChapter){ }
+    public boolean exist(long id) {
+        return chapterDAO.getChapterById(id).isPresent();
+    }
 
     @Transactional
     public Map<Chapitre, List<Chapitre>> getSubChapter(long id) {

@@ -1,6 +1,7 @@
 package org.oxyl.bindings.mapper;
 
 import org.oxyl.bindings.dto.questiondto.QuestionAddDTO;
+import org.oxyl.bindings.dto.questiondto.QuestionEditDTO;
 import org.oxyl.bindings.dto.questiondto.QuestionPageDTO;
 import org.oxyl.bindings.dto.questiondto.QuestionQuizDTO;
 import org.oxyl.core.model.Chapitre;
@@ -52,6 +53,21 @@ public class MapperQuestion {
                         .id(questionAddDTO.chapterId())
                         .build())
                 .answers(questionAddDTO.answers()
+                        .stream()
+                        .map(mapperReponse::convertToModel)
+                        .toList())
+                .build();
+    }
+
+    public Question convertToModel(QuestionEditDTO questionEditDTO) {
+        return new Question.QuestionBuilder()
+                .id(questionEditDTO.id())
+                .title(questionEditDTO.title())
+                .statement(questionEditDTO.statement())
+                .chapitre(new Chapitre.ChapitreBuilder()
+                        .id(questionEditDTO.chapterId())
+                        .build())
+                .answers(questionEditDTO.answers()
                         .stream()
                         .map(mapperReponse::convertToModel)
                         .toList())

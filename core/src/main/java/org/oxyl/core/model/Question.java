@@ -64,6 +64,10 @@ public class Question {
                 "}\n";
     }
 
+    public void setAnswers(List<Reponse> answers) {
+        this.answerList = answers;
+    }
+
     public static class QuestionBuilder {
         private long id;
         private String title;
