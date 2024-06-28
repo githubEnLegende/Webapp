@@ -22,7 +22,7 @@ public class MapperPromotion implements RowMapper<Promotion> {
     public Optional<Promotion> rsToPromotion(ResultSet rs) {
         try {
             return Optional.of(new Promotion.PromotionBuilder(rs.getInt("id"),
-                    rs.getString("name")).build());
+                    rs.getString("lastName")).build());
         } catch (SQLException e) {
             logger.error("Erreur Base de donnée", e.getMessage());
             return Optional.empty();
