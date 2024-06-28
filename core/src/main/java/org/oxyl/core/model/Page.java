@@ -21,12 +21,14 @@ public class Page<T> {
             String order,
             long pageNumber,
             long totalPages,
+            long count,
             List<T> content
     ) {
         this.nbRow = nbRow;
         this.order = order;
         this.pageNumber = pageNumber;
         this.totalPages = totalPages;
+        this.count = count;
         this.content = content;
     }
 
@@ -90,6 +92,7 @@ public class Page<T> {
                 order,
                 pageNumber,
                 totalPages,
+                count,
                 content.stream().map(
                         function
                 ).toList()
