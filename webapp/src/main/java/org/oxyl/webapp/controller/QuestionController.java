@@ -33,20 +33,4 @@ public class QuestionController {
         return "question";
     }
 
-    @GetMapping("/{id}")
-    public String displayQuestion(Model model, @PathVariable(value = "id") String id) {
-        List<String> result = questionService.getQuestionAnswer(Long.parseLong(id));
-
-        String title = result.removeFirst();
-        String statement = result.removeFirst();
-        String chapter_id = result.removeFirst();
-
-        model.addAttribute("title", title);
-        model.addAttribute("statement", statement);
-        model.addAttribute("chapter_id", chapter_id);
-        model.addAttribute("answers", result);
-
-        return "displayQuestion";
-    }
-
 }

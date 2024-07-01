@@ -1,5 +1,6 @@
 package org.oxyl.persistence;
 
+import org.hibernate.Hibernate;
 import org.hibernate.Session;
 import org.hibernate.Transaction;
 import org.hibernate.query.Query;
@@ -33,9 +34,11 @@ public class QuestionDAO {
         this.session = session;
     }
 
-    public Optional<Question> getQuestionById(int questionId) {
+    public Optional<Question> getQuestionById(long questionId) {
         QuestionEntity questionEntity = session.get(QuestionEntity.class, questionId);
         if (questionEntity != null) {
+            Hibernate.initialize(questionEntity.getAnswers());
+            Hibernate.initialize(questionEntity.getChapter());
             return Optional.of(mapperQuestion.toModel(questionEntity));
         }
         return Optional.empty();
@@ -66,26 +69,6 @@ public class QuestionDAO {
     public List<Question> getAllQuestion() {
         Query<QuestionEntity> query = session.createQuery("from QuestionEntity", QuestionEntity.class);
         return query.list().stream().map(mapperQuestion::toModel).toList();
-    }
-
-    @Transactional
-    public List<String> getQuestionAnswer(long id) {
-        String hql = "SELECT q FROM QuestionEntity q LEFT JOIN FETCH q.answers WHERE q.id = :id";
-        Query<QuestionEntity> query = session.createQuery(hql, QuestionEntity.class);
-        query.setParameter("id", id);
-
-        QuestionEntity questionEntity = query.uniqueResult();
-        List<String> response = new ArrayList<>();
-
-        if (questionEntity != null) {
-            response.add(questionEntity.getTitle());
-            response.add(questionEntity.getStatement());
-            response.add(String.valueOf(questionEntity.getChapter()));
-
-            questionEntity.getAnswers().forEach(answer -> response.add(answer.getText()));
-        }
-
-        return response;
     }
 
     public List<Question> getQuestionOfChapter(int chapterId, int number) {

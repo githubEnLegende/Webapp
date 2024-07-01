@@ -13,6 +13,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class QuestionService {
@@ -27,11 +28,6 @@ public class QuestionService {
         this.answerDAO = answerDAO;
     }
 
-    public void getQuestionById(int questionId) {
-        logger.info("Get question by id: {}", questionId);
-        questionDAO.getQuestionById(questionId);
-    }
-
     public void deleteQuestion(long id) {
         logger.info("Delete question by id: {}", id);
         questionDAO.deleteQuestion(id);
@@ -42,9 +38,9 @@ public class QuestionService {
         return questionDAO.getAllQuestion();
     }
 
-    public List<String> getQuestionAnswer(long id) {
+    public Optional<Question> getQuestionById(long id) {
         logger.info("Get question answer by id: {}", id);
-        return questionDAO.getQuestionAnswer(id);
+        return questionDAO.getQuestionById(id);
     }
 
     public List<Question> getQuestionOfChapter(

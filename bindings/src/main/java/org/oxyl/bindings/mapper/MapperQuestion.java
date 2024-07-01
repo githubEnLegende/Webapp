@@ -1,9 +1,6 @@
 package org.oxyl.bindings.mapper;
 
-import org.oxyl.bindings.dto.questiondto.QuestionAddDTO;
-import org.oxyl.bindings.dto.questiondto.QuestionEditDTO;
-import org.oxyl.bindings.dto.questiondto.QuestionPageDTO;
-import org.oxyl.bindings.dto.questiondto.QuestionQuizDTO;
+import org.oxyl.bindings.dto.questiondto.*;
 import org.oxyl.core.model.Chapitre;
 import org.oxyl.core.model.Question;
 import org.slf4j.Logger;
@@ -20,9 +17,11 @@ public class MapperQuestion {
 
     private final static Logger logger = LoggerFactory.getLogger(MapperChapitre.class);
     private final MapperReponse mapperReponse;
+    private final MapperChapitre mapperChapitre;
 
-    public MapperQuestion(MapperReponse mapperReponse) {
+    public MapperQuestion(MapperReponse mapperReponse, MapperChapitre mapperChapitre) {
         this.mapperReponse = mapperReponse;
+        this.mapperChapitre = mapperChapitre;
     }
 
     public QuestionPageDTO convertToQuestionPageDTO(Question question) {
@@ -72,5 +71,18 @@ public class MapperQuestion {
                         .map(mapperReponse::convertToModel)
                         .toList())
                 .build();
+    }
+
+    public QuestionInformationDTO convertToQuestionInformationDTO(Question question) {
+        return new QuestionInformationDTO(
+                question.getId(),
+                question.getTitle(),
+                question.getStatement(),
+                mapperChapitre.convertToChapterDTO(question.getChapitre()),
+                question.getAnswerList()
+                        .stream()
+                        .map(mapperReponse::convertToAnswerDTO)
+                        .toList()
+        );
     }
 }

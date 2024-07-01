@@ -131,7 +131,6 @@ public class FonctionDisplay {
         String userChoice = sc.nextLine();
         try {
             int id = Integer.parseInt(userChoice);
-            questionDAO.getQuestionById(id);
         } catch (NumberFormatException e) {
             System.out.println("not a valid ID");
         }

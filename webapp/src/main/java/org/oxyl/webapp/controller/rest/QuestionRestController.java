@@ -1,9 +1,7 @@
 package org.oxyl.webapp.controller.rest;
 
 import jakarta.validation.Valid;
-import org.oxyl.bindings.dto.questiondto.QuestionAddDTO;
-import org.oxyl.bindings.dto.questiondto.QuestionEditDTO;
-import org.oxyl.bindings.dto.questiondto.QuestionPageDTO;
+import org.oxyl.bindings.dto.questiondto.*;
 import org.oxyl.bindings.mapper.MapperQuestion;
 import org.oxyl.core.model.Question;
 import org.oxyl.service.service.ChapterService;
@@ -42,9 +40,12 @@ public class QuestionRestController {
     }
 
     @GetMapping(value = "/{id}", produces = "application/json")
-    public ResponseEntity<List<String>> getQuestionById(@PathVariable("id") long id) {
-        List<String> result = questionService.getQuestionAnswer(id);
-        return ResponseEntity.ok(result);
+    public ResponseEntity<QuestionInformationDTO> getQuestionById(@PathVariable("id") long id) {
+        var result = questionService.getQuestionById(id);
+        return result
+                .map(mapperQuestion::convertToQuestionInformationDTO)
+                .map(ResponseEntity::ok)
+                .orElseGet(() -> ResponseEntity.notFound().build());
     }
 
     @DeleteMapping(value = "/{id}")
